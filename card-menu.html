@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Card Menu</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Petit+Formal+Script&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+  --gold:#c99a3d;
+  --gold-soft:#e3c988;
+  --cream:#f4e8d9;
+  --dim:#cdb2a6;
+  --panel:#2a0a10;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
+  margin:0;
+  width:100%;
+  height:100%;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  background:rgba(24,5,8,.96);
+
+  color:var(--cream);
+
+  overflow:hidden;
+}
+
+
+/* ============================================================
+   MAIN MENU
+   ============================================================ */
+
+.menu{
+  height:100%;
+
+  display:flex;
+  flex-direction:column;
+
+  border-top:
+    1px solid rgba(201,154,61,.18);
+
+  box-shadow:
+    0 -12px 30px rgba(0,0,0,.18);
+}
+
+
+/* ============================================================
+   CATEGORY SLIDER
+   ============================================================ */
+
+.category-wrap{
+  height:50px;
+  min-height:50px;
+
+  display:flex;
+  align-items:center;
+
+  width:100%;
+
+  padding:0 6px;
+}
+
+
+.category-arrow{
+  width:30px;
+  height:30px;
+
+  min-width:30px;
+
+  border:
+    1px solid rgba(201,154,61,.22);
+
+  background:
+    rgba(255,255,255,.035);
+
+  color:var(--gold-soft);
+
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:21px;
+  line-height:1;
+
+  cursor:pointer;
+
+  transition:.18s;
+
+  z-index:3;
+}
+
+
+.category-arrow:hover{
+  background:
+    rgba(201,154,61,.13);
+
+  border-color:
+    var(--gold);
+
+  color:#fff;
+}
+
+
+.category-arrow:active{
+  transform:scale(.92);
+}
+
+
+.category-arrow.disabled{
+  opacity:.25;
+
+  pointer-events:none;
+}
+
+
+/* ============================================================
+   CATEGORY LIST
+   ============================================================ */
+
+.categories{
+  height:50px;
+
+  flex:1;
+
+  min-width:0;
+
+  display:flex;
+  align-items:center;
+
+  justify-content:center;
+
+  gap:3px;
+
+  overflow-x:auto;
+  overflow-y:hidden;
+
+  scrollbar-width:none;
+
+  padding:0 7px;
+
+  scroll-behavior:smooth;
+
+  -webkit-overflow-scrolling:touch;
+}
+
+
+.categories::-webkit-scrollbar{
+  display:none;
+}
+
+
+/* ============================================================
+   CATEGORY BUTTON
+   ============================================================ */
+
+.category{
+  border:0;
+
+  background:transparent;
+
+  color:var(--dim);
+
+  font-size:12px;
+
+  padding:8px 13px;
+
+  border-radius:18px;
+
+  cursor:pointer;
+
+  white-space:nowrap;
+
+  flex-shrink:0;
+
+  transition:.18s;
+}
+
+
+.category:hover{
+  color:var(--gold-soft);
+}
+
+
+.category.active{
+  background:
+    rgba(201,154,61,.13);
+
+  color:var(--gold-soft);
+}
+
+
+/* ============================================================
+   ITEM AREA
+   ============================================================ */
+
+.items{
+  flex:1;
+
+  min-height:0;
+
+  display:flex;
+  align-items:center;
+
+  justify-content:center;
+
+  overflow:hidden;
+
+  position:relative;
+
+  padding:4px 12px 11px;
+}
+
+
+/* ============================================================
+   ITEM SLIDER
+   ============================================================ */
+
+.item-list{
+  display:flex;
+
+  gap:17px;
+
+  width:100%;
+
+  margin:0;
+
+  justify-content:center;
+
+  overflow-x:auto;
+  overflow-y:hidden;
+
+  scroll-behavior:smooth;
+
+  scrollbar-width:none;
+
+  -webkit-overflow-scrolling:touch;
+}
+
+
+.item-list::-webkit-scrollbar{
+  display:none;
+}
+
+
+/* ============================================================
+   ITEM
+   ============================================================ */
+
+.item{
+  width:72px;
+
+  flex-shrink:0;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+
+  gap:5px;
+
+  cursor:pointer;
+
+  user-select:none;
+}
+
+
+/* ============================================================
+   ITEM PREVIEW
+   ============================================================ */
+
+.preview{
+  width:57px;
+  height:57px;
+
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:
+    rgba(255,255,255,.045);
+
+  border:
+    1px solid rgba(201,154,61,.2);
+
+  transition:.18s;
+
+  font-size:25px;
+
+  color:var(--cream);
+}
+
+
+.item:hover .preview{
+  transform:translateY(-2px);
+
+  border-color:
+    var(--gold-soft);
+}
+
+
+.item.active .preview{
+  border-color:
+    var(--gold);
+
+  background:
+    rgba(201,154,61,.14);
+
+  box-shadow:
+    0 0 0 3px
+    rgba(201,154,61,.07);
+}
+
+
+/* ============================================================
+   ITEM LABEL
+   ============================================================ */
+
+.label{
+  font-size:10px;
+
+  color:var(--dim);
+
+  white-space:nowrap;
+
+  max-width:72px;
+
+  overflow:hidden;
+
+  text-overflow:ellipsis;
+
+  text-align:center;
+}
+
+
+/* ============================================================
+   COLOR PREVIEW
+   ============================================================ */
+
+.color-preview{
+  width:34px;
+  height:34px;
+
+  border-radius:50%;
+
+  background:var(--sw);
+
+  border:
+    2px solid rgba(255,255,255,.16);
+}
+
+
+/* ============================================================
+   FONTS
+   ============================================================ */
+
+.font-serif{
+  font-family:
+    'Cormorant Garamond',
+    Georgia,
+    serif;
+
+  font-size:23px;
+}
+
+
+.font-script{
+  font-family:
+    'Petit Formal Script',
+    cursive;
+
+  font-size:20px;
+}
+
+
+.font-sans{
+  font-family:
+    Arial,
+    sans-serif;
+
+  font-size:15px;
+}
+
+
+/* ============================================================
+   TEXT EDITOR
+   ============================================================ */
+
+.text-item{
+  width:150px;
+}
+
+
+.text-box{
+  width:150px;
+
+  display:flex;
+  flex-direction:column;
+
+  gap:4px;
+}
+
+
+.text-box label{
+  font-size:9px;
+
+  color:var(--dim);
+}
+
+
+.text-box input,
+.text-box textarea{
+  width:100%;
+
+  border:
+    1px solid rgba(201,154,61,.28);
+
+  background:
+    rgba(0,0,0,.22);
+
+  color:var(--cream);
+
+  border-radius:5px;
+
+  padding:7px 8px;
+
+  font-size:11px;
+
+  outline:none;
+}
+
+
+.text-box textarea{
+  height:48px;
+
+  resize:none;
+}
+
+
+.text-box input:focus,
+.text-box textarea:focus{
+  border-color:
+    var(--gold);
+}
+
+
+.text-save{
+  border:
+    1px solid rgba(201,154,61,.45);
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--gold-soft),
+      var(--gold)
+    );
+
+  color:#241012;
+
+  border-radius:14px;
+
+  padding:5px 9px;
+
+  font-size:10px;
+
+  font-weight:bold;
+
+  cursor:pointer;
+}
+
+
+/* ============================================================
+   DESKTOP
+   ============================================================ */
+
+@media(min-width:701px){
+
+  .item-list{
+    justify-content:center;
+
+    overflow-x:hidden;
+  }
+
+}
+
+
+/* ============================================================
+   TABLET / MOBILE
+   ============================================================ */
+
+@media(max-width:700px){
+
+  .category-wrap{
+    padding:0 4px;
+  }
+
+
+  .category-arrow{
+    width:28px;
+    height:28px;
+
+    min-width:28px;
+
+    font-size:19px;
+  }
+
+
+  .categories{
+    justify-content:flex-start;
+
+    overflow-x:auto;
+
+    padding:0 5px;
+
+    gap:2px;
+  }
+
+
+  .category{
+    font-size:11px;
+
+    padding:8px 10px;
+  }
+
+
+  /* ----------------------------------------------------------
+     MOBILE ITEM AREA
+     ---------------------------------------------------------- */
+
+  .items{
+    padding:4px 12px 10px;
+
+    justify-content:flex-start;
+  }
+
+
+  .item-list{
+    justify-content:flex-start;
+
+    width:100%;
+
+    gap:11px;
+
+    overflow-x:auto;
+  }
+
+
+  .item{
+    width:64px;
+  }
+
+
+  .preview{
+    width:50px;
+    height:50px;
+
+    font-size:22px;
+  }
+
+
+  .label{
+    font-size:9px;
+
+    max-width:64px;
+  }
+
+
+  .text-item{
+    width:min(145px,42vw);
+  }
+
+
+  .text-box{
+    width:100%;
+  }
+
+
+  .text-box input,
+  .text-box textarea{
+    font-size:11px;
+
+    padding:7px;
+  }
+
+
+  .text-box textarea{
+    height:52px;
+  }
+
+}
+
+
+/* ============================================================
+   SMALL PHONES
+   ============================================================ */
+
+@media(max-width:430px){
+
+  .category-wrap{
+    height:46px;
+
+    min-height:46px;
+  }
+
+
+  .category-arrow{
+    width:26px;
+    height:26px;
+
+    min-width:26px;
+
+    font-size:18px;
+  }
+
+
+  .categories{
+    height:46px;
+  }
+
+
+  .category{
+    font-size:10px;
+
+    padding:7px 8px;
+  }
+
+
+  .items{
+    align-items:flex-start;
+
+    padding-top:8px;
+
+    padding-left:12px;
+
+    padding-right:12px;
+  }
+
+
+  .item-list{
+    gap:9px;
+
+    justify-content:flex-start;
+  }
+
+
+  .item{
+    width:62px;
+  }
+
+
+  .preview{
+    width:48px;
+    height:48px;
+  }
+
+
+  .text-item{
+    width:130px;
+  }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<div class="menu">
+
+
+  <!-- ========================================================
+       CATEGORY NAVIGATION
+       ======================================================== -->
+
+  <div class="category-wrap">
+
+    <button
+      class="category-arrow"
+      id="categoryLeft"
+      type="button"
+      aria-label="Scroll categories left"
+    >
+      ‹
+    </button>
+
+
+    <div
+      class="categories"
+      id="categories"
+    >
+
+      <button
+        class="category active"
+        data-category="text"
+      >
+        Message
+      </button>
+
+
+      <button
+        class="category"
+        data-category="symbol"
+      >
+        Symbols
+      </button>
+
+
+      <button
+        class="category"
+        data-category="frame"
+      >
+        Frames
+      </button>
+
+
+      <button
+        class="category"
+        data-category="background"
+      >
+        Backgrounds
+      </button>
+
+
+      <button
+        class="category"
+        data-category="color"
+      >
+        Colors
+      </button>
+
+
+      <button
+        class="category"
+        data-category="font"
+      >
+        Lettering
+      </button>
+
+    </div>
+
+
+    <button
+      class="category-arrow"
+      id="categoryRight"
+      type="button"
+      aria-label="Scroll categories right"
+    >
+      ›
+    </button>
+
+  </div>
+
+
+  <!-- ========================================================
+       ITEM AREA
+       NO VISIBLE ITEM ARROWS
+       ======================================================== -->
+
+  <div class="items">
+
+    <div
+      class="item-list"
+      id="itemList"
+    ></div>
+
+  </div>
+
+
+</div>
+
+
+<script>
+
+(function(){
+
+"use strict";
+
+
+/* ============================================================
+   CARD STATE
+   ============================================================ */
+
+var state = {
+
+  to:"Sister Grace",
+
+  msg:
+    "Thinking of you today — may the Lord renew your strength like the eagle's wings.",
+
+  verse:"Isaiah 40:31",
+
+  from:"Your Sunday School Class",
+
+  symbol:"🕊️",
+
+  frame:"frame-classic",
+
+  bg:"bg-plain",
+
+  accent:"gold",
+
+  font:"font-serif"
+
+};
+
+
+/* ============================================================
+   MENU DATA
+   ============================================================ */
+
+var DATA = {
+
+  symbol:[
+
+    {
+      name:"Dove",
+      value:"🕊️"
+    },
+
+    {
+      name:"Cross",
+      value:"✝️"
+    },
+
+    {
+      name:"Flame",
+      value:"🔥"
+    },
+
+    {
+      name:"Wheat",
+      value:"🌾"
+    },
+
+    {
+      name:"Candle",
+      value:"🕯️"
+    },
+
+    {
+      name:"Prayer",
+      value:"🙏"
+    },
+
+    {
+      name:"Heart",
+      value:"❤️"
+    },
+
+    {
+      name:"Sunrise",
+      value:"☀️"
+    }
+
+  ],
+
+
+  frame:[
+
+    {
+      name:"Classic",
+      value:"frame-classic",
+      preview:"▣"
+    },
+
+    {
+      name:"Ornate",
+      value:"frame-ornate",
+      preview:"▤"
+    },
+
+    {
+      name:"Dashed",
+      value:"frame-scallop",
+      preview:"▧"
+    },
+
+    {
+      name:"Simple",
+      value:"frame-simple",
+      preview:"□"
+    }
+
+  ],
+
+
+  background:[
+
+    {
+      name:"Plain",
+      value:"bg-plain",
+      preview:"○"
+    },
+
+    {
+      name:"Rays",
+      value:"bg-rays",
+      preview:"☀"
+    },
+
+    {
+      name:"Dotted",
+      value:"bg-dots",
+      preview:"⠿"
+    },
+
+    {
+      name:"Woven",
+      value:"bg-weave",
+      preview:"▦"
+    }
+
+  ],
+
+
+  color:[
+
+    {
+      name:"Gold",
+      value:"gold",
+      color:"#c99a3d"
+    },
+
+    {
+      name:"Rose",
+      value:"rose",
+      color:"#c97b8c"
+    },
+
+    {
+      name:"Ember",
+      value:"ember",
+      color:"#b4522f"
+    },
+
+    {
+      name:"Dawn",
+      value:"dawn",
+      color:"#8fa6c9"
+    }
+
+  ],
+
+
+  font:[
+
+    {
+      name:"Serif",
+      value:"font-serif",
+      preview:"Aa",
+      className:"font-serif"
+    },
+
+    {
+      name:"Script",
+      value:"font-script",
+      preview:"Aa",
+      className:"font-script"
+    },
+
+    {
+      name:"Sans",
+      value:"font-sans",
+      preview:"Aa",
+      className:"font-sans"
+    }
+
+  ]
+
+};
+
+
+/* ============================================================
+   ELEMENTS
+   ============================================================ */
+
+var list =
+  document.getElementById("itemList");
+
+
+var categories =
+  document.getElementById("categories");
+
+
+var leftButton =
+  document.getElementById("categoryLeft");
+
+
+var rightButton =
+  document.getElementById("categoryRight");
+
+
+/* ============================================================
+   SEND UPDATE TO CARD BUILDER
+   ============================================================ */
+
+function send(key,value){
+
+  window.parent.postMessage({
+
+    type:"CARD_UPDATE",
+
+    key:key,
+
+    value:value
+
+  },"*");
+
+}
+
+
+/* ============================================================
+   CATEGORY ARROWS
+   ============================================================ */
+
+function updateArrowState(){
+
+  if(!categories) return;
+
+
+  var maxScroll =
+    categories.scrollWidth -
+    categories.clientWidth;
+
+
+  if(maxScroll <= 2){
+
+    leftButton.classList.add("disabled");
+
+    rightButton.classList.add("disabled");
+
+    return;
+
+  }
+
+
+  if(categories.scrollLeft <= 2){
+
+    leftButton.classList.add("disabled");
+
+  }else{
+
+    leftButton.classList.remove("disabled");
+
+  }
+
+
+  if(
+    categories.scrollLeft >=
+    maxScroll - 2
+  ){
+
+    rightButton.classList.add("disabled");
+
+  }else{
+
+    rightButton.classList.remove("disabled");
+
+  }
+
+}
+
+
+function scrollCategories(direction){
+
+  var amount =
+    Math.max(
+      150,
+      categories.clientWidth * 0.55
+    );
+
+
+  categories.scrollBy({
+
+    left:
+      direction * amount,
+
+    behavior:"smooth"
+
+  });
+
+}
+
+
+leftButton.onclick=function(){
+
+  scrollCategories(-1);
+
+};
+
+
+rightButton.onclick=function(){
+
+  scrollCategories(1);
+
+};
+
+
+categories.addEventListener(
+  "scroll",
+  updateArrowState
+);
+
+
+/* ============================================================
+   CENTER CATEGORY
+   ============================================================ */
+
+function centerCategory(button){
+
+  if(!button) return;
+
+
+  var left =
+    button.offsetLeft -
+    (
+      categories.clientWidth -
+      button.offsetWidth
+    ) / 2;
+
+
+  categories.scrollTo({
+
+    left:Math.max(0,left),
+
+    behavior:"smooth"
+
+  });
+
+}
+
+
+/* ============================================================
+   TEXT MENU
+   ============================================================ */
+
+function renderText(){
+
+  list.innerHTML="";
+
+
+  var fields=[
+
+    {
+      key:"to",
+      label:"Recipient",
+      value:state.to,
+      type:"input"
+    },
+
+    {
+      key:"msg",
+      label:"Message",
+      value:state.msg,
+      type:"textarea"
+    },
+
+    {
+      key:"verse",
+      label:"Verse / reference",
+      value:state.verse,
+      type:"input"
+    },
+
+    {
+      key:"from",
+      label:"From",
+      value:state.from,
+      type:"input"
+    }
+
+  ];
+
+
+  fields.forEach(function(f){
+
+    var item =
+      document.createElement("div");
+
+
+    item.className =
+      "item text-item";
+
+
+    var box =
+      document.createElement("div");
+
+
+    box.className =
+      "text-box";
+
+
+    var label =
+      document.createElement("label");
+
+
+    label.textContent =
+      f.label;
+
+
+    var input =
+      document.createElement(
+        f.type === "textarea"
+          ? "textarea"
+          : "input"
+      );
+
+
+    input.value =
+      f.value || "";
+
+
+    input.maxLength =
+      f.key === "msg"
+        ? 220
+        : 40;
+
+
+    var save =
+      document.createElement("button");
+
+
+    save.className =
+      "text-save";
+
+
+    save.type =
+      "button";
+
+
+    save.textContent =
+      "Apply";
+
+
+    save.onclick=function(){
+
+      send(
+        f.key,
+        input.value
+      );
+
+
+      state[f.key] =
+        input.value;
+
+    };
+
+
+    box.appendChild(label);
+
+    box.appendChild(input);
+
+    box.appendChild(save);
+
+
+    item.appendChild(box);
+
+
+    list.appendChild(item);
+
+  });
+
+
+  /*
+   * Start at the beginning on mobile.
+   * On PC the four items are centered.
+   */
+
+  list.scrollLeft=0;
+
+}
+
+
+/* ============================================================
+   VISUAL MENU
+   ============================================================ */
+
+function renderVisual(category){
+
+  list.innerHTML="";
+
+
+  DATA[category].forEach(function(data){
+
+    var item =
+      document.createElement("div");
+
+
+    item.className =
+      "item";
+
+
+    var preview =
+      document.createElement("div");
+
+
+    preview.className =
+      "preview";
+
+
+    if(category === "color"){
+
+      var dot =
+        document.createElement("div");
+
+
+      dot.className =
+        "color-preview";
+
+
+      dot.style.setProperty(
+        "--sw",
+        data.color
+      );
+
+
+      preview.appendChild(dot);
+
+    }else{
+
+      preview.textContent =
+        data.preview ||
+        data.value;
+
+
+      if(category === "font"){
+
+        preview.classList.add(
+          data.className
+        );
+
+      }
+
+    }
+
+
+    var label =
+      document.createElement("div");
+
+
+    label.className =
+      "label";
+
+
+    label.textContent =
+      data.name;
+
+
+    item.appendChild(preview);
+
+    item.appendChild(label);
+
+
+    var stateKey =
+      category === "background"
+        ? "bg"
+        : category === "color"
+          ? "accent"
+          : category;
+
+
+    if(
+      state[stateKey] ===
+      data.value
+    ){
+
+      item.classList.add(
+        "active"
+      );
+
+    }
+
+
+    item.onclick=function(){
+
+      state[stateKey] =
+        data.value;
+
+
+      Array.prototype.forEach.call(
+
+        document.querySelectorAll(".item"),
+
+        function(x){
+
+          x.classList.remove(
+            "active"
+          );
+
+        }
+
+      );
+
+
+      item.classList.add(
+        "active"
+      );
+
+
+      send(
+        stateKey,
+        data.value
+      );
+
+    };
+
+
+    list.appendChild(item);
+
+  });
+
+
+  list.scrollLeft=0;
+
+}
+
+
+/* ============================================================
+   RENDER MENU
+   ============================================================ */
+
+function render(category){
+
+  if(category === "text"){
+
+    renderText();
+
+  }else{
+
+    renderVisual(category);
+
+  }
+
+}
+
+
+/* ============================================================
+   CATEGORY BUTTONS
+   ============================================================ */
+
+Array.prototype.forEach.call(
+
+  document.querySelectorAll(".category"),
+
+  function(btn){
+
+    btn.onclick=function(){
+
+      Array.prototype.forEach.call(
+
+        document.querySelectorAll(".category"),
+
+        function(x){
+
+          x.classList.remove(
+            "active"
+          );
+
+        }
+
+      );
+
+
+      btn.classList.add(
+        "active"
+      );
+
+
+      render(
+        btn.getAttribute(
+          "data-category"
+        )
+      );
+
+
+      centerCategory(btn);
+
+
+      updateArrowState();
+
+    };
+
+  }
+
+);
+
+
+/* ============================================================
+   RECEIVE CARD STATE FROM CARD BUILDER
+   ============================================================ */
+
+window.addEventListener(
+
+  "message",
+
+  function(event){
+
+    if(!event.data) return;
+
+
+    if(
+      event.data.type ===
+      "CARD_INIT" &&
+      event.data.state
+    ){
+
+      state =
+        Object.assign(
+          state,
+          event.data.state
+        );
+
+
+      var active =
+        document.querySelector(
+          ".category.active"
+        );
+
+
+      render(
+
+        active
+          ? active.getAttribute(
+              "data-category"
+            )
+          : "text"
+
+      );
+
+    }
+
+  }
+
+);
+
+
+/* ============================================================
+   RESIZE
+   ============================================================ */
+
+window.addEventListener(
+  "resize",
+  function(){
+
+    updateArrowState();
+
+  }
+);
+
+
+/* ============================================================
+   INITIALIZE
+   ============================================================ */
+
+render("text");
+
+updateArrowState();
+
+
+})();
+
+</script>
+
+</body>
+</html>
