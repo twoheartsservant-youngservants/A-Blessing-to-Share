@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Blessing to Share — Young Servants of the Lord</title>
+<meta name="description" content="Design a personal blessing card for a churchmate and share it by link, QR code, or email.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Work+Sans:wght@400;500;600;700&family=Petit+Formal+Script&display=swap" rel="stylesheet">
+<style>
+:root{
+  --maroon-deep:#2a0a10;--maroon-mid:#421119;--maroon-panel:#3a0f16;
+  --maroon-line:#6e2530;--gold:#c99a3d;--gold-soft:#e3c988;
+  --parchment:#f4e8d9;--parchment-dim:#cdb2a6;
+  --font-display:'Cormorant Garamond',Georgia,serif;--font-ui:'Work Sans',sans-serif;
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--maroon-deep);color:var(--parchment);font-family:var(--font-ui);line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:inherit}button{font-family:inherit;cursor:pointer}.site-header{position:sticky;top:0;z-index:20;background:linear-gradient(180deg,rgba(20,5,8,.97),rgba(20,5,8,.88));border-bottom:1px solid rgba(201,154,61,.22);backdrop-filter:blur(8px)}
+.header-inner{max-width:1180px;margin:auto;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}.brand-logo{width:42px;height:42px;object-fit:contain;border-radius:50%}.brand-text{display:flex;flex-direction:column;line-height:1.15}.brand-name{font-family:var(--font-display);font-size:1.08rem;font-weight:600}.brand-tag{font-size:.72rem;color:var(--gold-soft);letter-spacing:.03em}.site-nav{display:flex;gap:22px}.site-nav a{text-decoration:none;color:var(--parchment-dim);font-size:.9rem;padding:6px 2px;border-bottom:1px solid transparent}.site-nav a:hover{color:var(--gold-soft);border-bottom-color:var(--gold)}
+.hero{max-width:1180px;margin:auto;padding:72px 28px 70px}.hero-inner{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}.hero-copy h1{font-family:var(--font-display);font-weight:600;font-size:clamp(2.4rem,5vw,4.3rem);line-height:1.02;margin:0 0 20px}.hero-copy p{font-size:1.02rem;color:var(--parchment-dim);max-width:46ch;margin:0 0 28px}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 22px;font-size:.92rem;font-weight:600;border-radius:3px;border:1px solid transparent;text-decoration:none}.btn-gold{background:linear-gradient(180deg,var(--gold-soft),var(--gold));color:#241012}.hero-card-frame{display:flex;justify-content:center;position:relative}.hero-card-frame:before{content:"";position:absolute;width:250px;height:250px;border-radius:50%;background:radial-gradient(circle,rgba(201,154,61,.28),transparent 70%);filter:blur(6px)}
+.blessing-card{position:relative;z-index:1;width:340px;min-height:460px;background:linear-gradient(165deg,var(--maroon-panel),var(--maroon-mid));border:1px solid var(--card-line,var(--gold));border-radius:2px;padding:30px 26px 26px;display:flex;flex-direction:column;align-items:center;text-align:center;box-shadow:0 26px 50px -18px rgba(0,0,0,.65),0 0 0 1px rgba(0,0,0,.2) inset;overflow:hidden}.card-layer-bg{position:absolute;inset:0;pointer-events:none;opacity:.55}.bg-plain .card-layer-bg{background:none}.bg-rays .card-layer-bg{background:repeating-conic-gradient(from 0deg at 50% 0%,rgba(201,154,61,.10) 0deg 6deg,transparent 6deg 16deg)}.bg-dots .card-layer-bg{background-image:radial-gradient(var(--card-line,var(--gold)) 1px,transparent 1.4px);background-size:16px 16px;opacity:.28}.bg-weave .card-layer-bg{background-image:linear-gradient(45deg,rgba(201,154,61,.10) 25%,transparent 25%,transparent 75%,rgba(201,154,61,.10) 75%),linear-gradient(-45deg,rgba(201,154,61,.10) 25%,transparent 25%,transparent 75%,rgba(201,154,61,.10) 75%);background-size:18px 18px}
+.frame-classic:after{content:"";position:absolute;inset:10px;border:1px solid var(--card-line,var(--gold));opacity:.55;pointer-events:none}.frame-ornate{border:none}.frame-ornate:after{content:"";position:absolute;inset:8px;border:2px double var(--card-line,var(--gold));opacity:.75;pointer-events:none}.frame-scallop{border:none}.frame-scallop:after{content:"";position:absolute;inset:9px;border:1px dashed var(--card-line,var(--gold));opacity:.6;border-radius:10px;pointer-events:none}.frame-simple{border:1px solid var(--card-line,var(--gold))}
+.card-body{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:14px;flex:1}.card-symbol{font-size:2.4rem;line-height:1;margin-top:4px;filter:drop-shadow(0 0 14px rgba(201,154,61,.55))}.card-to{font-family:var(--font-display);font-size:1.05rem;color:var(--gold-soft);margin:0}.card-message{font-family:var(--font-display);font-size:1.18rem;color:var(--parchment);margin:4px 0;line-height:1.45;flex:1;overflow-wrap:anywhere;white-space:pre-wrap}.card-verse{font-size:.85rem;letter-spacing:.03em;color:var(--parchment-dim);margin:0}.card-from{font-size:.92rem;color:var(--gold-soft);margin:6px 0 0}.font-script .card-message{font-family:'Petit Formal Script',cursive;font-size:1.5rem;line-height:1.35}.font-sans .card-message{font-family:var(--font-ui);font-weight:500;font-size:1rem}.font-sans .card-to,.font-sans .card-from{font-family:var(--font-ui)}
+.how{max-width:1180px;margin:auto;padding:30px 28px 100px}.how h2{font-family:var(--font-display);font-size:2rem;font-weight:600;margin:0 0 30px;text-align:center}.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:28px}.steps li{padding:24px 20px;border:1px solid rgba(201,154,61,.18);border-radius:3px;background:rgba(66,17,25,.4)}.step-num{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;border:1px solid var(--gold);color:var(--gold-soft);font-family:var(--font-display);margin-bottom:12px}.steps p{margin:0;color:var(--parchment-dim);font-size:.95rem}.site-footer{text-align:center;padding:26px 20px 40px;color:var(--parchment-dim);font-size:.82rem;border-top:1px solid rgba(201,154,61,.16)}
+@media(max-width:900px){.hero-inner{grid-template-columns:1fr;gap:40px}.steps{grid-template-columns:1fr}.site-nav{gap:14px}}
+@media(max-width:600px){.header-inner{padding:12px 16px}.brand-name{font-size:.95rem}.site-nav a{font-size:.78rem}.hero{padding:55px 20px}.how{padding-left:20px;padding-right:20px}.blessing-card{width:290px;min-height:400px;padding:25px 20px}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="./">
+      <img src="logoysl.png" alt="Young Servants of the Lord" class="brand-logo" onerror="this.style.display='none'">
+      <span class="brand-text">
+        <span class="brand-name">Young Servants of the Lord</span>
+        <span class="brand-tag">A Blessing to Share</span>
+      </span>
+    </a>
+    <nav class="site-nav">
+      <a href="card-builder.html">Create a card</a>
+      <a href="#how">How it works</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <h1>Write a blessing,<br>send it with a click.</h1>
+      <p>Pick a symbol, set the colors, and write your own words to a churchmate — then share it by link, QR code, or email. No account needed.</p>
+      <a href="card-builder.html" class="btn btn-gold">Start designing</a>
+    </div>
+
+    <div class="hero-card-frame">
+      <article class="blessing-card frame-classic bg-rays" style="--card-accent:#c99a3d;--card-line:#e3c988;">
+        <div class="card-layer-bg" aria-hidden="true"></div>
+        <div class="card-body font-serif">
+          <div class="card-symbol">🕊️</div>
+          <p class="card-to">For Kim</p>
+          <p class="card-message">Thinking of you today — may the Lord renew your strength like the eagle's wings.</p>
+          <p class="card-verse">Isaiah 40:31</p>
+          <p class="card-from">— Kimblnl</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="how" id="how">
+  <h2>How a blessing travels</h2>
+  <ol class="steps">
+    <li><span class="step-num">1</span><p>Design your card and write a message in your own words.</p></li>
+    <li><span class="step-num">2</span><p>Copy the link, show a QR code, or send it straight to an inbox.</p></li>
+    <li><span class="step-num">3</span><p>Your churchmate opens it and sees the card exactly as you made it — no account required.</p></li>
+  </ol>
+</section>
+</main>
+
+<footer class="site-footer">
+  <p>
+    A Blessing to Share, by Young Servants of the Lord — a small way to
+    encourage the church family, one message at a time.
+  </p>
+
+  <div class="footer-credit">
+    <span>© Two-Hearts Servant</span>
+    <span>•</span>
+    <span>Created by <strong>Kim Blanila</strong></span>
+    <span>•</span>
+    <span>Assistant Media Ministry Head</span>
+  </div>
+</footer>
+</body>
+</html>
