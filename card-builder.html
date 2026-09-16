@@ -70,7 +70,12 @@
     <button id="qrDownloadBtn" type="button">Download QR image</button>
   </div>
 
-  <iframe name="historySubmitFrame" id="historySubmitFrame" hidden></iframe>
+  <iframe
+    id="menuFrame"
+    src="card-menu.html"
+    title="Card design menu"
+    style="position:absolute;left:0;right:0;bottom:0;width:100%;height:175px;border:0;background:transparent;z-index:30;"
+  ></iframe>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <div class="photo-hint" id="photoHint">Drag photos to reposition • use the corner to resize</div>
