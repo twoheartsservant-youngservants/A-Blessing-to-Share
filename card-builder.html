@@ -157,12 +157,44 @@ function base64UrlDecode(str){var b64=str.replace(/-/g,"+").replace(/_/g,"/");wh
 function getApiUrl(){return window.YSL_API_URL||""}
 function deviceId(){var k="yslBlessingUserId";var v=localStorage.getItem(k);if(!v){v=crypto.randomUUID?crypto.randomUUID():"u-"+Date.now()+"-"+Math.random().toString(36).slice(2);localStorage.setItem(k,v)}return v}
 function deviceKey(){var k="yslBlessingUserKey";var v=localStorage.getItem(k);if(!v){v=crypto.randomUUID?crypto.randomUUID():"k-"+Date.now()+"-"+Math.random().toString(36).slice(2);localStorage.setItem(k,v)}return v}
-function saveHistory(reason,callback){
-  if(!state.creationId)state.creationId=(crypto.randomUUID?crypto.randomUUID():"c-"+Date.now()+"-"+Math.random().toString(36).slice(2));
-  var payload=JSON.parse(JSON.stringify(state));payload.photos=(payload.photos||[]).slice(0,3);
-  var form=document.createElement("form");form.method="POST";form.action=getApiUrl();form.target="historySubmitFrame";form.style.display="none";
-  var fields={action:"save",userId:deviceId(),userKey:deviceKey(),creationId:state.creationId,cardType:"Blessing Card",state:JSON.stringify(payload),reason:reason||"manual"};
-  Object.keys(fields).forEach(function(k){var i=document.createElement("input");i.type="hidden";i.name=k;i.value=fields[k];form.appendChild(i)});document.body.appendChild(form);form.submit();setTimeout(function(){form.remove();if(callback)callback()},250);
+function saveHistory(reason, callback) {
+  if (!state.creationId) {
+    state.creationId = crypto.randomUUID
+      ? crypto.randomUUID()
+      : "c-" + Date.now() + "-" + Math.random().toString(36).slice(2);
+  }
+
+  var payload = JSON.parse(JSON.stringify(state));
+  payload.photos = (payload.photos || []).slice(0, 3);
+
+  var form = document.createElement("form");
+  form.method = "POST";
+  form.action = getApiUrl();
+  form.target = "historySubmitFrame";
+  form.style.display = "none";
+
+  var fields = {
+    action: "save",
+    creationId: state.creationId,
+    cardType: "Blessing Card",
+    state: JSON.stringify(payload)
+  };
+
+  Object.keys(fields).forEach(function(key) {
+    var input = document.createElement("input");
+    input.type = "hidden";
+    input.name = key;
+    input.value = fields[key];
+    form.appendChild(input);
+  });
+
+  document.body.appendChild(form);
+  form.submit();
+  form.remove();
+
+  if (callback) {
+    setTimeout(callback, 500);
+  }
 }
 function buildShareLink(){return window.location.origin+window.location.pathname+"#id="+encodeURIComponent(state.creationId||"")}
 var toastTimer;function showToast(text){$("toast").textContent=text;$("toast").classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(function(){$("toast").classList.remove("show")},2600)}
