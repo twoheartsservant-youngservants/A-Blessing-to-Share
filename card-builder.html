@@ -496,7 +496,7 @@
       return Object.assign({},s,{photos:compressed});
     });
   }
-  var shareCache={hash:null,id:null,url:null,userId:null,userKey:null,pending:null,usingFallback:false,lastError:null};
+  var shareCache={hash:null,id:null,url:null,userId:null,userKey:null,pending:null};
   // The Apps Script backend replies to POST actions with a tiny HTML page that
   // does window.top.postMessage(json,"*") — it isn't meant to be fetched
   // directly, but fetch() can still read the raw text cross-origin, so we
@@ -509,65 +509,6 @@
     if(m){try{return JSON.parse(m[1]);}catch(e){}}
     return null;
   }
-  /* ------------------------------------------------------------
-     POST TO BACKEND VIA HIDDEN IFRAME.
-     fetch() frequently can't read the response of an Apps Script
-     web app POST — Google's deployed /exec endpoint often omits
-     the CORS header on that response even when access is set to
-     "Anyone", so the browser blocks it with "Failed to fetch"
-     even though the save/email genuinely completed on the server
-     (visible in Apps Script's own Executions log). A hidden-iframe
-     form submission sidesteps this entirely: it's a page
-     navigation, not a fetch, so CORS never applies. The backend
-     replies with a tiny page that calls window.top.postMessage(),
-     which we listen for below instead of reading a fetch() body.
-     ------------------------------------------------------------ */
-  var gasFrame=null, gasPending=[];
-  function gasEnsureFrame(){
-    if(gasFrame)return;
-    gasFrame=document.createElement("iframe");
-    gasFrame.name="ysl-gas-frame";
-    gasFrame.style.display="none";
-    document.body.appendChild(gasFrame);
-    window.addEventListener("message",function(e){
-      if(!e.data||typeof e.data!=="object")return;
-      for(var i=0;i<gasPending.length;i++){
-        var p=gasPending[i];
-        if(p.type&&e.data.type&&p.type!==e.data.type)continue;
-        gasPending.splice(i,1);
-        clearTimeout(p.timer);
-        p.resolve(e.data);
-        return;
-      }
-    });
-  }
-  function gasPost(api,params,expectType){
-    gasEnsureFrame();
-    return new Promise(function(resolve,reject){
-      var entry={type:expectType,resolve:resolve,timer:null};
-      entry.timer=setTimeout(function(){
-        var idx=gasPending.indexOf(entry);
-        if(idx>-1)gasPending.splice(idx,1);
-        reject(new Error("Request timed out. Please check your connection and try again."));
-      },20000);
-      gasPending.push(entry);
-      var form=document.createElement("form");
-      form.method="POST";
-      form.action=api;
-      form.target="ysl-gas-frame";
-      form.style.display="none";
-      params.forEach(function(value,key){
-        var input=document.createElement("input");
-        input.type="hidden";
-        input.name=key;
-        input.value=value;
-        form.appendChild(input);
-      });
-      document.body.appendChild(form);
-      form.submit();
-      form.parentNode.removeChild(form);
-    });
-  }
   function saveCardRemote(payload){
     var params=new URLSearchParams();
     params.set("action","save");
@@ -576,12 +517,15 @@
     if(shareCache.userKey)params.set("userKey",shareCache.userKey);
     params.set("cardType","Blessing Card");
     params.set("state",JSON.stringify(payload));
-    return gasPost(apiUrl(),params,"SAVE_RESULT").then(function(res){
-      if(!res||!res.ok||!res.creationId)throw new Error((res&&res.message)||"save_failed");
-      shareCache.userId=res.userId||shareCache.userId;
-      shareCache.userKey=res.userKey||shareCache.userKey;
-      return res.creationId;
-    });
+    return fetch(apiUrl(),{method:"POST",body:params})
+      .then(function(r){return r.text();})
+      .then(function(text){
+        var res=parseGasResponse(text);
+        if(!res||!res.ok||!res.creationId)throw new Error((res&&res.message)||"save_failed");
+        shareCache.userId=res.userId||shareCache.userId;
+        shareCache.userKey=res.userKey||shareCache.userKey;
+        return res.creationId;
+      });
   }
   // Returns a Promise<string> resolving to the link to share. Re-saves only
   // when the card actually changed since the last successful save.
@@ -589,12 +533,6 @@
     if(shareCache.pending)return shareCache.pending;
     var api=apiUrl();
     if(!api){
-      // No backend configured at all (config.js missing, or API_URL blank).
-      // This is the #1 cause of huge shared links — everything falls back
-      // to a fully self-contained, Base64-encoded-photos URL.
-      console.warn("[YSL] YSL_CONFIG.API_URL is not set — sharing will use a long, self-contained link instead of a short one. Check that config.js is loaded and defines window.YSL_CONFIG.API_URL.");
-      shareCache.usingFallback=true;
-      shareCache.lastError="No backend configured (YSL_CONFIG.API_URL missing).";
       shareCache.pending=Promise.resolve(makeLink()).then(function(url){
         shareCache.pending=null;return url;
       });
@@ -602,19 +540,13 @@
     }
     shareCache.pending=buildSavePayload().then(function(payload){
       var h=hashStr(JSON.stringify(payload));
-      if(h===shareCache.hash&&shareCache.url&&!shareCache.usingFallback){shareCache.pending=null;return shareCache.url;}
+      if(h===shareCache.hash&&shareCache.url){shareCache.pending=null;return shareCache.url;}
       return saveCardRemote(payload).then(function(id){
         shareCache.hash=h;shareCache.id=id;shareCache.url=viewCardUrl(id);
-        shareCache.usingFallback=false;shareCache.lastError=null;
         shareCache.pending=null;
         return shareCache.url;
-      }).catch(function(err){
-        // Backend unreachable or save failed — fall back to the long,
-        // fully self-contained link so sharing still technically works,
-        // but make the failure visible instead of hiding it.
-        console.error("[YSL] Short-link save failed, falling back to a long link:",err&&err.message?err.message:err);
-        shareCache.usingFallback=true;
-        shareCache.lastError=(err&&err.message)||"Could not reach the server.";
+      }).catch(function(){
+        // backend unreachable — fall back to a fully self-contained link
         var url=makeLink();
         shareCache.pending=null;
         return url;
@@ -923,11 +855,8 @@
     var prevText=btn.textContent;
     btn.disabled=true;btn.textContent="Preparing…";
     ensureSavedLink().then(function(url){
-      var msg=shareCache.usingFallback
-        ?"Copied — but this is a long backup link because the short link couldn't be created. Try again in a moment."
-        :"Card link copied";
       if(navigator.clipboard&&navigator.clipboard.writeText){
-        return navigator.clipboard.writeText(url).then(function(){showToast(msg);},function(){
+        return navigator.clipboard.writeText(url).then(function(){showToast("Card link copied");},function(){
           window.prompt("Copy this card link:",url);
         });
       }
@@ -971,13 +900,6 @@
     btn.disabled=true;
     status.textContent="Sending your blessing…";
     ensureSavedLink().then(function(link){
-      if(shareCache.usingFallback){
-        // Refuse to email the huge self-contained link — better to fail
-        // clearly than send an email that looks broken.
-        return Promise.reject(new Error(
-          "Could not create a short link right now ("+(shareCache.lastError||"server unreachable")+"). Please try again."
-        ));
-      }
       var s=safeState();
       var params=new URLSearchParams();
       params.set("action","sendEmail");
@@ -988,16 +910,17 @@
       params.set("message",
         "Someone created a blessing especially for you.\nOpen your blessing:\n"+link);
       params.set("cardLink",link);
-      return gasPost(api,params,"EMAIL_RESULT");
-    }).then(function(res){
+      return fetch(api,{method:"POST",body:params}).then(function(r){return r.text();});
+    }).then(function(text){
+      var res=parseGasResponse(text);
       if(res&&res.ok){
         status.textContent=res.message||"Blessing sent successfully.";
       }else{
         status.textContent=(res&&res.message)||"Could not send the blessing. Please try again.";
         status.classList.add("error");
       }
-    }).catch(function(err){
-      status.textContent=(err&&err.message)||"Could not send the blessing. Please try again.";
+    }).catch(function(){
+      status.textContent="Could not send the blessing. Please try again.";
       status.classList.add("error");
     }).then(function(){
       btn.disabled=false;
