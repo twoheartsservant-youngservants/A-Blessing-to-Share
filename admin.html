@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin — A Blessing to Share</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --deep:#2a0a10;
+  --mid:#421119;
+  --panel:#3a0f16;
+  --gold:#c99a3d;
+  --soft:#e3c988;
+  --cream:#f4e8d9;
+  --dim:#cdb2a6;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at 50% 10%,#4a1820,#2a0a10 55%,#180508);
+  color:var(--cream);
+  font-family:'Work Sans',sans-serif;
+}
+
+.wrap{
+  max-width:1250px;
+  margin:auto;
+  padding:28px 20px 60px;
+}
+
+.head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+}
+
+.head h1{
+  font-family:'Cormorant Garamond',serif;
+  color:var(--soft);
+  font-size:2.4rem;
+  margin:0;
+}
+
+.head a{
+  color:var(--soft);
+  text-decoration:none;
+}
+
+.panel{
+  margin-top:24px;
+  padding:20px;
+  background:rgba(58,15,22,.9);
+  border:1px solid rgba(201,154,61,.2);
+  border-radius:10px;
+}
+
+.login{
+  max-width:420px;
+  margin:70px auto;
+}
+
+.input{
+  width:100%;
+  padding:12px;
+  background:rgba(0,0,0,.22);
+  border:1px solid rgba(201,154,61,.3);
+  border-radius:6px;
+  color:var(--cream);
+  font:inherit;
+}
+
+.btn{
+  margin-top:12px;
+  width:100%;
+  padding:12px;
+  border:0;
+  border-radius:6px;
+  background:linear-gradient(180deg,var(--soft),var(--gold));
+  color:#241012;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.error{
+  color:#f0b0b0;
+  min-height:20px;
+  margin-top:10px;
+}
+
+.stats{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.stat{
+  padding:14px 18px;
+  border:1px solid rgba(201,154,61,.2);
+  border-radius:8px;
+  min-width:150px;
+}
+
+.stat b{
+  font-size:1.5rem;
+  color:var(--soft);
+}
+
+.table-wrap{
+  overflow:auto;
+  margin-top:18px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:900px;
+}
+
+th,td{
+  text-align:left;
+  padding:10px;
+  border-bottom:1px solid rgba(201,154,61,.15);
+  vertical-align:top;
+}
+
+th{
+  color:var(--soft);
+}
+
+.thumb{
+  width:70px;
+  height:90px;
+  object-fit:cover;
+  background:#241012;
+  border-radius:4px;
+}
+
+.actions button{
+  margin-right:6px;
+  border:1px solid rgba(201,154,61,.35);
+  background:transparent;
+  color:var(--cream);
+  padding:6px 9px;
+  border-radius:5px;
+  cursor:pointer;
+}
+
+.actions .del{
+  color:#f0b0b0;
+}
+
+.logout{
+  margin-top:15px;
+  width:auto;
+  padding:9px 15px;
+}
+
+.message{
+  color:var(--dim);
+  margin-top:12px;
+}
+
+@media(max-width:600px){
+  .head{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .head h1{
+    font-size:2rem;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<main class="wrap">
+
+<header class="head">
+  <h1>Admin Dashboard</h1>
+  <a href="index.html">Back to site</a>
+</header>
+
+<section id="login" class="panel login">
+
+  <h2>Administrator access</h2>
+
+  <p style="color:var(--dim)">
+    Enter the administrator password.
+  </p>
+
+  <input
+    id="pass"
+    class="input"
+    type="password"
+    autocomplete="current-password"
+    placeholder="Admin password"
+  >
+
+  <button id="loginBtn" class="btn">
+    Sign in
+  </button>
+
+  <div id="loginError" class="error"></div>
+
+</section>
+
+
+<section id="dash" hidden>
+
+  <div class="panel">
+
+    <div class="stats">
+
+      <div class="stat">
+        <div>Total creations</div>
+        <b id="total">0</b>
+      </div>
+
+      <div class="stat">
+        <div>Total photos</div>
+        <b id="photos">0</b>
+      </div>
+
+    </div>
+
+    <button id="logoutBtn" class="btn logout">
+      Sign out
+    </button>
+
+  </div>
+
+
+  <div class="panel">
+
+    <div id="adminMessage" class="message">
+      Loading creations...
+    </div>
+
+    <div class="table-wrap">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>Preview</th>
+            <th>User</th>
+            <th>Recipient</th>
+            <th>Message</th>
+            <th>Photos</th>
+            <th>Created</th>
+            <th>Updated</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody id="rows"></tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</section>
+
+</main>
+
+
+<script src="config.js"></script>
+
+<script>
+(function(){
+
+  var API =
+    window.YSL_CONFIG &&
+    window.YSL_CONFIG.API_URL
+      ? window.YSL_CONFIG.API_URL
+      : "";
+
+  var token =
+    sessionStorage.getItem("yslAdminToken") || "";
+
+  var login =
+    document.getElementById("login");
+
+  var dash =
+    document.getElementById("dash");
+
+  var error =
+    document.getElementById("loginError");
+
+  var rows =
+    document.getElementById("rows");
+
+  var message =
+    document.getElementById("adminMessage");
+
+
+  function escapeHtml(value){
+
+    return String(value || "")
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;")
+      .replace(/'/g,"&#039;");
+
+  }
+
+
+  function jsonp(url,done){
+
+    var callback =
+      "admin_" +
+      Date.now() +
+      "_" +
+      Math.random()
+        .toString(36)
+        .substring(2);
+
+    window[callback] = function(data){
+
+      var script =
+        document.getElementById(callback);
+
+      if(script){
+        script.remove();
+      }
+
+      delete window[callback];
+
+      done(data);
+
+    };
+
+
+    var script =
+      document.createElement("script");
+
+    script.id = callback;
+
+    script.src =
+      url +
+      (url.indexOf("?") >= 0 ? "&" : "?") +
+      "callback=" +
+      callback;
+
+
+    script.onerror = function(){
+
+      script.remove();
+
+      delete window[callback];
+
+      done({
+        ok:false,
+        error:"Could not connect to the admin service."
+      });
+
+    };
+
+
+    document.body.appendChild(script);
+
+  }
+
+
+  function showLogin(){
+
+    login.hidden = false;
+    dash.hidden = true;
+
+  }
+
+
+  function showDashboard(){
+
+    login.hidden = true;
+    dash.hidden = false;
+
+  }
+
+
+  function load(){
+
+    if(!API){
+
+      error.textContent =
+        "API URL is missing in config.js.";
+
+      return;
+
+    }
+
+
+    if(!token){
+
+      showLogin();
+      return;
+
+    }
+
+
+    message.textContent =
+      "Loading creations...";
+
+
+    jsonp(
+      API +
+      "?action=adminList" +
+      "&adminToken=" +
+      encodeURIComponent(token),
+
+      function(data){
+
+        if(!data || !data.ok){
+
+          sessionStorage.removeItem(
+            "yslAdminToken"
+          );
+
+          token = "";
+
+          showLogin();
+
+          error.textContent =
+            (data && (data.error || data.message)) ||
+            "Administrator session expired.";
+
+          return;
+
+        }
+
+
+        showDashboard();
+
+
+        var items =
+          data.items || [];
+
+
+        document.getElementById("total")
+          .textContent =
+          items.length;
+
+
+        var photoCount =
+          items.reduce(function(total,item){
+
+            var state =
+              item.state || {};
+
+            return total +
+              ((state.photos || []).length);
+
+          },0);
+
+
+        document.getElementById("photos")
+          .textContent =
+          photoCount;
+
+
+        rows.innerHTML = "";
+
+
+        if(!items.length){
+
+          message.textContent =
+            "No saved creations yet.";
+
+          return;
+
+        }
+
+
+        message.textContent =
+          items.length +
+          " saved creation(s).";
+
+
+        items.forEach(function(item){
+
+          var state =
+            item.state || {};
+
+          var photos =
+            state.photos || [];
+
+          var photo =
+            photos[0];
+
+          var src =
+            photo &&
+            (photo.url || photo.dataUrl);
+
+
+          var tr =
+            document.createElement("tr");
+
+
+          var created =
+            item.createdAt
+              ? new Date(item.createdAt)
+                  .toLocaleString()
+              : "—";
+
+
+          var updated =
+            item.updatedAt
+              ? new Date(item.updatedAt)
+                  .toLocaleString()
+              : "—";
+
+
+          tr.innerHTML =
+
+            "<td>" +
+
+            (
+              src
+
+              ?
+
+              '<img class="thumb" src="' +
+              escapeHtml(src) +
+              '" alt="Preview">'
+
+              :
+
+              "—"
+            )
+
+            +
+
+            "</td>" +
+
+
+            "<td>" +
+            escapeHtml(item.userId || "Unknown") +
+            "</td>" +
+
+
+            "<td>" +
+            escapeHtml(state.to || "—") +
+            "</td>" +
+
+
+            "<td>" +
+            escapeHtml(
+              state.msg || ""
+            ).substring(0,180) +
+            "</td>" +
+
+
+            "<td>" +
+            photos.length +
+            "</td>" +
+
+
+            "<td>" +
+            escapeHtml(created) +
+            "</td>" +
+
+
+            "<td>" +
+            escapeHtml(updated) +
+            "</td>" +
+
+
+            '<td class="actions">' +
+
+            "<button class=\"view\">View</button>" +
+
+            "<button class=\"del\">Delete</button>" +
+
+            "</td>";
+
+
+          tr.querySelector(".view")
+            .onclick = function(){
+
+              location.href =
+                "view-card.html?id=" +
+                encodeURIComponent(item.id);
+
+            };
+
+
+          tr.querySelector(".del")
+            .onclick = function(){
+
+              if(!confirm(
+                "Delete this creation?\n\n" +
+                "This cannot be undone."
+              )){
+                return;
+              }
+
+
+              deleteCreation(
+                item.id,
+                tr
+              );
+
+            };
+
+
+          rows.appendChild(tr);
+
+        });
+
+      }
+    );
+
+  }
+
+
+  function deleteCreation(id,row){
+
+    message.textContent =
+      "Deleting...";
+
+
+    var form =
+      document.createElement("form");
+
+
+    form.method =
+      "POST";
+
+    form.action =
+      API;
+
+    form.target =
+      "adminFrame";
+
+    form.style.display =
+      "none";
+
+
+    var fields = {
+
+      action:
+        "adminDelete",
+
+      adminToken:
+        token,
+
+      creationId:
+        id
+
+    };
+
+
+    Object.keys(fields)
+      .forEach(function(key){
+
+        var input =
+          document.createElement("input");
+
+        input.type =
+          "hidden";
+
+        input.name =
+          key;
+
+        input.value =
+          fields[key];
+
+        form.appendChild(input);
+
+      });
+
+
+    document.body.appendChild(form);
+
+    form.submit();
+
+
+    setTimeout(function(){
+
+      form.remove();
+
+      if(row){
+        row.remove();
+      }
+
+
+      document.getElementById("total")
+        .textContent =
+        document.querySelectorAll(
+          "#rows tr"
+        ).length;
+
+
+      message.textContent =
+        "Creation deleted.";
+
+    },900);
+
+  }
+
+
+  function loginNow(){
+
+    var password =
+      document
+        .getElementById("pass")
+        .value
+        .trim();
+
+
+    if(!password){
+
+      error.textContent =
+        "Please enter the administrator password.";
+
+      return;
+
+    }
+
+
+    error.textContent =
+      "Checking password...";
+
+
+    jsonp(
+
+      API +
+      "?action=adminLogin" +
+      "&password=" +
+      encodeURIComponent(password),
+
+      function(data){
+
+        if(data && data.ok){
+
+          token =
+            data.token;
+
+
+          sessionStorage.setItem(
+            "yslAdminToken",
+            token
+          );
+
+
+          document.getElementById("pass")
+            .value = "";
+
+
+          error.textContent = "";
+
+          load();
+
+        }
+
+        else{
+
+          error.textContent =
+            (data && (data.error || data.message)) ||
+            "Invalid administrator password.";
+
+        }
+
+      }
+
+    );
+
+  }
+
+
+  document
+    .getElementById("loginBtn")
+    .onclick =
+    loginNow;
+
+
+  document
+    .getElementById("pass")
+    .addEventListener(
+      "keydown",
+      function(e){
+
+        if(e.key === "Enter"){
+          loginNow();
+        }
+
+      }
+    );
+
+
+  document
+    .getElementById("logoutBtn")
+    .onclick =
+    function(){
+
+      sessionStorage.removeItem(
+        "yslAdminToken"
+      );
+
+      token = "";
+
+      showLogin();
+
+    };
+
+
+  var iframe =
+    document.createElement("iframe");
+
+  iframe.name =
+    "adminFrame";
+
+  iframe.hidden =
+    true;
+
+  document.body.appendChild(iframe);
+
+
+  load();
+
+})();
+</script>
+
+</body>
+</html>

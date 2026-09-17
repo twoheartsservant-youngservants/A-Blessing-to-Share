@@ -1,0 +1,2333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>A Blessing to Share — Builder</title>
+
+<script src="config.js"></script>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f5f1ed;
+  color:#333
+}
+
+header{
+  background:#4c0a16;
+  color:white;
+  padding:16px 22px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px
+}
+
+header h1{
+  margin:0;
+  font-size:20px
+}
+
+.back-btn{
+  border:1px solid rgba(255,255,255,.5);
+  background:transparent;
+  color:white;
+  padding:9px 14px;
+  border-radius:8px;
+  cursor:pointer
+}
+
+.page{
+  max-width:1400px;
+  margin:auto;
+  padding:20px
+}
+
+.layout{
+  display:grid;
+  grid-template-columns:1fr 420px;
+  gap:20px;
+  align-items:start
+}
+
+.panel{
+  background:white;
+  border-radius:14px;
+  padding:18px;
+  box-shadow:0 4px 18px rgba(0,0,0,.08)
+}
+
+.panel h2{
+  margin-top:0;
+  color:#4c0a16;
+  font-size:20px
+}
+
+iframe{
+  width:100%;
+  height:720px;
+  border:0;
+  border-radius:12px;
+  background:#fafafa
+}
+
+.preview-box{
+  position:sticky;
+  top:20px
+}
+
+.preview-title{
+  font-weight:bold;
+  color:#4c0a16;
+  margin-bottom:10px
+}
+
+/* CARD */
+#preview{
+  position:relative;
+  min-height:520px;
+  border:1px dashed #b8a6a0;
+  border-radius:12px;
+  padding:25px;
+  background:#fffdfb;
+  overflow:hidden
+}
+
+.preview-card{
+  position:relative;
+  width:100%;
+  min-height:470px;
+  padding:28px 25px 65px;
+  margin:auto;
+  text-align:center;
+  overflow:hidden;
+  background:#fffdfb;
+  border:3px solid #4c0a16;
+  border-radius:10px
+}
+
+.preview-card::after{
+  content:"";
+  position:absolute;
+  inset:9px;
+  border:1px solid #b89b52;
+  pointer-events:none;
+  z-index:1
+}
+
+.card-content{
+  position:relative;
+  z-index:5;
+  min-height:390px;
+  display:flex;
+  flex-direction:column
+}
+
+.card-symbol{
+  font-size:30px;
+  line-height:1;
+  color:#4c0a16;
+  margin-bottom:8px
+}
+
+.preview-card h1{
+  color:#4c0a16;
+  margin:0 0 7px;
+  font-size:25px
+}
+
+.preview-recipient{
+  font-size:14px;
+  font-weight:bold;
+  color:#5c4c4c;
+  margin-bottom:18px
+}
+
+/* Message deliberately receives most of the card space */
+.preview-message{
+  white-space:pre-wrap;
+  line-height:1.7;
+  margin:8px auto 15px;
+  width:92%;
+  min-height:110px;
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#333;
+  font-size:16px
+}
+
+/* PHOTO AREA */
+.preview-photos{
+  position:relative;
+  width:100%;
+  min-height:145px;
+  margin:5px auto 10px;
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  z-index:10
+}
+
+.preview-photo-wrap{
+  position:relative;
+  width:120px;
+  height:120px;
+  overflow:hidden;
+  border-radius:9px;
+  border:1px solid rgba(76,10,22,.2);
+  cursor:grab;
+  user-select:none;
+  touch-action:none;
+  background:#eee
+}
+
+.preview-photo-wrap.dragging{
+  cursor:grabbing;
+  outline:2px solid #b89b52
+}
+
+.preview-photo{
+  position:absolute;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  pointer-events:none;
+  user-select:none
+}
+
+.photo-edit-label{
+  position:absolute;
+  left:5px;
+  bottom:5px;
+  z-index:3;
+  padding:3px 6px;
+  border-radius:5px;
+  background:rgba(0,0,0,.6);
+  color:white;
+  font-size:9px;
+  pointer-events:none
+}
+
+/* SENDER ALWAYS AT BOTTOM */
+.preview-from{
+  position:absolute;
+  bottom:14px;
+  left:0;
+  right:0;
+  z-index:6;
+  font-size:13px;
+  font-weight:500;
+  color:#333
+}
+
+/* BACKGROUND TEXTURES */
+.texture-dotted-sun-rays{
+  background-image:
+    radial-gradient(circle,rgba(76,10,22,.13) 1px,transparent 1.2px),
+    repeating-conic-gradient(
+      from 0deg,
+      transparent 0deg 7deg,
+      rgba(76,10,22,.035) 7deg 8deg
+    )
+}
+
+.texture-radiant-dot{
+  background-image:
+    radial-gradient(circle,rgba(76,10,22,.12) 1px,transparent 1.5px),
+    radial-gradient(circle at center,transparent 0 35%,rgba(184,155,82,.08) 36% 37%,transparent 38%)
+}
+
+.texture-halftone{
+  background-image:
+    radial-gradient(circle,rgba(76,10,22,.12) 1.2px,transparent 1.5px)
+}
+
+.texture-soft-rays{
+  background-image:
+    repeating-conic-gradient(
+      from 0deg,
+      rgba(76,10,22,.045) 0deg 5deg,
+      transparent 5deg 12deg
+    )
+}
+
+.texture-divine{
+  background-image:
+    radial-gradient(circle at center,rgba(184,155,82,.16),transparent 45%),
+    repeating-conic-gradient(
+      rgba(76,10,22,.025) 0deg 8deg,
+      transparent 8deg 16deg
+    )
+}
+
+.texture-sunburst{
+  background-image:
+    repeating-conic-gradient(
+      from 0deg,
+      rgba(76,10,22,.06) 0deg 2deg,
+      transparent 2deg 12deg
+    )
+}
+
+.texture-golden-grid{
+  background-image:
+    radial-gradient(circle,rgba(184,155,82,.18) 1px,transparent 1.3px),
+    linear-gradient(rgba(184,155,82,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(184,155,82,.035) 1px,transparent 1px);
+  background-size:12px 12px,24px 24px,24px 24px
+}
+
+.texture-radiance{
+  background-image:
+    radial-gradient(circle at center,rgba(184,155,82,.14),transparent 52%)
+}
+
+.texture-ethereal{
+  background-image:
+    radial-gradient(circle,rgba(76,10,22,.08) 1px,transparent 1px),
+    repeating-conic-gradient(
+      rgba(184,155,82,.035) 0deg 4deg,
+      transparent 4deg 18deg
+    )
+}
+
+.texture-light-lines{
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      transparent 0 12px,
+      rgba(76,10,22,.04) 12px 13px
+    )
+}
+
+.texture-fine-dotted{
+  background-image:
+    radial-gradient(circle,rgba(76,10,22,.10) .8px,transparent 1px);
+  background-size:8px 8px
+}
+
+.texture-glowing{
+  background-image:
+    radial-gradient(circle at center,rgba(184,155,82,.18),transparent 35%),
+    repeating-conic-gradient(
+      rgba(76,10,22,.035) 0deg 3deg,
+      transparent 3deg 15deg
+    )
+}
+
+.texture-minimal-rays{
+  background-image:
+    repeating-conic-gradient(
+      rgba(76,10,22,.035) 0deg 2deg,
+      transparent 2deg 20deg
+    )
+}
+
+.texture-beam{
+  background-image:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(184,155,82,.12),
+      transparent
+    )
+}
+
+.texture-elegant{
+  background-image:
+    radial-gradient(circle at 50% 20%,rgba(184,155,82,.13),transparent 35%),
+    repeating-conic-gradient(
+      rgba(76,10,22,.025) 0deg 6deg,
+      transparent 6deg 18deg
+    )
+}
+
+.actions{
+  display:grid;
+  gap:10px;
+  margin-top:18px
+}
+
+button{
+  border:0;
+  border-radius:9px;
+  padding:12px 15px;
+  font-size:15px;
+  cursor:pointer
+}
+
+.primary{
+  background:#4c0a16;
+  color:white
+}
+
+.gold{
+  background:#b89b52;
+  color:white
+}
+
+.secondary{
+  background:#eee7e1;
+  color:#4c0a16
+}
+
+button:disabled{
+  opacity:.6;
+  cursor:not-allowed
+}
+
+.status{
+  padding:11px;
+  margin-top:12px;
+  border-radius:8px;
+  display:none;
+  font-size:14px
+}
+
+.status.show{display:block}
+.status.success{background:#e8f6ea;color:#216b2a}
+.status.error{background:#fdeaea;color:#9d2222}
+.status.info{background:#eef3f8;color:#31556e}
+
+.share-box{
+  margin-top:18px;
+  padding:15px;
+  border-radius:10px;
+  background:#faf6f0;
+  display:none
+}
+
+.share-box.show{display:block}
+
+.share-link{
+  width:100%;
+  padding:11px;
+  border:1px solid #ccc;
+  border-radius:8px;
+  margin:8px 0;
+  background:white
+}
+
+.share-buttons{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px
+}
+
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.65);
+  z-index:1000;
+  align-items:center;
+  justify-content:center;
+  padding:20px
+}
+
+.modal.show{display:flex}
+
+.modal-content{
+  width:min(450px,100%);
+  background:white;
+  border-radius:14px;
+  padding:20px
+}
+
+.modal-content h3{
+  margin-top:0;
+  color:#4c0a16
+}
+
+.modal-content input{
+  width:100%;
+  padding:11px;
+  margin:7px 0 12px;
+  border:1px solid #ccc;
+  border-radius:8px
+}
+
+#qrCanvas{
+  display:block;
+  margin:20px auto;
+  max-width:100%
+}
+
+.close-btn{
+  background:#eee;
+  width:100%;
+  margin-top:8px
+}
+
+/* PHOTO EDITOR PANEL */
+.photo-editor-panel{
+  margin-top:10px;
+  padding:12px;
+  border-radius:10px;
+  background:#faf6f0;
+  border:1px solid #eadfd6
+}
+
+.photo-editor-panel strong{
+  color:#4c0a16;
+  font-size:12px
+}
+
+.photo-controls{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:9px
+}
+
+.photo-controls label{
+  font-size:10px;
+  color:#4c0a16
+}
+
+.photo-controls input{
+  width:100%
+}
+
+.photo-controls button{
+  padding:8px;
+  font-size:11px
+}
+
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr}
+  .preview-box{position:static}
+  iframe{height:650px}
+}
+
+@media(max-width:500px){
+  .page{padding:10px}
+  header{padding:13px}
+  header h1{font-size:17px}
+  .share-buttons{grid-template-columns:1fr}
+  .preview-card{padding-left:15px;padding-right:15px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>A Blessing to Share</h1>
+
+  <button
+    class="back-btn"
+    onclick="location.href='index.html'">
+    ← Back
+  </button>
+</header>
+
+<div class="page">
+
+<div class="layout">
+
+<section class="panel">
+
+  <h2>Design Your Blessing</h2>
+
+  <iframe
+    id="cardMenu"
+    src="card-menu.html"
+    title="Card Designer">
+  </iframe>
+
+</section>
+
+
+<section class="panel preview-box">
+
+  <div class="preview-title">
+    Finished Card Preview
+  </div>
+
+  <div id="preview">
+
+    <div
+      id="previewCard"
+      class="preview-card">
+
+      <div class="card-content">
+
+        <div
+          id="previewSymbol"
+          class="card-symbol">
+          ✝
+        </div>
+
+        <h1 id="previewTitle">
+          A Blessing For You
+        </h1>
+
+        <div
+          id="previewRecipient"
+          class="preview-recipient">
+          YSL
+        </div>
+
+        <div
+          id="previewMessage"
+          class="preview-message">
+          Your blessing will appear here.
+        </div>
+
+        <div
+          id="previewPhotos"
+          class="preview-photos">
+        </div>
+
+      </div>
+
+      <div
+        id="previewFrom"
+        class="preview-from">
+        —KIM
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- PHOTO EDITOR -->
+  <div
+    id="photoEditorPanel"
+    class="photo-editor-panel"
+    style="display:none">
+
+    <strong>Selected Photo</strong>
+
+    <div class="photo-controls">
+
+      <label>
+        Zoom
+        <input
+          id="photoZoom"
+          type="range"
+          min="50"
+          max="250"
+          value="100">
+      </label>
+
+      <label>
+        Rotation
+        <input
+          id="photoRotation"
+          type="range"
+          min="-180"
+          max="180"
+          value="0">
+      </label>
+
+      <label>
+        Crop X
+        <input
+          id="photoCropX"
+          type="range"
+          min="0"
+          max="100"
+          value="50">
+      </label>
+
+      <label>
+        Crop Y
+        <input
+          id="photoCropY"
+          type="range"
+          min="0"
+          max="100"
+          value="50">
+      </label>
+
+    </div>
+
+    <button
+      class="secondary"
+      style="width:100%;margin-top:8px"
+      onclick="resetSelectedPhoto()">
+      Reset Photo
+    </button>
+
+  </div>
+
+
+  <div class="actions">
+
+    <button
+      id="saveBtn"
+      class="primary"
+      onclick="saveCard()">
+      💾 Save Blessing
+    </button>
+
+    <button
+      id="copyBtn"
+      class="secondary"
+      onclick="copyLink()"
+      disabled>
+      🔗 Copy Link
+    </button>
+
+    <button
+      id="qrBtn"
+      class="secondary"
+      onclick="openQR()"
+      disabled>
+      ▣ QR Code
+    </button>
+
+    <button
+      id="emailBtn"
+      class="gold"
+      onclick="openEmail()"
+      disabled>
+      ✉ Send Blessing
+    </button>
+
+  </div>
+
+
+  <div id="status" class="status"></div>
+
+
+  <div id="shareBox" class="share-box">
+
+    <strong>Shareable Link</strong>
+
+    <input
+      id="shareLink"
+      class="share-link"
+      readonly>
+
+    <div class="share-buttons">
+
+      <button
+        class="secondary"
+        onclick="copyLink()">
+        Copy Link
+      </button>
+
+      <button
+        class="secondary"
+        onclick="openQR()">
+        QR Code
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+</div>
+</div>
+
+
+<!-- QR -->
+
+<div id="qrModal" class="modal">
+
+  <div class="modal-content">
+
+    <h3>QR Code</h3>
+
+    <p>
+      Scan this QR code to open the finished blessing.
+    </p>
+
+    <canvas id="qrCanvas"></canvas>
+
+    <button
+      class="primary"
+      onclick="downloadQR()">
+      Download QR
+    </button>
+
+    <button
+      class="close-btn"
+      onclick="closeQR()">
+      Close
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- EMAIL -->
+
+<div id="emailModal" class="modal">
+
+  <div class="modal-content">
+
+    <h3>Send Blessing</h3>
+
+    <label>Recipient Email</label>
+
+    <input
+      id="emailInput"
+      type="email"
+      placeholder="recipient@gmail.com">
+
+    <button
+      id="sendEmailBtn"
+      class="primary"
+      onclick="sendEmail()">
+      Send Blessing
+    </button>
+
+    <button
+      class="close-btn"
+      onclick="closeEmail()">
+      Cancel
+    </button>
+
+  </div>
+
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+
+<script>
+
+/* =====================================================
+   CONFIG
+===================================================== */
+
+const API_URL =
+  window.YSL_CONFIG &&
+  window.YSL_CONFIG.API_URL
+    ? window.YSL_CONFIG.API_URL
+    : "";
+
+const iframe =
+  document.getElementById("cardMenu");
+
+let currentState = {};
+
+let creationId =
+  localStorage.getItem("ysl_creation_id") || "";
+
+let shareableLink = "";
+
+let selectedPhotoIndex = -1;
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+function showStatus(message,type="info"){
+
+  const el =
+    document.getElementById("status");
+
+  el.textContent = message;
+
+  el.className =
+    "status show " + type;
+}
+
+
+/* =====================================================
+   REQUEST STATE
+===================================================== */
+
+function requestState(){
+
+  if(
+    iframe &&
+    iframe.contentWindow
+  ){
+
+    iframe.contentWindow.postMessage(
+      {type:"GET_STATE"},
+      window.location.origin
+    );
+
+  }
+}
+
+
+/* =====================================================
+   RECEIVE STATE
+===================================================== */
+
+window.addEventListener(
+  "message",
+  function(event){
+
+    if(
+      event.source !==
+      iframe.contentWindow
+    ){
+      return;
+    }
+
+    const data =
+      event.data;
+
+    if(!data) return;
+
+    let state = null;
+
+    if(
+      data.type === "CARD_STATE" ||
+      data.type === "STATE_UPDATE" ||
+      data.type === "CARD_UPDATE" ||
+      data.type === "SAVE_STATE" ||
+      data.type === "STATE"
+    ){
+
+      state = data.state || null;
+
+    }
+
+    else if(
+      data.type === "CARD_UPDATE_PHOTO"
+    ){
+
+      if(
+        currentState.photos &&
+        currentState.photos[data.index]
+      ){
+
+        currentState.photos[data.index] =
+          data.photo;
+
+        updatePreview(currentState);
+      }
+
+      return;
+    }
+
+    else if(
+      data.type === "ADD_PHOTO"
+    ){
+
+      currentState.photos =
+        currentState.photos || [];
+
+      currentState.photos.push(
+        data.photo
+      );
+
+      updatePreview(currentState);
+
+      return;
+    }
+
+    else if(
+      data.type === "REMOVE_PHOTO"
+    ){
+
+      if(
+        currentState.photos
+      ){
+
+        currentState.photos.splice(
+          data.index,
+          1
+        );
+
+        updatePreview(currentState);
+      }
+
+      return;
+    }
+
+    else if(
+      typeof data === "object" &&
+      (
+        data.recipient ||
+        data.message ||
+        data.from ||
+        data.photos
+      )
+    ){
+
+      state = data;
+    }
+
+    if(state){
+
+      currentState = state;
+
+      updatePreview(state);
+
+      localStorage.setItem(
+        "ysl_card_draft",
+        JSON.stringify(state)
+      );
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   NORMALIZE
+===================================================== */
+
+function normalizeState(state){
+
+  state = state || {};
+
+  return {
+
+    title:
+      state.title ||
+      state.cardTitle ||
+      "A Blessing For You",
+
+    recipient:
+      state.recipient ||
+      state.to ||
+      "YSL",
+
+    from:
+      state.from ||
+      state.sender ||
+      "KIM",
+
+    message:
+      state.message ||
+      state.msg ||
+      "Your blessing will appear here.",
+
+    photos:
+      Array.isArray(state.photos)
+        ? state.photos
+        : [],
+
+    symbol:
+      state.symbol ||
+      "✝",
+
+    backgroundTexture:
+      state.backgroundTexture ||
+      "dotted-sun-rays",
+
+    backgroundColor:
+      state.backgroundColor ||
+      "#fffdfb",
+
+    borderColor:
+      state.borderColor ||
+      "#4c0a16",
+
+    innerBorderColor:
+      state.innerBorderColor ||
+      state.borderColor ||
+      "#b89b52",
+
+    innerBorder:
+      state.innerBorder ||
+      "solid",
+
+    font:
+      state.font ||
+      "serif",
+
+    fontColor:
+      state.fontColor ||
+      "#333333"
+
+  };
+
+}
+
+
+/* =====================================================
+   FONT MAP
+===================================================== */
+
+function getFontFamily(font){
+
+  const fonts = {
+
+    serif:
+      "Georgia, 'Times New Roman', serif",
+
+    classic:
+      "'Times New Roman', Georgia, serif",
+
+    modern:
+      "Arial, Helvetica, sans-serif",
+
+    elegant:
+      "Garamond, Georgia, serif",
+
+    georgia:
+      "Georgia, serif",
+
+    palatino:
+      "'Palatino Linotype', Palatino, serif",
+
+    courier:
+      "'Courier New', monospace",
+
+    book:
+      "'Book Antiqua', Palatino, serif",
+
+    verdana:
+      "Verdana, sans-serif",
+
+    trebuchet:
+      "'Trebuchet MS', sans-serif",
+
+    century:
+      "'Century Gothic', sans-serif",
+
+    copperplate:
+      "Copperplate, 'Copperplate Gothic Light', serif"
+
+  };
+
+  return fonts[font] || fonts.serif;
+}
+
+
+/* =====================================================
+   TEXTURE
+===================================================== */
+
+function applyTexture(card,state){
+
+  const texture =
+    state.backgroundTexture ||
+    "dotted-sun-rays";
+
+  card.className =
+    "preview-card texture-" +
+    texture;
+
+  card.style.backgroundColor =
+    state.backgroundColor ||
+    "#fffdfb";
+}
+
+
+/* =====================================================
+   PREVIEW
+===================================================== */
+
+function updatePreview(state){
+
+  state =
+    normalizeState(state);
+
+  currentState =
+    Object.assign(
+      {},
+      currentState,
+      state
+    );
+
+  const card =
+    document.getElementById(
+      "previewCard"
+    );
+
+  document.getElementById(
+    "previewTitle"
+  ).textContent =
+    state.title;
+
+  document.getElementById(
+    "previewRecipient"
+  ).textContent =
+    state.recipient;
+
+  document.getElementById(
+    "previewMessage"
+  ).textContent =
+    state.message;
+
+  document.getElementById(
+    "previewFrom"
+  ).textContent =
+    "—" + state.from;
+
+  document.getElementById(
+    "previewSymbol"
+  ).textContent =
+    state.symbol;
+
+  applyTexture(
+    card,
+    state
+  );
+
+  card.style.borderColor =
+    state.borderColor;
+
+  card.style.color =
+    state.fontColor;
+
+  card.style.fontFamily =
+    getFontFamily(state.font);
+
+  document.getElementById(
+    "previewTitle"
+  ).style.color =
+    state.fontColor;
+
+  document.getElementById(
+    "previewMessage"
+  ).style.color =
+    state.fontColor;
+
+  document.getElementById(
+    "previewFrom"
+  ).style.color =
+    state.fontColor;
+
+  document.getElementById(
+    "previewSymbol"
+  ).style.color =
+    state.fontColor;
+
+  document.getElementById(
+    "previewRecipient"
+  ).style.color =
+    state.fontColor;
+
+  const inner =
+    card.querySelector(
+      "::after"
+    );
+
+  /*
+   CSS pseudo-element cannot be selected directly,
+   therefore use a CSS variable.
+  */
+
+  card.style.setProperty(
+    "--inner-border-color",
+    state.innerBorderColor
+  );
+
+  card.style.setProperty(
+    "--inner-border-style",
+    state.innerBorder || "solid"
+  );
+
+  card.style.setProperty(
+    "--inner-border-width",
+    state.innerBorder === "double"
+      ? "3px"
+      : "1px"
+  );
+
+  renderPreviewPhotos(
+    state.photos
+  );
+
+}
+
+
+/* =====================================================
+   DYNAMIC INNER BORDER
+===================================================== */
+
+const dynamicStyle =
+  document.createElement("style");
+
+dynamicStyle.textContent = `
+.preview-card::after{
+  border-color:var(--inner-border-color,#b89b52)!important;
+  border-style:var(--inner-border-style,solid)!important;
+  border-width:var(--inner-border-width,1px)!important;
+}
+`;
+
+document.head.appendChild(
+  dynamicStyle
+);
+
+
+/* =====================================================
+   RENDER PREVIEW PHOTOS
+===================================================== */
+
+function renderPreviewPhotos(photos){
+
+  const container =
+    document.getElementById(
+      "previewPhotos"
+    );
+
+  container.innerHTML = "";
+
+  if(
+    !Array.isArray(photos) ||
+    !photos.length
+  ){
+
+    selectedPhotoIndex = -1;
+
+    hidePhotoEditor();
+
+    return;
+  }
+
+  photos.forEach(
+    function(photo,index){
+
+      const src =
+        photo.url ||
+        photo.dataUrl ||
+        photo.src ||
+        "";
+
+      if(!src) return;
+
+      const wrap =
+        document.createElement("div");
+
+      wrap.className =
+        "preview-photo-wrap";
+
+      wrap.dataset.index =
+        index;
+
+      if(
+        selectedPhotoIndex === index
+      ){
+
+        wrap.style.outline =
+          "2px solid #b89b52";
+
+      }
+
+      const img =
+        document.createElement("img");
+
+      img.className =
+        "preview-photo";
+
+      img.src = src;
+
+      const zoom =
+        Number(photo.zoom || 100);
+
+      img.style.width =
+        zoom + "%";
+
+      img.style.height =
+        zoom + "%";
+
+      img.style.left =
+        (50 - Number(photo.cropX ?? 50)) +
+        "%";
+
+      img.style.top =
+        (50 - Number(photo.cropY ?? 50)) +
+        "%";
+
+      img.style.transform =
+        "translate(-50%,-50%) rotate(" +
+        Number(photo.rotation || 0) +
+        "deg)";
+
+      wrap.appendChild(img);
+
+      const label =
+        document.createElement("div");
+
+      label.className =
+        "photo-edit-label";
+
+      label.textContent =
+        "Drag to move • Click to edit";
+
+      wrap.appendChild(label);
+
+      setupPhotoDrag(
+        wrap,
+        index
+      );
+
+      wrap.addEventListener(
+        "click",
+        function(){
+
+          selectedPhotoIndex =
+            index;
+
+          updatePhotoEditor();
+
+          renderPreviewPhotos(
+            currentState.photos
+          );
+
+        }
+      );
+
+      container.appendChild(
+        wrap
+      );
+
+    }
+  );
+
+  updatePhotoEditor();
+
+}
+
+
+/* =====================================================
+   DRAG PHOTO
+===================================================== */
+
+function setupPhotoDrag(
+  wrap,
+  index
+){
+
+  let dragging = false;
+  let startX = 0;
+  let startY = 0;
+  let startCropX = 50;
+  let startCropY = 50;
+
+  wrap.addEventListener(
+    "pointerdown",
+    function(event){
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      const photo =
+        currentState.photos[index];
+
+      if(!photo) return;
+
+      selectedPhotoIndex =
+        index;
+
+      dragging = true;
+
+      wrap.classList.add(
+        "dragging"
+      );
+
+      startX =
+        event.clientX;
+
+      startY =
+        event.clientY;
+
+      startCropX =
+        Number(photo.cropX ?? 50);
+
+      startCropY =
+        Number(photo.cropY ?? 50);
+
+      wrap.setPointerCapture(
+        event.pointerId
+      );
+
+      updatePhotoEditor();
+
+    }
+  );
+
+  wrap.addEventListener(
+    "pointermove",
+    function(event){
+
+      if(!dragging) return;
+
+      const photo =
+        currentState.photos[index];
+
+      if(!photo) return;
+
+      const dx =
+        event.clientX - startX;
+
+      const dy =
+        event.clientY - startY;
+
+      photo.cropX =
+        Math.max(
+          0,
+          Math.min(
+            100,
+            startCropX -
+            dx * .35
+          )
+        );
+
+      photo.cropY =
+        Math.max(
+          0,
+          Math.min(
+            100,
+            startCropY -
+            dy * .35
+          )
+        );
+
+      renderPreviewPhotos(
+        currentState.photos
+      );
+
+      selectedPhotoIndex =
+        index;
+
+      updatePhotoEditor();
+
+    }
+  );
+
+  wrap.addEventListener(
+    "pointerup",
+    function(){
+
+      dragging = false;
+
+      wrap.classList.remove(
+        "dragging"
+      );
+
+      sendPhotoUpdate(
+        index
+      );
+
+    }
+  );
+
+  wrap.addEventListener(
+    "pointercancel",
+    function(){
+
+      dragging = false;
+
+      wrap.classList.remove(
+        "dragging"
+      );
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   PHOTO UPDATE
+===================================================== */
+
+function sendPhotoUpdate(index){
+
+  if(
+    !currentState.photos ||
+    !currentState.photos[index]
+  ) return;
+
+  const photo =
+    currentState.photos[index];
+
+  localStorage.setItem(
+    "ysl_card_draft",
+    JSON.stringify(currentState)
+  );
+
+  iframe.contentWindow.postMessage(
+    {
+      type:
+        "CARD_UPDATE_PHOTO",
+
+      index:
+        index,
+
+      photo:
+        photo
+    },
+    window.location.origin
+  );
+
+}
+
+
+/* =====================================================
+   PHOTO EDITOR
+===================================================== */
+
+function updatePhotoEditor(){
+
+  const panel =
+    document.getElementById(
+      "photoEditorPanel"
+    );
+
+  if(
+    selectedPhotoIndex < 0 ||
+    !currentState.photos ||
+    !currentState.photos[
+      selectedPhotoIndex
+    ]
+  ){
+
+    hidePhotoEditor();
+
+    return;
+  }
+
+  panel.style.display =
+    "block";
+
+  const photo =
+    currentState.photos[
+      selectedPhotoIndex
+    ];
+
+  document.getElementById(
+    "photoZoom"
+  ).value =
+    photo.zoom || 100;
+
+  document.getElementById(
+    "photoRotation"
+  ).value =
+    photo.rotation || 0;
+
+  document.getElementById(
+    "photoCropX"
+  ).value =
+    photo.cropX ?? 50;
+
+  document.getElementById(
+    "photoCropY"
+  ).value =
+    photo.cropY ?? 50;
+
+}
+
+
+function hidePhotoEditor(){
+
+  document.getElementById(
+    "photoEditorPanel"
+  ).style.display =
+    "none";
+
+}
+
+
+/* =====================================================
+   PHOTO RANGE EVENTS
+===================================================== */
+
+function bindPhotoControl(
+  id,
+  key
+){
+
+  document.getElementById(id)
+    .addEventListener(
+      "input",
+      function(){
+
+        if(
+          selectedPhotoIndex < 0 ||
+          !currentState.photos
+        ) return;
+
+        const photo =
+          currentState.photos[
+            selectedPhotoIndex
+          ];
+
+        photo[key] =
+          Number(this.value);
+
+        renderPreviewPhotos(
+          currentState.photos
+        );
+
+        selectedPhotoIndex =
+          Number(
+            selectedPhotoIndex
+          );
+
+        updatePhotoEditor();
+
+        sendPhotoUpdate(
+          selectedPhotoIndex
+        );
+
+      }
+    );
+
+}
+
+bindPhotoControl(
+  "photoZoom",
+  "zoom"
+);
+
+bindPhotoControl(
+  "photoRotation",
+  "rotation"
+);
+
+bindPhotoControl(
+  "photoCropX",
+  "cropX"
+);
+
+bindPhotoControl(
+  "photoCropY",
+  "cropY"
+);
+
+
+/* =====================================================
+   RESET PHOTO
+===================================================== */
+
+function resetSelectedPhoto(){
+
+  if(
+    selectedPhotoIndex < 0 ||
+    !currentState.photos
+  ) return;
+
+  const photo =
+    currentState.photos[
+      selectedPhotoIndex
+    ];
+
+  photo.zoom = 100;
+  photo.rotation = 0;
+  photo.cropX = 50;
+  photo.cropY = 50;
+
+  renderPreviewPhotos(
+    currentState.photos
+  );
+
+  updatePhotoEditor();
+
+  sendPhotoUpdate(
+    selectedPhotoIndex
+  );
+
+}
+
+
+/* =====================================================
+   SHORT LINK
+===================================================== */
+
+function buildShareLink(id){
+
+  const base =
+    window.location.href
+      .split("/")
+      .slice(0,-1)
+      .join("/");
+
+  return (
+    base +
+    "/view-card.html?id=" +
+    encodeURIComponent(id)
+  );
+
+}
+
+
+/* =====================================================
+   SAVE
+===================================================== */
+
+async function saveCard(){
+
+  if(!API_URL){
+
+    showStatus(
+      "API URL is missing in config.js.",
+      "error"
+    );
+
+    return;
+  }
+
+  requestState();
+
+  await new Promise(
+    resolve =>
+      setTimeout(resolve,300)
+  );
+
+  const saveBtn =
+    document.getElementById(
+      "saveBtn"
+    );
+
+  saveBtn.disabled = true;
+
+  saveBtn.textContent =
+    "Saving...";
+
+  showStatus(
+    "Saving your blessing...",
+    "info"
+  );
+
+  try{
+
+    const form =
+      new URLSearchParams();
+
+    form.append(
+      "action",
+      "save"
+    );
+
+    form.append(
+      "creationId",
+      creationId || ""
+    );
+
+    form.append(
+      "cardType",
+      currentState.cardType ||
+      "Blessing Card"
+    );
+
+    form.append(
+      "state",
+      JSON.stringify(
+        normalizeState(
+          currentState
+        )
+      )
+    );
+
+    form.append(
+      "response",
+      "json"
+    );
+
+    const response =
+      await fetch(
+        API_URL,
+        {
+          method:"POST",
+          body:form
+        }
+      );
+
+    const text =
+      await response.text();
+
+    let result;
+
+    try{
+
+      result =
+        JSON.parse(text);
+
+    }catch(error){
+
+      throw new Error(
+        "The server returned an invalid response."
+      );
+
+    }
+
+    if(!result.ok){
+
+      throw new Error(
+        result.error ||
+        result.message ||
+        "Unable to save blessing."
+      );
+
+    }
+
+    creationId =
+      result.creationId;
+
+    if(result.userId){
+
+      localStorage.setItem(
+        "ysl_user_id",
+        result.userId
+      );
+
+    }
+
+    if(result.userKey){
+
+      localStorage.setItem(
+        "ysl_user_key",
+        result.userKey
+      );
+
+    }
+
+    localStorage.setItem(
+      "ysl_creation_id",
+      creationId
+    );
+
+    shareableLink =
+      buildShareLink(
+        creationId
+      );
+
+    document.getElementById(
+      "shareLink"
+    ).value =
+      shareableLink;
+
+    document.getElementById(
+      "shareBox"
+    ).classList.add("show");
+
+    document.getElementById(
+      "copyBtn"
+    ).disabled = false;
+
+    document.getElementById(
+      "qrBtn"
+    ).disabled = false;
+
+    document.getElementById(
+      "emailBtn"
+    ).disabled = false;
+
+    showStatus(
+      "Blessing saved successfully!",
+      "success"
+    );
+
+  }catch(error){
+
+    console.error(error);
+
+    showStatus(
+      "Failed to save: " +
+      error.message,
+      "error"
+    );
+
+  }finally{
+
+    saveBtn.disabled = false;
+
+    saveBtn.textContent =
+      "💾 Save Blessing";
+
+  }
+
+}
+
+
+/* =====================================================
+   COPY
+===================================================== */
+
+async function copyLink(){
+
+  if(!shareableLink){
+
+    showStatus(
+      "Please save the blessing first.",
+      "error"
+    );
+
+    return;
+  }
+
+  try{
+
+    await navigator.clipboard.writeText(
+      shareableLink
+    );
+
+    showStatus(
+      "Short link copied!",
+      "success"
+    );
+
+  }catch(error){
+
+    const input =
+      document.getElementById(
+        "shareLink"
+      );
+
+    input.select();
+
+    document.execCommand("copy");
+
+    showStatus(
+      "Link copied!",
+      "success"
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   QR
+===================================================== */
+
+function openQR(){
+
+  if(!shareableLink) return;
+
+  document.getElementById(
+    "qrModal"
+  ).classList.add("show");
+
+  new QRious({
+
+    element:
+      document.getElementById(
+        "qrCanvas"
+      ),
+
+    value:
+      shareableLink,
+
+    size:300,
+
+    level:"H"
+
+  });
+
+}
+
+function closeQR(){
+
+  document.getElementById(
+    "qrModal"
+  ).classList.remove("show");
+
+}
+
+function downloadQR(){
+
+  const canvas =
+    document.getElementById(
+      "qrCanvas"
+    );
+
+  const link =
+    document.createElement("a");
+
+  link.download =
+    "blessing-qr.png";
+
+  link.href =
+    canvas.toDataURL("image/png");
+
+  link.click();
+
+}
+
+
+/* =====================================================
+   EMAIL
+===================================================== */
+
+function openEmail(){
+
+  if(!shareableLink){
+
+    showStatus(
+      "Save the blessing first.",
+      "error"
+    );
+
+    return;
+  }
+
+  document.getElementById(
+    "emailModal"
+  ).classList.add("show");
+
+}
+
+function closeEmail(){
+
+  document.getElementById(
+    "emailModal"
+  ).classList.remove("show");
+
+}
+
+
+async function sendEmail(){
+
+  const email =
+    document.getElementById(
+      "emailInput"
+    ).value.trim();
+
+  if(!email){
+
+    alert(
+      "Please enter an email address."
+    );
+
+    return;
+  }
+
+  if(!shareableLink){
+
+    alert(
+      "Please save the blessing first."
+    );
+
+    return;
+  }
+
+  const sendBtn =
+    document.getElementById(
+      "sendEmailBtn"
+    );
+
+  sendBtn.disabled = true;
+
+  sendBtn.textContent =
+    "Sending...";
+
+  showStatus(
+    "Sending blessing...",
+    "info"
+  );
+
+  try{
+
+    const form =
+      new URLSearchParams();
+
+    form.append(
+      "action",
+      "sendEmail"
+    );
+
+    form.append(
+      "email",
+      email
+    );
+
+    form.append(
+      "cardLink",
+      shareableLink
+    );
+
+    form.append(
+      "recipient",
+      currentState.recipient ||
+      "Someone Special"
+    );
+
+    form.append(
+      "from",
+      currentState.from ||
+      "KIM"
+    );
+
+    form.append(
+      "response",
+      "json"
+    );
+
+    const response =
+      await fetch(
+        API_URL,
+        {
+          method:"POST",
+          body:form
+        }
+      );
+
+    const text =
+      await response.text();
+
+    let result;
+
+    try{
+
+      result =
+        JSON.parse(text);
+
+    }catch(error){
+
+      throw new Error(
+        "Invalid server response: " +
+        text.substring(0,300)
+      );
+
+    }
+
+    if(!result.ok){
+
+      throw new Error(
+        result.error ||
+        result.message ||
+        "Unable to send email."
+      );
+
+    }
+
+    closeEmail();
+
+    showStatus(
+      "Blessing sent successfully!",
+      "success"
+    );
+
+    document.getElementById(
+      "emailInput"
+    ).value = "";
+
+  }catch(error){
+
+    console.error(
+      "Email error:",
+      error
+    );
+
+    showStatus(
+      "Failed to send: " +
+      error.message,
+      "error"
+    );
+
+  }finally{
+
+    sendBtn.disabled = false;
+
+    sendBtn.textContent =
+      "Send Blessing";
+
+  }
+
+}
+
+
+/* =====================================================
+   LOAD DRAFT
+===================================================== */
+
+try{
+
+  const saved =
+    localStorage.getItem(
+      "ysl_card_draft"
+    );
+
+  if(saved){
+
+    currentState =
+      JSON.parse(saved);
+
+    updatePreview(
+      currentState
+    );
+
+  }
+
+}catch(error){
+
+  console.warn(
+    "Could not load draft.",
+    error
+  );
+
+}
+
+
+/* =====================================================
+   EXISTING CREATION
+===================================================== */
+
+if(creationId){
+
+  shareableLink =
+    buildShareLink(
+      creationId
+    );
+
+  document.getElementById(
+    "shareLink"
+  ).value =
+    shareableLink;
+
+  document.getElementById(
+    "shareBox"
+  ).classList.add("show");
+
+  document.getElementById(
+    "copyBtn"
+  ).disabled = false;
+
+  document.getElementById(
+    "qrBtn"
+  ).disabled = false;
+
+  document.getElementById(
+    "emailBtn"
+  ).disabled = false;
+
+}
+
+
+/* =====================================================
+   INITIALIZE MENU
+===================================================== */
+
+iframe.addEventListener(
+  "load",
+  function(){
+
+    iframe.contentWindow.postMessage(
+      {
+        type:"CARD_INIT",
+        state:
+          normalizeState(
+            currentState
+          )
+      },
+      window.location.origin
+    );
+
+    setTimeout(
+      requestState,
+      200
+    );
+
+  }
+);
+
+</script>
+
+</body>
+</html>
