@@ -1,0 +1,2277 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>A Blessing to Share — Young Servants of the Lord</title>
+
+<meta name="description"
+      content="Create a personal blessing card for someone in your church family and share it by link, QR code, or email.">
+
+<meta name="theme-color" content="#2a0a10">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Work+Sans:wght@400;500;600;700&family=Petit+Formal+Script&display=swap"
+      rel="stylesheet">
+
+<style>
+
+/* =========================================================
+   ROOT
+========================================================= */
+
+:root {
+  --maroon-deep: #21070c;
+  --maroon-dark: #2a0a10;
+  --maroon-mid: #421119;
+  --maroon-panel: #3a0f16;
+  --maroon-light: #541722;
+
+  --gold: #c99a3d;
+  --gold-bright: #dfbd6b;
+  --gold-soft: #e8d39e;
+
+  --parchment: #f7ecdf;
+  --parchment-soft: #e6d3c4;
+  --parchment-dim: #cdb2a6;
+  --white-soft: #fffaf4;
+
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-ui: "Work Sans", sans-serif;
+  --font-script: "Petit Formal Script", cursive;
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(
+      circle at 50% -10%,
+      rgba(201,154,61,.10),
+      transparent 35%
+    ),
+    var(--maroon-deep);
+
+  color: var(--parchment);
+  font-family: var(--font-ui);
+  line-height: 1.6;
+
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+}
+
+button,
+a {
+  font-family: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+
+/* =========================================================
+   BACKGROUND TEXTURE
+========================================================= */
+
+body::before {
+  content: "";
+
+  position: fixed;
+  inset: 0;
+
+  pointer-events: none;
+
+  opacity: .20;
+
+  background-image:
+    radial-gradient(
+      rgba(255,255,255,.09) .7px,
+      transparent .7px
+    );
+
+  background-size: 18px 18px;
+
+  mask-image:
+    linear-gradient(
+      to bottom,
+      black,
+      transparent 75%
+    );
+
+  z-index: -1;
+}
+
+
+/* =========================================================
+   SCROLL ANIMATION SYSTEM
+========================================================= */
+
+.reveal {
+  opacity: 0;
+
+  transform:
+    translateY(55px);
+
+  transition:
+    opacity .9s ease,
+    transform .9s cubic-bezier(.2,.7,.2,1);
+}
+
+.reveal.visible {
+  opacity: 1;
+
+  transform:
+    translateY(0);
+}
+
+
+/* Left/right reveal */
+
+.reveal-left {
+  opacity: 0;
+
+  transform:
+    translateX(-60px);
+
+  transition:
+    opacity .9s ease,
+    transform .9s cubic-bezier(.2,.7,.2,1);
+}
+
+.reveal-left.visible {
+  opacity: 1;
+
+  transform:
+    translateX(0);
+}
+
+
+.reveal-right {
+  opacity: 0;
+
+  transform:
+    translateX(60px);
+
+  transition:
+    opacity .9s ease,
+    transform .9s cubic-bezier(.2,.7,.2,1);
+}
+
+.reveal-right.visible {
+  opacity: 1;
+
+  transform:
+    translateX(0);
+}
+
+
+/* Scale reveal */
+
+.reveal-scale {
+  opacity: 0;
+
+  transform:
+    scale(.90);
+
+  transition:
+    opacity .9s ease,
+    transform 1s cubic-bezier(.2,.7,.2,1);
+}
+
+.reveal-scale.visible {
+  opacity: 1;
+
+  transform:
+    scale(1);
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.site-header {
+  position: sticky;
+  top: 0;
+
+  z-index: 100;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(25,5,9,.98),
+      rgba(25,5,9,.92)
+    );
+
+  border-bottom:
+    1px solid rgba(201,154,61,.20);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  animation:
+    headerDrop .8s ease both;
+}
+
+@keyframes headerDrop {
+
+  from {
+    opacity: 0;
+    transform: translateY(-25px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+}
+
+
+.header-inner {
+  width: min(1180px,100%);
+
+  margin: auto;
+
+  padding: 13px 28px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+}
+
+
+.brand {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  text-decoration: none;
+
+  min-width: 0;
+}
+
+
+.brand-logo {
+  width: 43px;
+  height: 43px;
+
+  object-fit: contain;
+
+  border-radius: 50%;
+
+  flex-shrink: 0;
+}
+
+
+.brand-text {
+  display: flex;
+
+  flex-direction: column;
+
+  line-height: 1.12;
+}
+
+
+.brand-name {
+  font-family: var(--font-display);
+
+  font-size: 1.12rem;
+
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+
+.brand-tag {
+  margin-top: 3px;
+
+  color: var(--gold-soft);
+
+  font-size: .69rem;
+
+  letter-spacing: .08em;
+
+  text-transform: uppercase;
+}
+
+
+.site-nav {
+  display: flex;
+
+  align-items: center;
+
+  gap: 22px;
+}
+
+
+.site-nav a {
+  position: relative;
+
+  text-decoration: none;
+
+  color: var(--parchment-dim);
+
+  font-size: .86rem;
+
+  font-weight: 500;
+
+  padding: 7px 2px;
+
+  transition:
+    color .2s ease;
+}
+
+
+.site-nav a::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+
+  bottom: 0;
+
+  height: 1px;
+
+  background: var(--gold);
+
+  transform: scaleX(0);
+
+  transform-origin: center;
+
+  transition:
+    transform .2s ease;
+}
+
+
+.site-nav a:hover {
+  color: var(--gold-soft);
+}
+
+
+.site-nav a:hover::after {
+  transform: scaleX(1);
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+  position: relative;
+
+  width: min(1180px,100%);
+
+  margin: auto;
+
+  padding:
+    92px 28px 100px;
+}
+
+
+.hero::before {
+  content: "";
+
+  position: absolute;
+
+  width: 500px;
+  height: 500px;
+
+  left: -220px;
+  top: 20px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(201,154,61,.08),
+      transparent 68%
+    );
+
+  pointer-events: none;
+}
+
+
+.hero-inner {
+  display: grid;
+
+  grid-template-columns:
+    1.02fr .98fr;
+
+  gap: 70px;
+
+  align-items: center;
+}
+
+
+.hero-copy {
+  position: relative;
+
+  z-index: 2;
+
+  animation:
+    heroText 1s .15s cubic-bezier(.2,.7,.2,1) both;
+}
+
+
+@keyframes heroText {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateX(-45px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateX(0);
+  }
+
+}
+
+
+.eyebrow {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin-bottom: 18px;
+
+  color: var(--gold-soft);
+
+  font-size: .72rem;
+
+  font-weight: 600;
+
+  letter-spacing: .18em;
+
+  text-transform: uppercase;
+}
+
+
+.eyebrow::before,
+.eyebrow::after {
+  content: "";
+
+  width: 22px;
+  height: 1px;
+
+  background:
+    rgba(201,154,61,.65);
+}
+
+
+.hero-copy h1 {
+  margin: 0 0 22px;
+
+  font-family: var(--font-display);
+
+  font-weight: 600;
+
+  font-size:
+    clamp(3rem,6vw,5.2rem);
+
+  line-height: .96;
+
+  letter-spacing: -.025em;
+}
+
+
+.hero-copy h1 em {
+  color: var(--gold-soft);
+
+  font-style: italic;
+}
+
+
+.hero-copy p {
+  max-width: 52ch;
+
+  margin:
+    0 0 31px;
+
+  color: var(--parchment-dim);
+
+  font-size:
+    clamp(.96rem,1.5vw,1.05rem);
+
+  line-height: 1.75;
+}
+
+
+.hero-actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+
+  flex-wrap: wrap;
+}
+
+
+.btn {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 9px;
+
+  min-height: 46px;
+
+  padding:
+    11px 22px;
+
+  border-radius: 4px;
+
+  border: 1px solid transparent;
+
+  font-size: .87rem;
+
+  font-weight: 600;
+
+  text-decoration: none;
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    background .2s ease,
+    border-color .2s ease;
+}
+
+
+.btn:hover {
+  transform:
+    translateY(-2px);
+}
+
+
+.btn-gold {
+  color: #281015;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--gold-bright),
+      var(--gold)
+    );
+
+  box-shadow:
+    0 12px 28px rgba(0,0,0,.25);
+}
+
+
+.btn-gold:hover {
+  box-shadow:
+    0 15px 34px rgba(0,0,0,.35);
+}
+
+
+.btn-outline {
+  color: var(--gold-soft);
+
+  background:
+    rgba(255,255,255,.025);
+
+  border-color:
+    rgba(201,154,61,.35);
+}
+
+
+.btn-outline:hover {
+  background:
+    rgba(201,154,61,.08);
+
+  border-color:
+    rgba(201,154,61,.65);
+}
+
+
+.btn-icon {
+  font-size: 1rem;
+}
+
+
+.hero-note {
+  margin-top: 21px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  color:
+    rgba(230,211,196,.62);
+
+  font-size: .74rem;
+}
+
+
+.hero-note span:first-child {
+  color: var(--gold);
+
+  font-size: .85rem;
+}
+
+
+/* =========================================================
+   HERO CARD
+========================================================= */
+
+.hero-card-frame {
+  position: relative;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  min-height: 540px;
+
+  animation:
+    cardEntrance 1.15s .25s cubic-bezier(.2,.7,.2,1) both;
+}
+
+
+@keyframes cardEntrance {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateX(60px)
+      scale(.92);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateX(0)
+      scale(1);
+  }
+
+}
+
+
+.hero-card-frame::before {
+  content: "";
+
+  position: absolute;
+
+  width: 430px;
+  height: 430px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(201,154,61,.20),
+      rgba(201,154,61,.05) 40%,
+      transparent 70%
+    );
+
+  filter: blur(8px);
+
+  animation:
+    glowPulse 5s ease-in-out infinite;
+}
+
+
+@keyframes glowPulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+
+    opacity: .7;
+  }
+
+  50% {
+    transform: scale(1.08);
+
+    opacity: 1;
+  }
+
+}
+
+
+.hero-card-frame::after {
+  content: "A BLESSING TO SHARE";
+
+  position: absolute;
+
+  bottom: 5px;
+
+  font-family: var(--font-display);
+
+  color:
+    rgba(201,154,61,.25);
+
+  font-size: .7rem;
+
+  letter-spacing: .28em;
+}
+
+
+.blessing-card {
+  position: relative;
+
+  z-index: 2;
+
+  width: 350px;
+
+  min-height: 475px;
+
+  padding:
+    35px 30px 30px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  text-align: center;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      160deg,
+      #421119,
+      #351016
+    );
+
+  border:
+    1px solid var(--card-line,var(--gold));
+
+  border-radius: 3px;
+
+  box-shadow:
+    0 35px 70px rgba(0,0,0,.48),
+    0 12px 25px rgba(0,0,0,.25),
+    inset 0 0 0 1px rgba(255,255,255,.025);
+
+  transform:
+    rotate(1.3deg);
+
+  animation:
+    cardFloat 6s ease-in-out infinite;
+
+  transition:
+    transform .4s ease,
+    box-shadow .4s ease;
+}
+
+
+@keyframes cardFloat {
+
+  0%,
+  100% {
+    transform:
+      translateY(0)
+      rotate(1.3deg);
+  }
+
+  50% {
+    transform:
+      translateY(-10px)
+      rotate(-.5deg);
+  }
+
+}
+
+
+.blessing-card:hover {
+  animation-play-state: paused;
+
+  transform:
+    rotate(0deg)
+    translateY(-7px);
+
+  box-shadow:
+    0 42px 80px rgba(0,0,0,.55),
+    0 15px 30px rgba(0,0,0,.28);
+}
+
+
+.card-layer-bg {
+  position: absolute;
+
+  inset: 0;
+
+  pointer-events: none;
+}
+
+
+.bg-rays .card-layer-bg {
+  background:
+    repeating-conic-gradient(
+      from 0deg at 50% 0%,
+      rgba(201,154,61,.12) 0deg 6deg,
+      transparent 6deg 16deg
+    );
+
+  opacity: .75;
+}
+
+
+.bg-dots .card-layer-bg {
+  background-image:
+    radial-gradient(
+      var(--card-line,var(--gold)) 1px,
+      transparent 1.4px
+    );
+
+  background-size: 16px 16px;
+
+  opacity: .25;
+}
+
+
+.bg-weave .card-layer-bg {
+  background-image:
+    linear-gradient(
+      45deg,
+      rgba(201,154,61,.09) 25%,
+      transparent 25%,
+      transparent 75%,
+      rgba(201,154,61,.09) 75%
+    ),
+    linear-gradient(
+      -45deg,
+      rgba(201,154,61,.09) 25%,
+      transparent 25%,
+      transparent 75%,
+      rgba(201,154,61,.09) 75%
+    );
+
+  background-size: 18px 18px;
+
+  opacity: .65;
+}
+
+
+.frame-classic::after {
+  content: "";
+
+  position: absolute;
+
+  inset: 11px;
+
+  border:
+    1px solid var(--card-line,var(--gold));
+
+  opacity: .58;
+
+  pointer-events: none;
+}
+
+
+.frame-ornate {
+  border: none;
+}
+
+
+.frame-ornate::after {
+  content: "";
+
+  position: absolute;
+
+  inset: 8px;
+
+  border:
+    3px double var(--card-line,var(--gold));
+
+  opacity: .65;
+
+  pointer-events: none;
+}
+
+
+.frame-scallop {
+  border: none;
+}
+
+
+.frame-scallop::after {
+  content: "";
+
+  position: absolute;
+
+  inset: 9px;
+
+  border:
+    1px dashed var(--card-line,var(--gold));
+
+  border-radius: 10px;
+
+  opacity: .55;
+
+  pointer-events: none;
+}
+
+
+.card-body {
+  position: relative;
+
+  z-index: 3;
+
+  width: 100%;
+
+  min-height: 100%;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 14px;
+}
+
+
+.card-symbol {
+  margin-top: 3px;
+
+  font-size: 2.45rem;
+
+  line-height: 1;
+
+  filter:
+    drop-shadow(
+      0 0 13px
+      rgba(201,154,61,.48)
+    );
+
+  animation:
+    doveFloat 4s ease-in-out infinite;
+}
+
+
+@keyframes doveFloat {
+
+  0%,
+  100% {
+    transform:
+      translateY(0);
+  }
+
+  50% {
+    transform:
+      translateY(-5px);
+  }
+
+}
+
+
+.card-to {
+  margin: 0;
+
+  color: var(--gold-soft);
+
+  font-family: var(--font-display);
+
+  font-size: 1.08rem;
+}
+
+
+.card-message {
+  flex: 1;
+
+  width: 100%;
+
+  margin: 5px 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  color: var(--parchment);
+
+  font-family: var(--font-display);
+
+  font-size: 1.28rem;
+
+  line-height: 1.45;
+
+  overflow-wrap: anywhere;
+}
+
+
+.card-verse {
+  margin: 0;
+
+  color: var(--parchment-dim);
+
+  font-size: .79rem;
+
+  letter-spacing: .06em;
+}
+
+
+.card-from {
+  margin: 7px 0 0;
+
+  color: var(--gold-soft);
+
+  font-size: .85rem;
+}
+
+
+.card-script {
+  font-family: var(--font-script);
+}
+
+
+/* =========================================================
+   DIVIDER
+========================================================= */
+
+.section-divider {
+  width:
+    min(1080px,calc(100% - 56px));
+
+  height: 1px;
+
+  margin:
+    0 auto;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(201,154,61,.32),
+      transparent
+    );
+}
+
+
+/* =========================================================
+   HOW SECTION
+========================================================= */
+
+.how {
+  width: min(1180px,100%);
+
+  margin: auto;
+
+  padding:
+    92px 28px 105px;
+}
+
+
+.section-heading {
+  text-align: center;
+
+  margin-bottom: 48px;
+}
+
+
+.section-kicker {
+  margin-bottom: 7px;
+
+  color: var(--gold);
+
+  font-size: .69rem;
+
+  font-weight: 600;
+
+  letter-spacing: .2em;
+
+  text-transform: uppercase;
+}
+
+
+.section-heading h2 {
+  margin: 0;
+
+  font-family: var(--font-display);
+
+  font-size:
+    clamp(2rem,4vw,2.8rem);
+
+  font-weight: 600;
+
+  line-height: 1.05;
+}
+
+
+.section-heading p {
+  max-width: 50ch;
+
+  margin:
+    12px auto 0;
+
+  color: var(--parchment-dim);
+
+  font-size: .9rem;
+}
+
+
+.steps {
+  list-style: none;
+
+  margin: 0;
+
+  padding: 0;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap: 22px;
+}
+
+
+.steps li {
+  position: relative;
+
+  min-height: 205px;
+
+  padding:
+    27px 24px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(66,17,25,.72),
+      rgba(48,11,17,.55)
+    );
+
+  border:
+    1px solid rgba(201,154,61,.16);
+
+  border-radius: 5px;
+
+  transition:
+    transform .3s ease,
+    border-color .3s ease,
+    background .3s ease;
+}
+
+
+.steps li:hover {
+  transform:
+    translateY(-6px);
+
+  border-color:
+    rgba(201,154,61,.35);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(74,19,28,.82),
+      rgba(48,11,17,.68)
+    );
+}
+
+
+.step-num {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 38px;
+  height: 38px;
+
+  margin-bottom: 18px;
+
+  border:
+    1px solid var(--gold);
+
+  border-radius: 50%;
+
+  color: var(--gold-soft);
+
+  font-family: var(--font-display);
+
+  font-size: 1.05rem;
+}
+
+
+.steps h3 {
+  margin:
+    0 0 8px;
+
+  font-family: var(--font-display);
+
+  font-size: 1.35rem;
+
+  font-weight: 600;
+}
+
+
+.steps p {
+  margin: 0;
+
+  color: var(--parchment-dim);
+
+  font-size: .86rem;
+
+  line-height: 1.65;
+}
+
+
+/* =========================================================
+   FEATURES
+========================================================= */
+
+.features {
+  width:
+    min(1050px,100%);
+
+  margin: 0 auto;
+
+  padding:
+    0 28px 100px;
+}
+
+
+.feature-inner {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  border-top:
+    1px solid rgba(201,154,61,.16);
+
+  border-bottom:
+    1px solid rgba(201,154,61,.16);
+}
+
+
+.feature {
+  padding:
+    27px 25px;
+
+  text-align: center;
+
+  transition:
+    transform .3s ease;
+}
+
+
+.feature:hover {
+  transform:
+    translateY(-5px);
+}
+
+
+.feature + .feature {
+  border-left:
+    1px solid rgba(201,154,61,.14);
+}
+
+
+.feature-icon {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: var(--gold);
+
+  font-size: 1.1rem;
+
+  animation:
+    iconPulse 3s ease-in-out infinite;
+}
+
+
+@keyframes iconPulse {
+
+  0%,
+  100% {
+    opacity: .65;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+}
+
+
+.feature strong {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: var(--parchment);
+
+  font-family: var(--font-display);
+
+  font-size: 1.08rem;
+}
+
+
+.feature span {
+  color: var(--parchment-dim);
+
+  font-size: .74rem;
+}
+
+
+/* =========================================================
+   CTA
+========================================================= */
+
+.cta {
+  width:
+    min(950px,calc(100% - 40px));
+
+  margin:
+    0 auto 95px;
+
+  padding:
+    65px 35px;
+
+  position: relative;
+
+  overflow: hidden;
+
+  text-align: center;
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(201,154,61,.13),
+      transparent 55%
+    ),
+    linear-gradient(
+      145deg,
+      #421119,
+      #2e0c12
+    );
+
+  border:
+    1px solid rgba(201,154,61,.23);
+
+  border-radius: 7px;
+
+  box-shadow:
+    0 25px 60px rgba(0,0,0,.25);
+}
+
+
+.cta::before {
+  content: "✦";
+
+  position: absolute;
+
+  left: 25px;
+  top: 18px;
+
+  color:
+    rgba(201,154,61,.32);
+
+  animation:
+    sparkle 3s ease-in-out infinite;
+}
+
+
+.cta::after {
+  content: "✦";
+
+  position: absolute;
+
+  right: 25px;
+  bottom: 18px;
+
+  color:
+    rgba(201,154,61,.32);
+
+  animation:
+    sparkle 3s 1.5s ease-in-out infinite;
+}
+
+
+@keyframes sparkle {
+
+  0%,
+  100% {
+    opacity: .25;
+
+    transform:
+      scale(.8)
+      rotate(0deg);
+  }
+
+  50% {
+    opacity: 1;
+
+    transform:
+      scale(1.2)
+      rotate(20deg);
+  }
+
+}
+
+
+.cta-symbol {
+  color: var(--gold);
+
+  font-size: 1.35rem;
+
+  margin-bottom: 9px;
+}
+
+
+.cta h2 {
+  margin:
+    0 0 10px;
+
+  font-family: var(--font-display);
+
+  font-size:
+    clamp(2rem,4vw,2.8rem);
+
+  font-weight: 600;
+}
+
+
+.cta p {
+  max-width: 48ch;
+
+  margin:
+    0 auto 25px;
+
+  color: var(--parchment-dim);
+
+  font-size: .9rem;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.site-footer {
+  padding:
+    35px 20px 45px;
+
+  text-align: center;
+
+  color: var(--parchment-dim);
+
+  font-size: .78rem;
+
+  border-top:
+    1px solid rgba(201,154,61,.14);
+}
+
+
+.footer-main {
+  max-width: 650px;
+
+  margin:
+    0 auto 12px;
+
+  line-height: 1.65;
+}
+
+
+.footer-credit {
+  color:
+    rgba(227,201,136,.70);
+
+  font-size: .69rem;
+
+  letter-spacing: .025em;
+}
+
+
+.footer-credit strong {
+  color: var(--gold-soft);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:950px) {
+
+  .header-inner {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .hero {
+    padding:
+      70px 24px 80px;
+  }
+
+  .hero-inner {
+    grid-template-columns: 1fr;
+
+    gap: 50px;
+  }
+
+  .hero-copy {
+    text-align: center;
+  }
+
+  .hero-copy p {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-actions {
+    justify-content: center;
+  }
+
+  .hero-note {
+    justify-content: center;
+  }
+
+  .hero-card-frame {
+    min-height: 510px;
+  }
+
+  .steps {
+    grid-template-columns: 1fr;
+  }
+
+  .steps li {
+    min-height: auto;
+  }
+
+}
+
+
+@media(max-width:650px) {
+
+  .site-header {
+    position: relative;
+  }
+
+  .header-inner {
+    padding:
+      11px 15px;
+  }
+
+  .brand-logo {
+    width: 37px;
+    height: 37px;
+  }
+
+  .brand-name {
+    font-size: .95rem;
+  }
+
+  .brand-tag {
+    font-size: .59rem;
+  }
+
+  .site-nav {
+    gap: 10px;
+  }
+
+  .site-nav a {
+    font-size: .69rem;
+  }
+
+  .site-nav a:first-child {
+    display: none;
+  }
+
+  .hero {
+    padding:
+      58px 18px 65px;
+  }
+
+  .hero-copy h1 {
+    font-size:
+      clamp(2.7rem,14vw,4rem);
+  }
+
+  .hero-copy p {
+    font-size: .91rem;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+
+    width: 100%;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+  }
+
+  .hero-card-frame {
+    min-height: 450px;
+  }
+
+  .hero-card-frame::before {
+    width: 320px;
+    height: 320px;
+  }
+
+  .blessing-card {
+    width:
+      min(300px,86vw);
+
+    min-height: 410px;
+
+    padding:
+      28px 23px 24px;
+  }
+
+  .card-symbol {
+    font-size: 2.1rem;
+  }
+
+  .card-message {
+    font-size: 1.12rem;
+  }
+
+  .how {
+    padding:
+      70px 18px 75px;
+  }
+
+  .section-heading {
+    margin-bottom: 32px;
+  }
+
+  .steps {
+    gap: 14px;
+  }
+
+  .steps li {
+    padding:
+      22px 20px;
+  }
+
+  .features {
+    padding:
+      0 18px 75px;
+  }
+
+  .feature-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .feature + .feature {
+    border-left: none;
+
+    border-top:
+      1px solid rgba(201,154,61,.14);
+  }
+
+  .cta {
+    width:
+      calc(100% - 30px);
+
+    margin-bottom: 70px;
+
+    padding:
+      48px 22px;
+  }
+
+  .site-footer {
+    padding:
+      28px 18px 38px;
+  }
+
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+@media(prefers-reduced-motion: reduce) {
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+
+    transition: none !important;
+  }
+
+  .reveal,
+  .reveal-left,
+  .reveal-right,
+  .reveal-scale {
+    opacity: 1;
+
+    transform: none;
+  }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =======================================================
+     HEADER
+======================================================= -->
+
+<header class="site-header">
+
+  <div class="header-inner">
+
+    <a
+      class="brand"
+      href="./"
+      aria-label="A Blessing to Share home"
+    >
+
+      <img
+        src="logoysl.png"
+        alt="Young Servants of the Lord"
+        class="brand-logo"
+        onerror="this.style.display='none'"
+      >
+
+      <span class="brand-text">
+
+        <span class="brand-name">
+          Young Servants of the Lord
+        </span>
+
+        <span class="brand-tag">
+          A Blessing to Share
+        </span>
+
+      </span>
+
+    </a>
+
+
+    <nav
+      class="site-nav"
+      aria-label="Main navigation"
+    >
+
+      <a href="card-builder.html">
+        Create a card
+      </a>
+
+      <a href="history.html">
+        History
+      </a>
+
+      <a href="#how">
+        How it works
+      </a>
+
+    </nav>
+
+  </div>
+
+</header>
+
+
+
+<main>
+
+
+<!-- =======================================================
+     HERO
+======================================================= -->
+
+<section class="hero">
+
+  <div class="hero-inner">
+
+
+    <div class="hero-copy">
+
+      <div class="eyebrow">
+        A simple message of encouragement
+      </div>
+
+
+      <h1>
+        Write a blessing.<br>
+        <em>Share some light.</em>
+      </h1>
+
+
+      <p>
+        Create a personal blessing card for someone
+        in your church family. Choose the design,
+        write your own message, and share it through
+        a link, QR code, or email.
+      </p>
+
+
+      <div class="hero-actions">
+
+        <a
+          href="card-builder.html"
+          class="btn btn-gold"
+        >
+
+          <span class="btn-icon">
+            ✦
+          </span>
+
+          Start designing
+
+        </a>
+
+
+        <a
+          href="#how"
+          class="btn btn-outline"
+        >
+          Learn how it works
+        </a>
+
+      </div>
+
+
+      <div class="hero-note">
+
+        <span>
+          ✝
+        </span>
+
+        <span>
+          No account is required to open a shared blessing.
+        </span>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- ===================================================
+         SAMPLE CARD
+    ==================================================== -->
+
+    <div class="hero-card-frame">
+
+      <article
+        class="blessing-card frame-classic bg-rays"
+        style="
+          --card-accent:#c99a3d;
+          --card-line:#e3c988;
+        "
+      >
+
+        <div
+          class="card-layer-bg"
+          aria-hidden="true"
+        ></div>
+
+
+        <div class="card-body">
+
+          <div class="card-symbol">
+            🕊️
+          </div>
+
+
+          <p class="card-to">
+            For Sister Grace
+          </p>
+
+
+          <p class="card-message">
+            Thinking of you today —
+            may the Lord renew your strength
+            like the eagle's wings.
+          </p>
+
+
+          <p class="card-verse">
+            Isaiah 40:31
+          </p>
+
+
+          <p class="card-from">
+            — Your Sunday School Class
+          </p>
+
+        </div>
+
+      </article>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<div class="section-divider"></div>
+
+
+
+<!-- =======================================================
+     HOW IT WORKS
+======================================================= -->
+
+<section
+  class="how"
+  id="how"
+>
+
+  <div class="section-heading reveal">
+
+    <div class="section-kicker">
+      Simple and personal
+    </div>
+
+    <h2>
+      How a blessing travels
+    </h2>
+
+    <p>
+      A few simple steps can turn your thoughts
+      into an encouragement someone can keep.
+    </p>
+
+  </div>
+
+
+
+  <ol class="steps">
+
+    <li class="reveal" style="transition-delay:.05s">
+
+      <span class="step-num">
+        1
+      </span>
+
+      <h3>
+        Design
+      </h3>
+
+      <p>
+        Choose a symbol, colors, pattern,
+        border, and style. Then write a blessing
+        in your own words.
+      </p>
+
+    </li>
+
+
+    <li class="reveal" style="transition-delay:.18s">
+
+      <span class="step-num">
+        2
+      </span>
+
+      <h3>
+        Share
+      </h3>
+
+      <p>
+        Save your creation and share it using
+        its link, display a QR code, or send
+        the blessing directly by email.
+      </p>
+
+    </li>
+
+
+    <li class="reveal" style="transition-delay:.31s">
+
+      <span class="step-num">
+        3
+      </span>
+
+      <h3>
+        Encourage
+      </h3>
+
+      <p>
+        Your churchmate opens the blessing
+        and sees the card you created.
+        No account is needed to view it.
+      </p>
+
+    </li>
+
+  </ol>
+
+</section>
+
+
+
+<!-- =======================================================
+     FEATURES
+======================================================= -->
+
+<section class="features">
+
+  <div class="feature-inner">
+
+    <div
+      class="feature reveal"
+      style="transition-delay:.05s"
+    >
+
+      <span class="feature-icon">
+        ✦
+      </span>
+
+      <strong>
+        Your own words
+      </strong>
+
+      <span>
+        Make every message personal.
+      </span>
+
+    </div>
+
+
+    <div
+      class="feature reveal"
+      style="transition-delay:.18s"
+    >
+
+      <span class="feature-icon">
+        ♡
+      </span>
+
+      <strong>
+        Made to encourage
+      </strong>
+
+      <span>
+        A small way to brighten someone's day.
+      </span>
+
+    </div>
+
+
+    <div
+      class="feature reveal"
+      style="transition-delay:.31s"
+    >
+
+      <span class="feature-icon">
+        ✝
+      </span>
+
+      <strong>
+        Faith-centered
+      </strong>
+
+      <span>
+        Share Scripture, prayer, and encouragement.
+      </span>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- =======================================================
+     CTA
+======================================================= -->
+
+<section class="cta reveal-scale">
+
+  <div class="cta-symbol">
+    ✦
+  </div>
+
+
+  <h2>
+    Someone may need your encouragement today.
+  </h2>
+
+
+  <p>
+    Take a moment to create a blessing and let
+    your words become a little reminder of God's love.
+  </p>
+
+
+  <a
+    href="card-builder.html"
+    class="btn btn-gold"
+  >
+    Create a blessing
+  </a>
+
+</section>
+
+
+</main>
+
+
+
+<!-- =======================================================
+     FOOTER
+======================================================= -->
+
+<footer class="site-footer reveal">
+
+  <p class="footer-main">
+
+    A Blessing to Share, by Young Servants of the Lord —
+    a small way to encourage the church family,
+    one message at a time.
+
+  </p>
+
+
+  <div class="footer-credit">
+
+    ✦ &nbsp;
+
+    Created by
+    <strong>Kim Blanila</strong>
+
+    &nbsp; • &nbsp;
+
+    Two-Hearts Servant
+
+    &nbsp; • &nbsp;
+
+    Assistant Media Ministry Head
+
+  </div>
+
+</footer>
+
+
+
+<!-- =======================================================
+     SCROLL REVEAL JAVASCRIPT
+======================================================= -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const revealElements =
+    document.querySelectorAll(
+      ".reveal, .reveal-left, .reveal-right, .reveal-scale"
+    );
+
+
+  /*
+   * If the browser does not support
+   * IntersectionObserver, simply show
+   * everything.
+   */
+
+  if (!("IntersectionObserver" in window)) {
+
+    revealElements.forEach(function (element) {
+
+      element.classList.add("visible");
+
+    });
+
+    return;
+
+  }
+
+
+  const observer =
+    new IntersectionObserver(
+      function (entries) {
+
+        entries.forEach(function (entry) {
+
+          if (entry.isIntersecting) {
+
+            entry.target.classList.add("visible");
+
+            /*
+             * Once the animation has happened,
+             * stop watching the element.
+             */
+
+            observer.unobserve(entry.target);
+
+          }
+
+        });
+
+      },
+      {
+        threshold: 0.14,
+
+        rootMargin:
+          "0px 0px -50px 0px"
+      }
+    );
+
+
+  revealElements.forEach(function (element) {
+
+    observer.observe(element);
+
+  });
+
+});
+
+</script>
+
+
+</body>
+</html>
