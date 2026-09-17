@@ -509,6 +509,65 @@
     if(m){try{return JSON.parse(m[1]);}catch(e){}}
     return null;
   }
+  /* ------------------------------------------------------------
+     POST TO BACKEND VIA HIDDEN IFRAME.
+     fetch() frequently can't read the response of an Apps Script
+     web app POST — Google's deployed /exec endpoint often omits
+     the CORS header on that response even when access is set to
+     "Anyone", so the browser blocks it with "Failed to fetch"
+     even though the save/email genuinely completed on the server
+     (visible in Apps Script's own Executions log). A hidden-iframe
+     form submission sidesteps this entirely: it's a page
+     navigation, not a fetch, so CORS never applies. The backend
+     replies with a tiny page that calls window.top.postMessage(),
+     which we listen for below instead of reading a fetch() body.
+     ------------------------------------------------------------ */
+  var gasFrame=null, gasPending=[];
+  function gasEnsureFrame(){
+    if(gasFrame)return;
+    gasFrame=document.createElement("iframe");
+    gasFrame.name="ysl-gas-frame";
+    gasFrame.style.display="none";
+    document.body.appendChild(gasFrame);
+    window.addEventListener("message",function(e){
+      if(!e.data||typeof e.data!=="object")return;
+      for(var i=0;i<gasPending.length;i++){
+        var p=gasPending[i];
+        if(p.type&&e.data.type&&p.type!==e.data.type)continue;
+        gasPending.splice(i,1);
+        clearTimeout(p.timer);
+        p.resolve(e.data);
+        return;
+      }
+    });
+  }
+  function gasPost(api,params,expectType){
+    gasEnsureFrame();
+    return new Promise(function(resolve,reject){
+      var entry={type:expectType,resolve:resolve,timer:null};
+      entry.timer=setTimeout(function(){
+        var idx=gasPending.indexOf(entry);
+        if(idx>-1)gasPending.splice(idx,1);
+        reject(new Error("Request timed out. Please check your connection and try again."));
+      },20000);
+      gasPending.push(entry);
+      var form=document.createElement("form");
+      form.method="POST";
+      form.action=api;
+      form.target="ysl-gas-frame";
+      form.style.display="none";
+      params.forEach(function(value,key){
+        var input=document.createElement("input");
+        input.type="hidden";
+        input.name=key;
+        input.value=value;
+        form.appendChild(input);
+      });
+      document.body.appendChild(form);
+      form.submit();
+      form.parentNode.removeChild(form);
+    });
+  }
   function saveCardRemote(payload){
     var params=new URLSearchParams();
     params.set("action","save");
@@ -517,15 +576,12 @@
     if(shareCache.userKey)params.set("userKey",shareCache.userKey);
     params.set("cardType","Blessing Card");
     params.set("state",JSON.stringify(payload));
-    return fetch(apiUrl(),{method:"POST",body:params})
-      .then(function(r){return r.text();})
-      .then(function(text){
-        var res=parseGasResponse(text);
-        if(!res||!res.ok||!res.creationId)throw new Error((res&&res.message)||"save_failed");
-        shareCache.userId=res.userId||shareCache.userId;
-        shareCache.userKey=res.userKey||shareCache.userKey;
-        return res.creationId;
-      });
+    return gasPost(apiUrl(),params,"SAVE_RESULT").then(function(res){
+      if(!res||!res.ok||!res.creationId)throw new Error((res&&res.message)||"save_failed");
+      shareCache.userId=res.userId||shareCache.userId;
+      shareCache.userKey=res.userKey||shareCache.userKey;
+      return res.creationId;
+    });
   }
   // Returns a Promise<string> resolving to the link to share. Re-saves only
   // when the card actually changed since the last successful save.
@@ -932,9 +988,8 @@
       params.set("message",
         "Someone created a blessing especially for you.\nOpen your blessing:\n"+link);
       params.set("cardLink",link);
-      return fetch(api,{method:"POST",body:params}).then(function(r){return r.text();});
-    }).then(function(text){
-      var res=parseGasResponse(text);
+      return gasPost(api,params,"EMAIL_RESULT");
+    }).then(function(res){
       if(res&&res.ok){
         status.textContent=res.message||"Blessing sent successfully.";
       }else{
