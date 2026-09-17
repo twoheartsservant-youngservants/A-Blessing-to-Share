@@ -1,0 +1,47 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin — A Blessing to Share</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"><style>:root{--deep:#2a0a10;--mid:#421119;--panel:#3a0f16;--gold:#c99a3d;--soft:#e3c988;--cream:#f4e8d9;--dim:#cdb2a6}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% 10%,#4a1820,#2a0a10 55%,#180508);color:var(--cream);font-family:'Work Sans',sans-serif}.wrap{max-width:1250px;margin:auto;padding:28px 20px 60px}.head{display:flex;justify-content:space-between;align-items:center;gap:15px}.head h1{font-family:'Cormorant Garamond',serif;color:var(--soft);font-size:2.4rem;margin:0}.panel{margin-top:24px;padding:20px;background:rgba(58,15,22,.9);border:1px solid rgba(201,154,61,.2);border-radius:10px}.login{max-width:420px;margin:70px auto}.input{width:100%;padding:12px;background:rgba(0,0,0,.22);border:1px solid rgba(201,154,61,.3);border-radius:6px;color:var(--cream);font:inherit}.btn{margin-top:12px;width:100%;padding:12px;border:0;border-radius:6px;background:linear-gradient(180deg,var(--soft),var(--gold));color:#241012;font-weight:700}.error{color:#f0b0b0;min-height:20px}.stats{display:flex;gap:12px;flex-wrap:wrap}.stat{padding:14px 18px;border:1px solid rgba(201,154,61,.2);border-radius:8px}.stat b{font-size:1.5rem;color:var(--soft)}.table-wrap{overflow:auto;margin-top:18px}table{width:100%;border-collapse:collapse;min-width:900px}th,td{text-align:left;padding:10px;border-bottom:1px solid rgba(201,154,61,.15);vertical-align:top}th{color:var(--soft)}.thumb{width:70px;height:90px;object-fit:cover;background:#241012;border-radius:4px}.actions button{margin-right:6px;border:1px solid rgba(201,154,61,.35);background:transparent;color:var(--cream);padding:6px 9px;border-radius:5px}.actions .del{color:#f0b0b0}@media(max-width:600px){.head{flex-direction:column;align-items:flex-start}.head h1{font-size:2rem}}
+</style></head><body><main class="wrap"><header class="head"><h1>Admin Dashboard</h1><a href="index.html" style="color:var(--soft)">Back to site</a></header><section id="login" class="panel login"><h2>Administrator access</h2><p style="color:var(--dim)">Enter the administrator password. Access is verified by the Apps Script backend.</p><input id="pass" class="input" type="password" autocomplete="current-password" placeholder="Admin password"><button id="loginBtn" class="btn">Sign in</button><div id="loginError" class="error"></div></section><section id="dash" hidden><div class="panel"><div class="stats"><div class="stat"><div>Total creations</div><b id="total">0</b></div><div class="stat"><div>Total photos</div><b id="photos">0</b></div></div><div class="table-wrap"><table><thead><tr><th>Preview</th><th>User</th><th>Design</th><th>Photos</th><th>Created</th><th>Updated</th><th>Actions</th></tr></thead><tbody id="rows"></tbody></table></div></div></section></main><iframe name="adminFrame" id="adminFrame" hidden></iframe><script src="config.js"></script><script>
+(function(){
+  var API=window.YSL_API_URL||"";
+  var token=sessionStorage.getItem("yslAdminToken");
+  var login=document.getElementById("login"),dash=document.getElementById("dash"),error=document.getElementById("loginError");
+  function jsonp(url,done){
+    var cb="adm_"+Date.now()+"_"+Math.random().toString(36).slice(2);
+    window[cb]=function(data){var sc=document.getElementById(cb);if(sc)sc.remove();delete window[cb];done(data)};
+    var sc=document.createElement("script");sc.id=cb;sc.src=url+(url.indexOf("?")>=0?"&":"?")+"callback="+cb;
+    sc.onerror=function(){sc.remove();delete window[cb];done({ok:false,message:"Could not connect to the admin service."})};
+    document.body.appendChild(sc);
+  }
+  function load(){
+    if(!token){login.hidden=false;dash.hidden=true;return}
+    jsonp(API+"?action=adminList&adminToken="+encodeURIComponent(token),function(d){
+      if(!d||!d.ok){sessionStorage.removeItem("yslAdminToken");token="";login.hidden=false;dash.hidden=true;error.textContent=(d&&d.message)||"Administrator session expired.";return}
+      login.hidden=true;dash.hidden=false;
+      var items=d.items||[];document.getElementById("total").textContent=items.length;document.getElementById("photos").textContent=items.reduce(function(a,x){return a+((x.state&&x.state.photos)||[]).length},0);
+      var rows=document.getElementById("rows");rows.innerHTML="";
+      items.forEach(function(x){
+        var st=x.state||{},photo=st.photos&&st.photos[0],src=photo&&(photo.url||photo.dataUrl);
+        var tr=document.createElement("tr");
+        tr.innerHTML="<td>"+(src?"<img class=\"thumb\" src=\""+String(src).replace(/\"/g,"&quot;")+"\">":"—")+"</td><td>"+String(x.userId||"").replace(/[&<>]/g,"")+"</td><td>"+String(st.to||"Blessing Card").replace(/[&<>]/g,"")+"</td><td>"+((st.photos||[]).length)+"</td><td>"+new Date(x.createdAt).toLocaleString()+"</td><td>"+new Date(x.updatedAt).toLocaleString()+"</td><td class=\"actions\"><button>View</button><button class=\"del\">Delete</button></td>";
+        tr.querySelector("button").onclick=function(){location.href="card-builder.html#id="+encodeURIComponent(x.id)};
+        tr.querySelector(".del").onclick=function(){if(confirm("Delete this creation? This cannot be undone.")){postDelete(x.id,tr)}};
+        rows.appendChild(tr);
+      });
+    });
+  }
+  function postDelete(id,row){
+    var f=document.createElement("form");f.method="POST";f.action=API;f.target="adminFrame";f.style.display="none";
+    [{k:"action",v:"adminDelete"},{k:"adminToken",v:token},{k:"creationId",v:id}].forEach(function(x){var i=document.createElement("input");i.type="hidden";i.name=x.k;i.value=x.v;f.appendChild(i)});
+    document.body.appendChild(f);f.submit();setTimeout(function(){f.remove();row.remove();document.getElementById("total").textContent=document.querySelectorAll("#rows tr").length},800);
+  }
+  function loginNow(){
+    var p=document.getElementById("pass").value.trim();if(!p)return;error.textContent="Checking password…";
+    jsonp(API+"?action=adminLogin&password="+encodeURIComponent(p),function(d){
+      if(d&&d.ok){token=d.token;sessionStorage.setItem("yslAdminToken",token);document.getElementById("pass").value="";error.textContent="";load()}
+      else error.textContent=(d&&d.message)||"Invalid administrator password.";
+    });
+  }
+  document.getElementById("loginBtn").onclick=loginNow;
+  document.getElementById("pass").addEventListener("keydown",function(e){if(e.key==="Enter")loginNow()});
+  load();
+})();
+</script></body></html>
