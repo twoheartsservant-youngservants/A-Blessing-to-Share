@@ -1,42 +1,1628 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <title>Personal History — A Blessing to Share</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Work+Sans:wght@400;500;600;700&family=Petit+Formal+Script&display=swap" rel="stylesheet">
+
 <style>
-:root{--deep:#2a0a10;--mid:#421119;--panel:#3a0f16;--gold:#c99a3d;--soft:#e3c988;--cream:#f4e8d9;--dim:#cdb2a6;--line:#6e2530;--ui:'Work Sans',sans-serif;--display:'Cormorant Garamond',Georgia,serif;--script:'Petit Formal Script',cursive}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:var(--ui);background:radial-gradient(circle at 50% 10%,#4a1820,#2a0a10 55%,#180508);color:var(--cream)}
-.wrap{max-width:1180px;margin:auto;padding:26px 22px 60px}.head{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:26px}.head h1{font-family:var(--display);font-size:2.4rem;color:var(--soft);margin:0}.btn{border:1px solid rgba(201,154,61,.35);background:rgba(42,10,16,.7);color:var(--cream);text-decoration:none;padding:9px 14px;border-radius:20px;cursor:pointer}.btn:hover{background:rgba(201,154,61,.08)}
-.status{padding:50px 20px;text-align:center;color:var(--dim);border:1px dashed rgba(201,154,61,.25);border-radius:10px;background:rgba(58,15,22,.35)}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}.card{background:rgba(58,15,22,.86);border:1px solid rgba(201,154,61,.2);border-radius:10px;padding:13px;box-shadow:0 16px 35px rgba(0,0,0,.25)}.preview{height:270px;display:flex;align-items:center;justify-content:center;background:#241012;border-radius:7px;overflow:hidden;position:relative}.stage{width:340px;height:460px;flex:none;position:relative;transform-origin:center center}.blessing{position:relative;width:340px;height:460px;padding:30px 26px 26px;background:var(--bg,#fffdfb);color:var(--font,#4c0a16);border:2px solid var(--line,#c89b3c);border-radius:4px;overflow:hidden;display:flex;flex-direction:column;text-align:center;font-family:var(--family,Georgia,serif);box-shadow:0 20px 45px rgba(0,0,0,.4)}.blessing:before{content:"";position:absolute;inset:0;opacity:.45;pointer-events:none;background-image:var(--texture,none)}.blessing:after{content:"";position:absolute;inset:10px;border:var(--iw,1px) var(--is,solid) var(--iline,#c89b3c);pointer-events:none;opacity:.65}.body{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:10px;flex:1;width:100%}.symbol{font-size:2.2rem;line-height:1}.to{font-family:var(--display);font-size:1rem;color:var(--line);margin:0}.message{font-family:inherit;font-size:1.12rem;line-height:1.42;white-space:pre-wrap;overflow:hidden;flex:1;width:100%;display:flex;align-items:center;justify-content:center;margin:2px 0}.verse{font-size:.8rem;opacity:.7;margin:0}.from{font-size:.9rem;color:var(--line);margin:2px 0 0}.photos{position:absolute;inset:0;z-index:4;pointer-events:none;overflow:hidden}.photo{position:absolute;overflow:hidden;transform-origin:center;box-shadow:0 8px 20px rgba(0,0,0,.3)}.photo img{display:block;width:100%;height:100%;object-fit:cover}.meta{padding:10px 2px}.meta strong{color:var(--soft)}.meta small{color:var(--dim);line-height:1.5}.actions{display:flex;gap:7px}.actions button{flex:1;border:1px solid rgba(201,154,61,.35);background:rgba(0,0,0,.18);color:var(--cream);padding:8px;border-radius:6px;cursor:pointer}.actions button:first-child{background:linear-gradient(180deg,var(--soft),var(--gold));color:#241012;border:0}.danger{color:#f0b0b0!important}.empty{display:none}
-@media(max-width:600px){.wrap{padding:20px 14px 45px}.head{align-items:flex-start;flex-direction:column}.head h1{font-size:2rem}.head .btn{width:100%;text-align:center}.grid{grid-template-columns:1fr}.preview{height:310px}}
-</style></head>
-<body><main class="wrap"><div style="margin-bottom:14px"><a href="index.html" class="btn">← Back to Home</a></div><header class="head"><h1>Personal History</h1><a href="card-builder.html" class="btn">Create a card</a></header><div id="status" class="status">Loading your saved creations…</div><section id="grid" class="grid"></section></main><iframe name="historyFrame" id="historyFrame" hidden></iframe><script src="config.js"></script>
-<script>
-(function(){"use strict";
-const API=window.YSL_CONFIG&&window.YSL_CONFIG.API_URL?window.YSL_CONFIG.API_URL:"";
-const status=document.getElementById("status"),grid=document.getElementById("grid");
-/* IMPORTANT: this ID belongs to the card CREATOR. It is never derived from To/From/email. */
-function creatorIdentity(){
- let id=localStorage.getItem("ysl_creator_id");
- if(!id){try{id=crypto.randomUUID()}catch(e){id="creator_"+Date.now()+"_"+Math.random().toString(36).slice(2)}localStorage.setItem("ysl_creator_id",id)}
- return id;
+
+:root{
+  --deep:#2a0a10;
+  --mid:#421119;
+  --panel:#3a0f16;
+  --gold:#c99a3d;
+  --soft:#e3c988;
+  --cream:#f4e8d9;
+  --dim:#cdb2a6;
+  --line:#6e2530;
+  --ui:'Work Sans',sans-serif;
+  --display:'Cormorant Garamond',Georgia,serif;
+  --script:'Petit Formal Script',cursive
 }
-const creatorId=creatorIdentity();
-const legacyId=localStorage.getItem("ysl_user_id")||"";
-const creatorKey=localStorage.getItem("yslBlessingUserKey")||localStorage.getItem("ysl_user_key")||"";
-function esc(v){return String(v==null?"":v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
-function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
-function hex(v){return /^#[0-9a-f]{6}$/i.test(String(v||""))?v:"#c89b3c"}
-function texture(type,color){const c=hex(color), rgba=(a)=>{const n=c.slice(1),r=parseInt(n.slice(0,2),16),g=parseInt(n.slice(2,4),16),b=parseInt(n.slice(4,6),16);return`rgba(${r},${g},${b},${a})`};const x=String(type||"").toLowerCase();if(x.includes("dot"))return`radial-gradient(circle,${rgba(.3)} 1px,transparent 1.5px)`;if(x.includes("ray")||x.includes("sunburst")||x.includes("beam"))return`repeating-conic-gradient(from 0deg at 50% 50%,${rgba(.14)} 0deg 4deg,transparent 4deg 18deg)`;if(x.includes("weave"))return`linear-gradient(45deg,${rgba(.08)} 25%,transparent 25%,transparent 75%,${rgba(.08)} 75%),linear-gradient(-45deg,${rgba(.08)} 25%,transparent 25%,transparent 75%,${rgba(.08)} 75%)`;return"none"}
-function normalize(s){s=s||{};return Object.assign({},s,{to:s.to||s.recipient||"YSL",msg:s.msg??s.message??"",font:s.font||"Georgia",fontColor:s.fontColor||"#4C0A16",backgroundColor:s.backgroundColor||s.bgColor||"#fffdfb",borderColor:s.borderColor||"#C89B3C",innerBorderColor:s.innerBorderColor||s.borderColor||"#C89B3C",texture:s.texture||s.backgroundTexture||"dotted-sun-rays",textureColor:s.textureColor||"#C89B3C",innerBorder:s.innerBorder||"fine"})}
-function renderPreview(s){s=normalize(s);const stage=document.createElement("div");stage.className="stage";const card=document.createElement("article");card.className="blessing";card.style.setProperty("--bg",s.backgroundColor);card.style.setProperty("--line",s.borderColor);card.style.setProperty("--iline",s.innerBorderColor);card.style.setProperty("--font",s.fontColor);card.style.setProperty("--texture",texture(s.texture,s.textureColor));const f=String(s.innerBorder).toLowerCase();card.style.setProperty("--iw",f==="double"?"3px":f==="none"?"0px":"1px");card.style.setProperty("--is",f==="dotted"?"dotted":f==="dashed"?"dashed":f==="double"?"double":"solid");let family=s.font||"Georgia";if(String(family).toLowerCase().includes("sans"))family="Arial,Helvetica,sans-serif";else if(String(family).toLowerCase().includes("script"))family="'Petit Formal Script',cursive";else family="Georgia,'Times New Roman',serif";card.style.setProperty("--family",family);const body=document.createElement("div");body.className="body";body.innerHTML=`<div class="symbol">${esc(s.symbol||"✝")}</div><p class="to">For ${esc(s.to)}</p><p class="message">${esc(s.msg)}</p><p class="verse">${esc(s.verse||"")}</p><p class="from">— ${esc(s.from||"")}</p>`;card.appendChild(body);const photos=document.createElement("div");photos.className="photos";(Array.isArray(s.photos)?s.photos:[]).slice(0,5).forEach(p=>{const src=p&& (p.dataUrl||p.url||p.src);if(!src)return;const el=document.createElement("div"),img=document.createElement("img");el.className="photo";let w=clamp(Number(p.width)||150,50,300),h=clamp(Number(p.height)||110,50,300),z=p.zoom!=null?Number(p.zoom)/100:Number(p.cropZoom)||1;el.style.width=w+"px";el.style.height=h+"px";el.style.left=clamp(Number(p.x)||50,3,97)+"%";el.style.top=clamp(Number(p.y)||50,3,97)+"%";el.style.transform=`translate(-50%,-50%) rotate(${Number(p.rotation)||0}deg)`;img.src=src;img.style.objectPosition=`${Number(p.cropX??50)}% ${Number(p.cropY??50)}%`;img.style.transform=`scale(${Math.max(.1,z)})`;img.onerror=()=>el.remove();el.appendChild(img);photos.appendChild(el)});card.appendChild(photos);stage.appendChild(card);return stage}
-function fit(preview,stage){stage.style.transform=`scale(${Math.min((preview.clientWidth||240)/340,(preview.clientHeight||270)/460)})`}
-function render(items){grid.innerHTML="";if(!items.length){status.style.display="block";status.textContent="You don't have any saved creations yet.";return}status.style.display="none";items.forEach(item=>{const wrap=document.createElement("article");wrap.className="card";const preview=document.createElement("div");preview.className="preview";const stage=renderPreview(item.state||{});preview.appendChild(stage);wrap.appendChild(preview);const s=normalize(item.state||{}),count=Array.isArray(s.photos)?s.photos.length:0;const meta=document.createElement("div");meta.className="meta";meta.innerHTML=`<strong>${esc(s.to)}</strong><br><small>Updated ${esc(date(item.updatedAt||item.createdAt))} • ${count} photo(s)</small>`;wrap.appendChild(meta);const actions=document.createElement("div");actions.className="actions";const edit=document.createElement("button");edit.textContent="Edit";edit.onclick=()=>location.href="card-builder.html?edit=1#id="+encodeURIComponent(item.id);const del=document.createElement("button");del.textContent="Delete";del.className="danger";del.onclick=()=>delCard(item.id,wrap);actions.append(edit,del);wrap.appendChild(actions);grid.appendChild(wrap);fit(preview,stage)})}
-function date(v){if(!v)return"—";const d=new Date(v);return isNaN(d)?String(v):d.toLocaleString()}
-function delCard(id,el){if(!id||!confirm("Are you sure you want to delete this creation?\n\nThis action cannot be undone."))return;status.style.display="block";status.textContent="Deleting creation…";const f=document.createElement("form");f.method="POST";f.action=API;f.target="historyFrame";["action","creatorId","userId","userKey","creationId"].forEach((n,i)=>{const x=document.createElement("input");x.type="hidden";x.name=n;x.value=["delete",creatorId,legacyId,creatorKey,id][i];f.appendChild(x)});document.body.appendChild(f);f.submit();setTimeout(()=>{f.remove();el.remove();status.style.display=grid.children.length?"none":"block";if(!grid.children.length)status.textContent="You don't have any saved creations yet."},900)}
-function load(){if(!API){status.textContent="Could not connect to the blessing service. Check config.js.";return}status.textContent="Loading your saved creations…";const cb="history_"+Date.now();window[cb]=data=>{try{delete window[cb]}catch(e){}if(data&&data.ok)render(data.items||[]);else{status.textContent=data&&data.error||"Could not load history."}};const qs=new URLSearchParams({action:"getHistory",creatorId:creatorId,userId:legacyId,userKey:creatorKey,callback:cb});const script=document.createElement("script");script.src=API+"?"+qs;script.onerror=()=>status.textContent="Could not connect to history service.";document.body.appendChild(script)}
-window.addEventListener("resize",()=>grid.querySelectorAll(".card").forEach(c=>{const p=c.querySelector(".preview"),s=c.querySelector(".stage");if(p&&s)fit(p,s)}));load();
+
+*{
+  box-sizing:border-box
+}
+
+html,
+body{
+  margin:0;
+  min-height:100%;
+  font-family:var(--ui);
+  background:
+    radial-gradient(
+      circle at 50% 10%,
+      #4a1820,
+      #2a0a10 55%,
+      #180508
+    );
+  color:var(--cream)
+}
+
+.wrap{
+  max-width:1180px;
+  margin:auto;
+  padding:26px 22px 60px
+}
+
+.head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  margin-bottom:26px
+}
+
+.head h1{
+  font-family:var(--display);
+  font-size:2.4rem;
+  color:var(--soft);
+  margin:0
+}
+
+.btn{
+  border:1px solid rgba(201,154,61,.35);
+  background:rgba(42,10,16,.7);
+  color:var(--cream);
+  text-decoration:none;
+  padding:9px 14px;
+  border-radius:20px;
+  cursor:pointer
+}
+
+.btn:hover{
+  background:rgba(201,154,61,.08)
+}
+
+.status{
+  padding:50px 20px;
+  text-align:center;
+  color:var(--dim);
+  border:1px dashed rgba(201,154,61,.25);
+  border-radius:10px;
+  background:rgba(58,15,22,.35)
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:
+    repeat(
+      auto-fill,
+      minmax(240px,1fr)
+    );
+  gap:18px
+}
+
+.card{
+  background:rgba(58,15,22,.86);
+  border:1px solid rgba(201,154,61,.2);
+  border-radius:10px;
+  padding:13px;
+  box-shadow:
+    0 16px 35px rgba(0,0,0,.25)
+}
+
+.preview{
+  height:270px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#241012;
+  border-radius:7px;
+  overflow:hidden;
+  position:relative
+}
+
+.stage{
+  width:340px;
+  height:460px;
+  flex:none;
+  position:relative;
+  transform-origin:center center
+}
+
+.blessing{
+  position:relative;
+  width:340px;
+  height:460px;
+  padding:30px 26px 26px;
+
+  background:var(--bg,#fffdfb);
+  color:var(--font,#4c0a16);
+
+  border:2px solid var(--line,#c89b3c);
+  border-radius:4px;
+
+  overflow:hidden;
+
+  display:flex;
+  flex-direction:column;
+
+  text-align:center;
+
+  font-family:
+    var(
+      --family,
+      Georgia,
+      serif
+    );
+
+  box-shadow:
+    0 20px 45px rgba(0,0,0,.4)
+}
+
+.blessing:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  opacity:.45;
+  pointer-events:none;
+  background-image:
+    var(--texture,none)
+}
+
+.blessing:after{
+  content:"";
+  position:absolute;
+  inset:10px;
+
+  border:
+    var(--iw,1px)
+    var(--is,solid)
+    var(--iline,#c89b3c);
+
+  pointer-events:none;
+  opacity:.65
+}
+
+.body{
+  position:relative;
+  z-index:2;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+
+  gap:10px;
+
+  flex:1;
+  width:100%
+}
+
+.symbol{
+  font-size:2.2rem;
+  line-height:1
+}
+
+.to{
+  font-family:var(--display);
+  font-size:1rem;
+  color:var(--line);
+  margin:0
+}
+
+.message{
+  font-family:inherit;
+  font-size:1.12rem;
+  line-height:1.42;
+
+  white-space:pre-wrap;
+  overflow:hidden;
+
+  flex:1;
+  width:100%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  margin:2px 0
+}
+
+.verse{
+  font-size:.8rem;
+  opacity:.7;
+  margin:0
+}
+
+.from{
+  font-size:.9rem;
+  color:var(--line);
+  margin:2px 0 0
+}
+
+.photos{
+  position:absolute;
+  inset:0;
+  z-index:4;
+  pointer-events:none;
+  overflow:hidden
+}
+
+.photo{
+  position:absolute;
+  overflow:hidden;
+  transform-origin:center;
+  box-shadow:
+    0 8px 20px rgba(0,0,0,.3)
+}
+
+.photo img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover
+}
+
+.meta{
+  padding:10px 2px
+}
+
+.meta strong{
+  color:var(--soft)
+}
+
+.meta small{
+  color:var(--dim);
+  line-height:1.5
+}
+
+.actions{
+  display:flex;
+  gap:7px
+}
+
+.actions button{
+  flex:1;
+
+  border:
+    1px solid
+    rgba(201,154,61,.35);
+
+  background:rgba(0,0,0,.18);
+  color:var(--cream);
+
+  padding:8px;
+  border-radius:6px;
+
+  cursor:pointer
+}
+
+.actions button:first-child{
+  background:
+    linear-gradient(
+      180deg,
+      var(--soft),
+      var(--gold)
+    );
+
+  color:#241012;
+  border:0
+}
+
+.danger{
+  color:#f0b0b0!important
+}
+
+.empty{
+  display:none
+}
+
+@media(max-width:600px){
+
+  .wrap{
+    padding:20px 14px 45px
+  }
+
+  .head{
+    align-items:flex-start;
+    flex-direction:column
+  }
+
+  .head h1{
+    font-size:2rem
+  }
+
+  .head .btn{
+    width:100%;
+    text-align:center
+  }
+
+  .grid{
+    grid-template-columns:1fr
+  }
+
+  .preview{
+    height:310px
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<main class="wrap">
+
+  <div style="margin-bottom:14px">
+
+    <a
+      href="index.html"
+      class="btn"
+    >
+      ← Back to Home
+    </a>
+
+  </div>
+
+  <header class="head">
+
+    <h1>
+      Personal History
+    </h1>
+
+    <a
+      href="card-builder.html"
+      class="btn"
+    >
+      Create a card
+    </a>
+
+  </header>
+
+  <div
+    id="status"
+    class="status"
+  >
+    Loading your saved creations…
+  </div>
+
+  <section
+    id="grid"
+    class="grid"
+  ></section>
+
+</main>
+
+<iframe
+  name="historyFrame"
+  id="historyFrame"
+  hidden
+></iframe>
+
+<script src="config.js"></script>
+
+<script>
+
+(function(){
+
+"use strict";
+
+
+/* =====================================================
+   API
+===================================================== */
+
+const API =
+  window.YSL_CONFIG &&
+  window.YSL_CONFIG.API_URL
+    ? window.YSL_CONFIG.API_URL
+    : "";
+
+
+const status =
+  document.getElementById("status");
+
+const grid =
+  document.getElementById("grid");
+
+
+/* =====================================================
+   CREATOR ID
+   MUST MATCH CARD-BUILDER.HTML
+===================================================== */
+
+function createCreatorId(){
+
+  return (
+    "creator_" +
+    Date.now().toString(36) +
+    "_" +
+    Math.random()
+      .toString(36)
+      .slice(2,12)
+  );
+
+}
+
+
+function getCreatorId(){
+
+  /*
+   * THIS IS THE PRIMARY KEY USED BY
+   * YOUR CURRENT CARD BUILDER.
+   */
+  const storageKey =
+    "ysl_blessing_creator_id";
+
+  let creatorId = "";
+
+  try{
+
+    creatorId =
+      localStorage.getItem(
+        storageKey
+      ) || "";
+
+  }
+
+  catch(error){
+
+    console.warn(
+      "Could not read creator ID.",
+      error
+    );
+
+  }
+
+
+  /*
+   * Older version compatibility.
+   */
+  if(!creatorId){
+
+    try{
+
+      creatorId =
+        localStorage.getItem(
+          "ysl_creator_id"
+        ) || "";
+
+    }
+
+    catch(error){
+
+      console.warn(
+        "Could not read legacy creator ID.",
+        error
+      );
+
+    }
+
+  }
+
+
+  /*
+   * Older user ID compatibility.
+   */
+  if(!creatorId){
+
+    try{
+
+      creatorId =
+        localStorage.getItem(
+          "ysl_user_id"
+        ) || "";
+
+    }
+
+    catch(error){
+
+      console.warn(
+        "Could not read legacy user ID.",
+        error
+      );
+
+    }
+
+  }
+
+
+  /*
+   * If no identity exists, create one.
+   *
+   * This uses the SAME format as your
+   * current card-builder.html.
+   */
+  if(!creatorId){
+
+    creatorId =
+      createCreatorId();
+
+    try{
+
+      localStorage.setItem(
+        storageKey,
+        creatorId
+      );
+
+    }
+
+    catch(error){
+
+      console.warn(
+        "Could not save creator ID.",
+        error
+      );
+
+    }
+
+  }
+
+
+  /*
+   * Always synchronize the current key.
+   */
+  try{
+
+    localStorage.setItem(
+      storageKey,
+      creatorId
+    );
+
+  }
+
+  catch(error){
+
+    console.warn(
+      "Could not synchronize creator ID.",
+      error
+    );
+
+  }
+
+
+  return creatorId;
+
+}
+
+
+const creatorId =
+  getCreatorId();
+
+
+/* =====================================================
+   LEGACY VALUES
+===================================================== */
+
+const legacyId =
+  localStorage.getItem(
+    "ysl_user_id"
+  ) || "";
+
+
+const creatorKey =
+  localStorage.getItem(
+    "yslBlessingUserKey"
+  ) ||
+  localStorage.getItem(
+    "ysl_user_key"
+  ) ||
+  "";
+
+
+/* =====================================================
+   HELPERS
+===================================================== */
+
+function esc(v){
+
+  return String(
+    v == null ? "" : v
+  ).replace(
+    /[&<>"']/g,
+    c => ({
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#039;"
+    }[c])
+  );
+
+}
+
+
+function clamp(v,a,b){
+
+  return Math.max(
+    a,
+    Math.min(b,v)
+  );
+
+}
+
+
+function hex(v){
+
+  return /^#[0-9a-f]{6}$/i.test(
+    String(v || "")
+  )
+    ? v
+    : "#c89b3c";
+
+}
+
+
+function texture(type,color){
+
+  const c =
+    hex(color);
+
+  const rgba =
+    (a)=>{
+
+      const n =
+        c.slice(1);
+
+      const r =
+        parseInt(
+          n.slice(0,2),
+          16
+        );
+
+      const g =
+        parseInt(
+          n.slice(2,4),
+          16
+        );
+
+      const b =
+        parseInt(
+          n.slice(4,6),
+          16
+        );
+
+      return `rgba(${r},${g},${b},${a})`;
+
+    };
+
+
+  const x =
+    String(type || "")
+      .toLowerCase();
+
+
+  if(
+    x.includes("dot")
+  ){
+
+    return `
+      radial-gradient(
+        circle,
+        ${rgba(.3)} 1px,
+        transparent 1.5px
+      )
+    `;
+
+  }
+
+
+  if(
+    x.includes("ray") ||
+    x.includes("sunburst") ||
+    x.includes("beam")
+  ){
+
+    return `
+      repeating-conic-gradient(
+        from 0deg at 50% 50%,
+        ${rgba(.14)} 0deg 4deg,
+        transparent 4deg 18deg
+      )
+    `;
+
+  }
+
+
+  if(
+    x.includes("weave")
+  ){
+
+    return `
+      linear-gradient(
+        45deg,
+        ${rgba(.08)} 25%,
+        transparent 25%,
+        transparent 75%,
+        ${rgba(.08)} 75%
+      ),
+      linear-gradient(
+        -45deg,
+        ${rgba(.08)} 25%,
+        transparent 25%,
+        transparent 75%,
+        ${rgba(.08)} 75%
+      )
+    `;
+
+  }
+
+
+  return "none";
+
+}
+
+
+/* =====================================================
+   NORMALIZE
+===================================================== */
+
+function normalize(s){
+
+  s =
+    s || {};
+
+  return Object.assign(
+    {},
+    s,
+    {
+
+      to:
+        s.to ||
+        s.recipient ||
+        "YSL",
+
+      msg:
+        s.msg ??
+        s.message ??
+        "",
+
+      font:
+        s.font ||
+        "Georgia",
+
+      fontColor:
+        s.fontColor ||
+        "#4C0A16",
+
+      backgroundColor:
+        s.backgroundColor ||
+        s.bgColor ||
+        "#fffdfb",
+
+      borderColor:
+        s.borderColor ||
+        "#C89B3C",
+
+      innerBorderColor:
+        s.innerBorderColor ||
+        s.borderColor ||
+        "#C89B3C",
+
+      texture:
+        s.texture ||
+        s.backgroundTexture ||
+        "dotted-sun-rays",
+
+      textureColor:
+        s.textureColor ||
+        "#C89B3C",
+
+      innerBorder:
+        s.innerBorder ||
+        "fine"
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   PREVIEW
+===================================================== */
+
+function renderPreview(s){
+
+  s =
+    normalize(s);
+
+
+  const stage =
+    document.createElement("div");
+
+  stage.className =
+    "stage";
+
+
+  const card =
+    document.createElement("article");
+
+  card.className =
+    "blessing";
+
+
+  card.style.setProperty(
+    "--bg",
+    s.backgroundColor
+  );
+
+  card.style.setProperty(
+    "--line",
+    s.borderColor
+  );
+
+  card.style.setProperty(
+    "--iline",
+    s.innerBorderColor
+  );
+
+  card.style.setProperty(
+    "--font",
+    s.fontColor
+  );
+
+  card.style.setProperty(
+    "--texture",
+    texture(
+      s.texture,
+      s.textureColor
+    )
+  );
+
+
+  const f =
+    String(
+      s.innerBorder
+    ).toLowerCase();
+
+
+  card.style.setProperty(
+    "--iw",
+    f === "double"
+      ? "3px"
+      : f === "none"
+        ? "0px"
+        : "1px"
+  );
+
+
+  card.style.setProperty(
+    "--is",
+    f === "dotted"
+      ? "dotted"
+      : f === "dashed"
+        ? "dashed"
+        : f === "double"
+          ? "double"
+          : "solid"
+  );
+
+
+  let family =
+    s.font ||
+    "Georgia";
+
+
+  if(
+    String(family)
+      .toLowerCase()
+      .includes("sans")
+  ){
+
+    family =
+      "Arial,Helvetica,sans-serif";
+
+  }
+
+  else if(
+    String(family)
+      .toLowerCase()
+      .includes("script")
+  ){
+
+    family =
+      "'Petit Formal Script',cursive";
+
+  }
+
+  else{
+
+    family =
+      "Georgia,'Times New Roman',serif";
+
+  }
+
+
+  card.style.setProperty(
+    "--family",
+    family
+  );
+
+
+  const body =
+    document.createElement("div");
+
+  body.className =
+    "body";
+
+
+  body.innerHTML = `
+
+    <div class="symbol">
+      ${esc(s.symbol || "✝")}
+    </div>
+
+    <p class="to">
+      For ${esc(s.to)}
+    </p>
+
+    <p class="message">
+      ${esc(s.msg)}
+    </p>
+
+    <p class="verse">
+      ${esc(s.verse || "")}
+    </p>
+
+    <p class="from">
+      — ${esc(s.from || "")}
+    </p>
+
+  `;
+
+
+  card.appendChild(body);
+
+
+  const photos =
+    document.createElement("div");
+
+  photos.className =
+    "photos";
+
+
+  (
+    Array.isArray(s.photos)
+      ? s.photos
+      : []
+  )
+  .slice(0,5)
+  .forEach(p=>{
+
+    const src =
+      p &&
+      (
+        p.dataUrl ||
+        p.url ||
+        p.src
+      );
+
+
+    if(!src)return;
+
+
+    const el =
+      document.createElement("div");
+
+    const img =
+      document.createElement("img");
+
+
+    el.className =
+      "photo";
+
+
+    const w =
+      clamp(
+        Number(p.width) || 150,
+        50,
+        300
+      );
+
+
+    const h =
+      clamp(
+        Number(p.height) || 110,
+        50,
+        300
+      );
+
+
+    const z =
+      p.zoom != null
+        ? Number(p.zoom) / 100
+        : Number(p.cropZoom) || 1;
+
+
+    el.style.width =
+      w + "px";
+
+
+    el.style.height =
+      h + "px";
+
+
+    el.style.left =
+      clamp(
+        Number(p.x) || 50,
+        3,
+        97
+      ) + "%";
+
+
+    el.style.top =
+      clamp(
+        Number(p.y) || 50,
+        3,
+        97
+      ) + "%";
+
+
+    el.style.transform =
+      `translate(-50%,-50%) rotate(${Number(p.rotation)||0}deg)`;
+
+
+    img.src =
+      src;
+
+
+    img.style.objectPosition =
+      `${Number(p.cropX ?? 50)}% ${Number(p.cropY ?? 50)}%`;
+
+
+    img.style.transform =
+      `scale(${Math.max(.1,z)})`;
+
+
+    img.onerror =
+      ()=>{
+        el.remove();
+      };
+
+
+    el.appendChild(img);
+
+    photos.appendChild(el);
+
+  });
+
+
+  card.appendChild(photos);
+
+  stage.appendChild(card);
+
+
+  return stage;
+
+}
+
+
+/* =====================================================
+   FIT
+===================================================== */
+
+function fit(
+  preview,
+  stage
+){
+
+  stage.style.transform =
+    `scale(${
+      Math.min(
+        (preview.clientWidth || 240) / 340,
+        (preview.clientHeight || 270) / 460
+      )
+    })`;
+
+}
+
+
+/* =====================================================
+   RENDER HISTORY
+===================================================== */
+
+function render(items){
+
+  grid.innerHTML =
+    "";
+
+
+  if(!items.length){
+
+    status.style.display =
+      "block";
+
+    status.textContent =
+      "You don't have any saved creations yet.";
+
+    return;
+
+  }
+
+
+  status.style.display =
+    "none";
+
+
+  items.forEach(item=>{
+
+    const wrap =
+      document.createElement("article");
+
+    wrap.className =
+      "card";
+
+
+    const preview =
+      document.createElement("div");
+
+    preview.className =
+      "preview";
+
+
+    const stage =
+      renderPreview(
+        item.state || {}
+      );
+
+
+    preview.appendChild(stage);
+
+    wrap.appendChild(preview);
+
+
+    const s =
+      normalize(
+        item.state || {}
+      );
+
+
+    const count =
+      Array.isArray(s.photos)
+        ? s.photos.length
+        : 0;
+
+
+    const meta =
+      document.createElement("div");
+
+    meta.className =
+      "meta";
+
+
+    meta.innerHTML = `
+
+      <strong>
+        ${esc(s.to)}
+      </strong>
+
+      <br>
+
+      <small>
+        Updated
+        ${esc(
+          date(
+            item.updatedAt ||
+            item.createdAt
+          )
+        )}
+
+        •
+        ${count}
+        photo(s)
+      </small>
+
+    `;
+
+
+    wrap.appendChild(meta);
+
+
+    const actions =
+      document.createElement("div");
+
+    actions.className =
+      "actions";
+
+
+    const edit =
+      document.createElement("button");
+
+    edit.textContent =
+      "Edit";
+
+
+    edit.onclick =
+      ()=>{
+
+        location.href =
+          "card-builder.html?edit=1#id=" +
+          encodeURIComponent(
+            item.id
+          );
+
+      };
+
+
+    const del =
+      document.createElement("button");
+
+    del.textContent =
+      "Delete";
+
+    del.className =
+      "danger";
+
+
+    del.onclick =
+      ()=>{
+
+        delCard(
+          item.id,
+          wrap
+        );
+
+      };
+
+
+    actions.append(
+      edit,
+      del
+    );
+
+
+    wrap.appendChild(actions);
+
+    grid.appendChild(wrap);
+
+
+    fit(
+      preview,
+      stage
+    );
+
+  });
+
+}
+
+
+/* =====================================================
+   DATE
+===================================================== */
+
+function date(v){
+
+  if(!v)
+    return "—";
+
+
+  const d =
+    new Date(v);
+
+
+  return isNaN(
+    d.getTime()
+  )
+    ? String(v)
+    : d.toLocaleString();
+
+}
+
+
+/* =====================================================
+   DELETE
+   MATCHES YOUR Code.gs
+===================================================== */
+
+function delCard(
+  id,
+  el
+){
+
+  if(
+    !id ||
+    !confirm(
+      "Are you sure you want to delete this creation?\n\n" +
+      "This action cannot be undone."
+    )
+  ){
+
+    return;
+
+  }
+
+
+  status.style.display =
+    "block";
+
+  status.textContent =
+    "Deleting creation…";
+
+
+  /*
+   * Your Code.gs doPost() expects:
+   *
+   * action
+   * creatorId
+   * userId
+   * userKey
+   * creationId
+   */
+  const f =
+    document.createElement("form");
+
+
+  f.method =
+    "POST";
+
+  f.action =
+    API;
+
+  f.target =
+    "historyFrame";
+
+
+  const values = {
+
+    action:
+      "delete",
+
+    creatorId:
+      creatorId,
+
+    userId:
+      legacyId || creatorId,
+
+    userKey:
+      creatorKey,
+
+    creationId:
+      id
+
+  };
+
+
+  Object.keys(values)
+    .forEach(name=>{
+
+      const input =
+        document.createElement("input");
+
+      input.type =
+        "hidden";
+
+      input.name =
+        name;
+
+      input.value =
+        values[name];
+
+      f.appendChild(input);
+
+    });
+
+
+  document.body.appendChild(f);
+
+  f.submit();
+
+
+  setTimeout(
+    ()=>{
+
+      f.remove();
+
+      el.remove();
+
+
+      if(
+        grid.children.length
+      ){
+
+        status.style.display =
+          "none";
+
+      }
+
+      else{
+
+        status.style.display =
+          "block";
+
+        status.textContent =
+          "You don't have any saved creations yet.";
+
+      }
+
+    },
+    900
+  );
+
+}
+
+
+/* =====================================================
+   LOAD
+   MATCHES YOUR Code.gs getHistory_()
+===================================================== */
+
+function load(){
+
+  if(!API){
+
+    status.textContent =
+      "Could not connect to the blessing service. Check config.js.";
+
+    return;
+
+  }
+
+
+  if(!creatorId){
+
+    status.textContent =
+      "Could not identify this creator. Please open the card builder first.";
+
+    return;
+
+  }
+
+
+  status.textContent =
+    "Loading your saved creations…";
+
+
+  /*
+   * JSONP callback.
+   *
+   * Code.gs response_() supports this.
+   */
+  const cb =
+    "history_" +
+    Date.now();
+
+
+  window[cb] =
+    data=>{
+
+      try{
+
+        delete window[cb];
+
+      }
+
+      catch(error){}
+
+
+      if(
+        data &&
+        data.ok
+      ){
+
+        render(
+          data.items || []
+        );
+
+      }
+
+      else{
+
+        status.textContent =
+          data &&
+          data.error
+            ? data.error
+            : "Could not load history.";
+
+      }
+
+    };
+
+
+  /*
+   * EXACT PARAMETERS EXPECTED BY
+   * YOUR CURRENT Code.gs
+   */
+  const qs =
+    new URLSearchParams({
+
+      action:
+        "getHistory",
+
+      creatorId:
+        creatorId,
+
+      userId:
+        legacyId || creatorId,
+
+      userKey:
+        creatorKey,
+
+      callback:
+        cb
+
+    });
+
+
+  const script =
+    document.createElement("script");
+
+
+  script.src =
+    API +
+    "?" +
+    qs.toString();
+
+
+  script.onerror =
+    ()=>{
+
+      try{
+        delete window[cb];
+      }catch(error){}
+
+      status.textContent =
+        "Could not connect to history service.";
+
+    };
+
+
+  document.body.appendChild(
+    script
+  );
+
+}
+
+
+/* =====================================================
+   RESIZE
+===================================================== */
+
+window.addEventListener(
+  "resize",
+  ()=>{
+
+    grid
+      .querySelectorAll(".card")
+      .forEach(card=>{
+
+        const preview =
+          card.querySelector(
+            ".preview"
+          );
+
+        const stage =
+          card.querySelector(
+            ".stage"
+          );
+
+
+        if(
+          preview &&
+          stage
+        ){
+
+          fit(
+            preview,
+            stage
+          );
+
+        }
+
+      });
+
+  }
+);
+
+
+/* =====================================================
+   START
+===================================================== */
+
+load();
+
 })();
-</script></body></html>
+
+</script>
+
+</body>
+</html>
