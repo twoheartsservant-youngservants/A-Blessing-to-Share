@@ -1,0 +1,3255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0">
+
+<title>Design Your Blessing</title>
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --maroon: #651525;
+  --maroon-dark: #48101b;
+  --gold: #c89b3c;
+  --gold-light: #ead18b;
+  --cream: #fffaf2;
+  --paper: #ffffff;
+  --ink: #2c2020;
+  --muted: #756767;
+  --line: #eadfd6;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: #ffffff;
+  color: var(--ink);
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+}
+
+body {
+  padding: 20px;
+}
+
+.section {
+  margin-bottom: 20px;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  overflow: hidden;
+}
+
+.section-title {
+  padding: 14px 16px;
+  background: #fffaf7;
+  border-bottom: 1px solid var(--line);
+  color: var(--maroon);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.section-body {
+  padding: 16px;
+}
+
+.field {
+  margin-bottom: 15px;
+}
+
+.field:last-child {
+  margin-bottom: 0;
+}
+
+label {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: white;
+  color: var(--ink);
+  font: inherit;
+  outline: none;
+}
+
+input,
+select {
+  min-height: 40px;
+  padding: 9px 11px;
+}
+
+textarea {
+  min-height: 180px;
+  resize: vertical;
+  padding: 11px;
+  line-height: 1.55;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--gold);
+  box-shadow:
+    0 0 0 2px rgba(200,155,60,.10);
+}
+
+.two-column {
+  display: grid;
+  grid-template-columns:
+    1fr 1fr;
+  gap: 12px;
+}
+
+.preset-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 9px;
+}
+
+.preset {
+  border: 1px solid var(--line);
+  background: #fffaf7;
+  color: var(--maroon);
+  border-radius: 7px;
+  padding: 7px 10px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.preset:hover {
+  border-color: var(--gold);
+  background: #fff6e8;
+}
+
+
+/* =========================================================
+   PHOTO UPLOAD
+========================================================= */
+
+.upload-box {
+  border: 2px dashed #dbc9bd;
+  border-radius: 11px;
+  padding: 20px;
+  text-align: center;
+  background: #fffdfb;
+  cursor: pointer;
+  transition: .15s;
+}
+
+.upload-box:hover {
+  border-color: var(--gold);
+  background: #fffaf2;
+}
+
+.upload-box:has(+ #photoInput:disabled) {
+  opacity: .55;
+  cursor: not-allowed;
+}
+
+.upload-icon {
+  font-size: 27px;
+  margin-bottom: 7px;
+}
+
+.upload-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--maroon);
+}
+
+.upload-note {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+#photoInput {
+  display: none;
+}
+
+.photo-limit-message {
+  margin-top: 9px;
+  color: #9c3b3b;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: center;
+  min-height: 16px;
+}
+
+.photo-list {
+  margin-top: 13px;
+  display: grid;
+  gap: 9px;
+}
+
+.photo-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px;
+  background: #fffaf7;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+}
+
+.photo-thumb {
+  width: 58px;
+  height: 58px;
+  flex: 0 0 58px;
+  border-radius: 7px;
+  overflow: hidden;
+  background: #eee;
+  border: 1px solid var(--line);
+}
+
+.photo-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.photo-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.photo-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.photo-note {
+  margin-top: 3px;
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.photo-delete {
+  border: 0;
+  background: transparent;
+  color: #9c3b3b;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.photo-delete:hover {
+  color: #651525;
+}
+
+
+/* =========================================================
+   DESIGN
+========================================================= */
+
+.color-row {
+  display: grid;
+  grid-template-columns:
+    1fr 60px;
+  gap: 8px;
+  align-items: center;
+}
+
+input[type="color"] {
+  width: 60px;
+  height: 40px;
+  padding: 3px;
+  cursor: pointer;
+}
+
+.design-grid {
+  display: grid;
+  grid-template-columns:
+    1fr 1fr;
+  gap: 12px;
+}
+
+.design-full {
+  grid-column: 1 / -1;
+}
+
+.color-preview {
+  height: 10px;
+  margin-top: 7px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+}
+
+.info-box {
+  margin-top: 12px;
+  padding: 11px 12px;
+  border-radius: 8px;
+  background: #fff8e9;
+  border: 1px solid #efdfb7;
+  color: #6b5527;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 600px) {
+
+  body {
+    padding: 10px;
+  }
+
+  .two-column,
+  .design-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .design-full {
+    grid-column: auto;
+  }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<!-- =====================================================
+     BLESSING DETAILS
+===================================================== -->
+
+<section class="section">
+
+  <div class="section-title">
+    Blessing Details
+  </div>
+
+  <div class="section-body">
+
+    <div class="field">
+
+      <label for="title">
+        Card Title
+      </label>
+
+      <input
+        id="title"
+        type="text"
+        value="A Blessing For You"
+        maxlength="80">
+
+    </div>
+
+    <div class="two-column">
+
+      <div class="field">
+
+        <label for="to">
+          To
+        </label>
+
+        <input
+          id="to"
+          type="text"
+          value="YSL"
+          maxlength="60">
+
+      </div>
+
+      <div class="field">
+
+        <label for="from">
+          From
+        </label>
+
+        <input
+          id="from"
+          type="text"
+          value="KIM"
+          maxlength="60">
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     MESSAGE
+===================================================== -->
+
+<section class="section">
+
+  <div class="section-title">
+    Message
+  </div>
+
+  <div class="section-body">
+
+    <div class="field">
+
+      <label for="message">
+        Your Blessing Message
+      </label>
+
+      <textarea
+        id="message"
+        placeholder="Write your blessing here..."></textarea>
+
+      <div class="preset-row">
+
+        <button
+          class="preset"
+          type="button"
+          onclick="usePreset('blessing')">
+
+          Blessing
+
+        </button>
+
+        <button
+          class="preset"
+          type="button"
+          onclick="usePreset('love')">
+
+          Love
+
+        </button>
+
+        <button
+          class="preset"
+          type="button"
+          onclick="usePreset('faith')">
+
+          Faith
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     PHOTOS
+===================================================== -->
+
+<section class="section">
+
+  <div class="section-title">
+    Photos
+  </div>
+
+  <div class="section-body">
+
+    <label
+      class="upload-box"
+      for="photoInput">
+
+      <div class="upload-icon">
+        🖼️
+      </div>
+
+      <div class="upload-title">
+        Add Photos
+      </div>
+
+      <div class="upload-note">
+        Upload up to 3 photos.
+        You can edit, move, resize, rotate,
+        and crop them directly in the
+        Finished Card Preview.
+      </div>
+
+    </label>
+
+    <input
+      id="photoInput"
+      type="file"
+      accept="image/*"
+      multiple
+      title="Maximum of 3 photos">
+
+    <div
+      id="photoLimitMessage"
+      class="photo-limit-message"
+      aria-live="polite">
+    </div>
+
+    <div
+      id="photoList"
+      class="photo-list">
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     DESIGN
+===================================================== -->
+
+<section class="section">
+
+  <div class="section-title">
+    Design
+  </div>
+
+  <div class="section-body">
+
+    <div class="design-grid">
+
+
+      <!-- SYMBOL -->
+
+      <div class="field">
+
+        <label for="symbol">
+          Symbol
+        </label>
+
+        <select id="symbol">
+
+          <option value="✝">
+            Cross
+          </option>
+
+          <option value="☦">
+            Orthodox Cross
+          </option>
+
+          <option value="✚">
+            Cross Plus
+          </option>
+
+          <option value="🕊">
+            Dove
+          </option>
+
+          <option value="♥">
+            Heart
+          </option>
+
+          <option value="✦">
+            Star
+          </option>
+
+          <option value="❦">
+            Floral
+          </option>
+
+          <option value="✧">
+            Light Star
+          </option>
+
+          <option value="">
+            None
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- FONT -->
+
+      <div class="field">
+
+        <label for="font">
+          Font
+        </label>
+
+        <select id="font">
+
+          <option value="Georgia">
+            Georgia
+          </option>
+
+          <option value="Palatino Linotype">
+            Palatino Linotype
+          </option>
+
+          <option value="Book Antiqua">
+            Book Antiqua
+          </option>
+
+          <option value="Times New Roman">
+            Times New Roman
+          </option>
+
+          <option value="Garamond">
+            Garamond
+          </option>
+
+          <option value="Arial">
+            Arial
+          </option>
+
+          <option value="Verdana">
+            Verdana
+          </option>
+
+          <option value="Trebuchet MS">
+            Trebuchet MS
+          </option>
+
+          <option value="Segoe UI">
+            Segoe UI
+          </option>
+
+          <option value="Century Gothic">
+            Century Gothic
+          </option>
+
+          <option value="Courier New">
+            Courier New
+          </option>
+
+          <option value="Lucida Handwriting">
+            Lucida Handwriting
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- BACKGROUND COLOR -->
+
+      <div class="field">
+
+        <label for="backgroundColor">
+          Card Background Color
+        </label>
+
+        <div class="color-row">
+
+          <input
+            id="backgroundColorText"
+            type="text"
+            value="#FFFAF2"
+            maxlength="7"
+            aria-label="Card background color hex">
+
+          <input
+            id="backgroundColor"
+            type="color"
+            value="#FFFAF2">
+
+        </div>
+
+        <div
+          id="backgroundColorPreview"
+          class="color-preview">
+        </div>
+
+      </div>
+
+
+      <!-- =================================================
+           CSS-ONLY TEXTURE
+      ================================================= -->
+
+      <div class="field design-full">
+
+        <label for="texture">
+          Background Design / Texture
+        </label>
+
+        <select id="texture">
+
+          <option value="fine-paper">
+            Fine Paper
+          </option>
+
+          <option value="diagonal-lines">
+            Diagonal Lines
+          </option>
+
+          <option value="crosshatch">
+            Crosshatch
+          </option>
+
+          <option value="tiny-dots">
+            Tiny Dots
+          </option>
+
+          <option value="grid">
+            Grid
+          </option>
+
+          <option value="diamond">
+            Diamond
+          </option>
+
+          <option value="linen">
+            Linen
+          </option>
+
+          <option value="soft-waves">
+            Soft Waves
+          </option>
+
+          <option value="damask">
+            Damask
+          </option>
+
+          <option value="noise-grain">
+            Noise-like Grain
+          </option>
+
+          <option value="vertical-pinstripes">
+            Vertical Pinstripes
+          </option>
+
+          <option value="horizontal-pinstripes">
+            Horizontal Pinstripes
+          </option>
+
+          <option value="hexagon">
+            Hexagon
+          </option>
+
+          <option value="checker">
+            Checker
+          </option>
+
+          <option value="scallop">
+            Scallop
+          </option>
+
+          <option value="vintage-paper">
+            Vintage Paper
+          </option>
+
+          <option value="soft-circles">
+            Soft Circles
+          </option>
+
+          <option value="sunburst">
+            Sunburst
+          </option>
+
+          <option value="starburst">
+            Starburst
+          </option>
+
+          <option value="micro-diamond">
+            Micro-Diamond
+          </option>
+
+          <option value="herringbone">
+            Herringbone
+          </option>
+
+          <option value="basketweave">
+            Basketweave
+          </option>
+
+          <option value="zigzag">
+            Zigzag
+          </option>
+
+          <option value="chevron">
+            Chevron
+          </option>
+
+          <option value="honeycomb">
+            Honeycomb
+          </option>
+
+          <option value="polka-dots">
+            Polka Dots
+          </option>
+
+          <option value="speckles">
+            Speckles
+          </option>
+
+          <option value="ripples">
+            Ripples
+          </option>
+
+          <option value="concentric-circles">
+            Concentric Circles
+          </option>
+
+          <option value="radial-lines">
+            Radial Lines
+          </option>
+
+          <option value="lace">
+            Lace
+          </option>
+
+          <option value="frosted">
+            Frosted
+          </option>
+
+          <option value="embossed">
+            Embossed
+          </option>
+
+          <option value="woven-fabric">
+            Woven Fabric
+          </option>
+
+          <option value="canvas">
+            Canvas
+          </option>
+
+          <option value="parchment">
+            Parchment
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- TEXTURE COLOR -->
+
+      <div class="field">
+
+        <label for="textureColor">
+          Texture Color
+        </label>
+
+        <div class="color-row">
+
+          <input
+            id="textureColorText"
+            type="text"
+            value="#C89B3C"
+            maxlength="7"
+            aria-label="Texture color hex">
+
+          <input
+            id="textureColor"
+            type="color"
+            value="#C89B3C">
+
+        </div>
+
+        <div
+          id="textureColorPreview"
+          class="color-preview">
+        </div>
+
+      </div>
+
+
+      <!-- OUTER BORDER -->
+
+      <div class="field">
+
+        <label for="borderColor">
+          Border Color
+        </label>
+
+        <div class="color-row">
+
+          <input
+            id="borderColorText"
+            type="text"
+            value="#C89B3C"
+            maxlength="7"
+            aria-label="Border color hex">
+
+          <input
+            id="borderColor"
+            type="color"
+            value="#C89B3C">
+
+        </div>
+
+        <div
+          id="borderColorPreview"
+          class="color-preview">
+        </div>
+
+      </div>
+
+
+      <!-- INNER BORDER STYLE -->
+
+      <div class="field">
+
+        <label for="innerBorder">
+          Second / Inner Border
+        </label>
+
+        <select id="innerBorder">
+
+          <option value="fine">
+            Fine Line
+          </option>
+
+          <option value="double">
+            Double Line
+          </option>
+
+          <option value="dotted">
+            Dotted
+          </option>
+
+          <option value="dashed">
+            Dashed
+          </option>
+
+          <option value="elegant">
+            Elegant Rounded
+          </option>
+
+          <option value="none">
+            None
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- INNER BORDER COLOR -->
+
+      <div class="field">
+
+        <label for="innerBorderColor">
+          Second / Inner Border Color
+        </label>
+
+        <div class="color-row">
+
+          <input
+            id="innerBorderColorText"
+            type="text"
+            value="#C89B3C"
+            maxlength="7"
+            aria-label="Inner border color hex">
+
+          <input
+            id="innerBorderColor"
+            type="color"
+            value="#C89B3C">
+
+        </div>
+
+        <div
+          id="innerBorderColorPreview"
+          class="color-preview">
+        </div>
+
+      </div>
+
+
+      <!-- FONT COLOR -->
+
+      <div class="field">
+
+        <label for="fontColor">
+          Font Color
+        </label>
+
+        <div class="color-row">
+
+          <input
+            id="fontColorText"
+            type="text"
+            value="#4C0A16"
+            maxlength="7"
+            aria-label="Font color hex">
+
+          <input
+            id="fontColor"
+            type="color"
+            value="#4C0A16">
+
+        </div>
+
+        <div
+          id="fontColorPreview"
+          class="color-preview">
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="info-box">
+
+      <strong>CSS-only textures:</strong>
+
+      All background designs are generated
+      directly with CSS gradients and patterns.
+      No texture image files, SVG files,
+      canvas, or texture uploads are required.
+
+      <br><br>
+
+      <strong>Photo editing:</strong>
+
+      Photos are uploaded from this menu.
+
+      You can add a maximum of
+      <strong>3 photos</strong>.
+
+      After uploading, select a photo in the
+      Finished Card Preview to move, resize,
+      rotate, or crop it.
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<script>
+
+/* =========================================================
+   CREATOR ID
+========================================================= */
+
+function createCreatorId(){
+
+  return (
+    "creator_" +
+    Date.now().toString(36) +
+    "_" +
+    Math.random()
+      .toString(36)
+      .slice(2,12)
+  );
+
+}
+
+
+function getCreatorId(){
+
+  const storageKey =
+    "ysl_blessing_creator_id";
+
+  let creatorId =
+    "";
+
+  try{
+
+    creatorId =
+      localStorage.getItem(
+        storageKey
+      ) || "";
+
+  }catch(error){
+
+    console.warn(
+      "Could not read creator ID from localStorage.",
+      error
+    );
+
+  }
+
+  if(!creatorId){
+
+    creatorId =
+      createCreatorId();
+
+    try{
+
+      localStorage.setItem(
+        storageKey,
+        creatorId
+      );
+
+    }catch(error){
+
+      console.warn(
+        "Could not save creator ID to localStorage.",
+        error
+      );
+
+    }
+
+  }
+
+  return creatorId;
+
+}
+
+
+const creatorId =
+  getCreatorId();
+
+
+/* =========================================================
+   PHOTO LIMIT
+========================================================= */
+
+const MAX_PHOTOS = 3;
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let state = {
+
+  creatorId:
+    creatorId,
+
+  title:
+    "A Blessing For You",
+
+  to:
+    "YSL",
+
+  recipient:
+    "YSL",
+
+  from:
+    "KIM",
+
+  msg:
+    "",
+
+  message:
+    "",
+
+  photos:
+    [],
+
+  symbol:
+    "✝",
+
+  texture:
+    "fine-paper",
+
+  backgroundTexture:
+    "fine-paper",
+
+  textureColor:
+    "#C89B3C",
+
+  backgroundColor:
+    "#FFFAF2",
+
+  borderColor:
+    "#C89B3C",
+
+  innerBorderColor:
+    "#C89B3C",
+
+  innerBorder:
+    "fine",
+
+  fontColor:
+    "#4C0A16",
+
+  font:
+    "Georgia"
+
+};
+
+
+/* =========================================================
+   PRESETS
+========================================================= */
+
+const presets = {
+
+  blessing:
+    "May this blessing remind you that you are loved, guided, and never alone.\n\nMay God continue to bless you, strengthen your faith, and guide you in every step of your journey.",
+
+  love:
+    "May you always be reminded that you are loved, valued, and cared for.\n\nMay God's love remain with you today and always.",
+
+  faith:
+    "May your faith remain strong even during difficult moments.\n\nTrust in God's plan, keep praying, and remember that He is always with you."
+
+};
+
+
+function usePreset(type){
+
+  const message =
+    presets[type] || "";
+
+  document.getElementById(
+    "message"
+  ).value =
+    message;
+
+  state.msg =
+    message;
+
+  state.message =
+    message;
+
+  sendState();
+
+}
+
+
+/* =========================================================
+   DOM
+========================================================= */
+
+const titleInput =
+  document.getElementById("title");
+
+const toInput =
+  document.getElementById("to");
+
+const fromInput =
+  document.getElementById("from");
+
+const messageInput =
+  document.getElementById("message");
+
+const symbolInput =
+  document.getElementById("symbol");
+
+const textureInput =
+  document.getElementById("texture");
+
+const fontInput =
+  document.getElementById("font");
+
+const innerBorderInput =
+  document.getElementById("innerBorder");
+
+const textureColor =
+  document.getElementById("textureColor");
+
+const textureColorText =
+  document.getElementById("textureColorText");
+
+const backgroundColor =
+  document.getElementById("backgroundColor");
+
+const backgroundColorText =
+  document.getElementById("backgroundColorText");
+
+const borderColor =
+  document.getElementById("borderColor");
+
+const borderColorText =
+  document.getElementById("borderColorText");
+
+const innerBorderColor =
+  document.getElementById("innerBorderColor");
+
+const innerBorderColorText =
+  document.getElementById("innerBorderColorText");
+
+const fontColor =
+  document.getElementById("fontColor");
+
+const fontColorText =
+  document.getElementById("fontColorText");
+
+const photoInput =
+  document.getElementById("photoInput");
+
+const photoList =
+  document.getElementById("photoList");
+
+const photoLimitMessage =
+  document.getElementById(
+    "photoLimitMessage"
+  );
+
+
+/* =========================================================
+   PHOTO LIMIT UI
+========================================================= */
+
+function showPhotoLimitMessage(message){
+
+  if(!photoLimitMessage){
+    return;
+  }
+
+  photoLimitMessage.textContent =
+    message || "";
+
+}
+
+
+function updatePhotoUploadState(){
+
+  const photoCount =
+    state.photos.length;
+
+  const remaining =
+    MAX_PHOTOS -
+    photoCount;
+
+
+  if(remaining <= 0){
+
+    /*
+     * Disable the actual input.
+     */
+    photoInput.disabled =
+      true;
+
+    showPhotoLimitMessage(
+      "Maximum of 3 photos reached. Remove a photo to add another."
+    );
+
+  }else{
+
+    photoInput.disabled =
+      false;
+
+    showPhotoLimitMessage(
+      ""
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   INPUT EVENTS
+========================================================= */
+
+titleInput.addEventListener(
+  "input",
+  () => {
+
+    state.title =
+      titleInput.value;
+
+    sendState();
+
+  }
+);
+
+
+toInput.addEventListener(
+  "input",
+  () => {
+
+    state.to =
+      toInput.value;
+
+    state.recipient =
+      toInput.value;
+
+    sendState();
+
+  }
+);
+
+
+fromInput.addEventListener(
+  "input",
+  () => {
+
+    state.from =
+      fromInput.value;
+
+    sendState();
+
+  }
+);
+
+
+messageInput.addEventListener(
+  "input",
+  () => {
+
+    state.msg =
+      messageInput.value;
+
+    state.message =
+      messageInput.value;
+
+    sendState();
+
+  }
+);
+
+
+symbolInput.addEventListener(
+  "change",
+  () => {
+
+    state.symbol =
+      symbolInput.value || "";
+
+    sendState();
+
+  }
+);
+
+
+textureInput.addEventListener(
+  "change",
+  () => {
+
+    state.texture =
+      textureInput.value;
+
+    state.backgroundTexture =
+      textureInput.value;
+
+    sendState();
+
+  }
+);
+
+
+fontInput.addEventListener(
+  "change",
+  () => {
+
+    state.font =
+      fontInput.value;
+
+    sendState();
+
+  }
+);
+
+
+innerBorderInput.addEventListener(
+  "change",
+  () => {
+
+    state.innerBorder =
+      innerBorderInput.value;
+
+    sendState();
+
+  }
+);
+
+
+/* =========================================================
+   COLOR HELPERS
+========================================================= */
+
+function validHex(value){
+
+  return /^#[0-9A-Fa-f]{6}$/.test(
+    String(value || "").trim()
+  );
+
+}
+
+
+function syncColor(
+  colorInput,
+  textInput,
+  property
+){
+
+  colorInput.addEventListener(
+    "input",
+    () => {
+
+      const value =
+        colorInput.value.toUpperCase();
+
+      textInput.value =
+        value;
+
+      state[property] =
+        value;
+
+      updateColorPreview(
+        property,
+        value
+      );
+
+      sendState();
+
+    }
+  );
+
+
+  textInput.addEventListener(
+    "input",
+    () => {
+
+      let value =
+        textInput.value.trim();
+
+      if(
+        !value.startsWith("#")
+      ){
+
+        value =
+          "#" + value;
+
+      }
+
+      if(
+        validHex(value)
+      ){
+
+        value =
+          value.toUpperCase();
+
+        colorInput.value =
+          value;
+
+        state[property] =
+          value;
+
+        updateColorPreview(
+          property,
+          value
+        );
+
+        sendState();
+
+      }
+
+    }
+  );
+
+}
+
+
+function updateColorPreview(
+  property,
+  value
+){
+
+  const ids = {
+
+    textureColor:
+      "textureColorPreview",
+
+    backgroundColor:
+      "backgroundColorPreview",
+
+    borderColor:
+      "borderColorPreview",
+
+    innerBorderColor:
+      "innerBorderColorPreview",
+
+    fontColor:
+      "fontColorPreview"
+
+  };
+
+  const element =
+    document.getElementById(
+      ids[property]
+    );
+
+  if(element){
+
+    element.style.background =
+      value;
+
+  }
+
+}
+
+
+syncColor(
+  textureColor,
+  textureColorText,
+  "textureColor"
+);
+
+syncColor(
+  backgroundColor,
+  backgroundColorText,
+  "backgroundColor"
+);
+
+syncColor(
+  borderColor,
+  borderColorText,
+  "borderColor"
+);
+
+syncColor(
+  innerBorderColor,
+  innerBorderColorText,
+  "innerBorderColor"
+);
+
+syncColor(
+  fontColor,
+  fontColorText,
+  "fontColor"
+);
+
+
+/* =========================================================
+   PHOTO UPLOAD
+   MAXIMUM 3 PHOTOS
+========================================================= */
+
+photoInput.addEventListener(
+  "change",
+  async event => {
+
+    const selectedFiles =
+      Array.from(
+        event.target.files || []
+      );
+
+
+    /*
+     * How many photos can still
+     * be added?
+     */
+    const remainingSlots =
+      MAX_PHOTOS -
+      state.photos.length;
+
+
+    if(remainingSlots <= 0){
+
+      showPhotoLimitMessage(
+        "Maximum of 3 photos reached. Remove a photo to add another."
+      );
+
+      photoInput.value =
+        "";
+
+      updatePhotoUploadState();
+
+      return;
+
+    }
+
+
+    /*
+     * Only accept image files and only
+     * take enough files to reach 3.
+     */
+    const imageFiles =
+      selectedFiles.filter(
+        file =>
+          file.type.startsWith("image/")
+      );
+
+
+    const files =
+      imageFiles.slice(
+        0,
+        remainingSlots
+      );
+
+
+    /*
+     * Inform the user if they tried to
+     * add more than the remaining slots.
+     */
+    if(
+      imageFiles.length >
+      remainingSlots
+    ){
+
+      showPhotoLimitMessage(
+        `Only ${remainingSlots} more photo${
+          remainingSlots === 1 ? "" : "s"
+        } can be added. Maximum is 3 photos.`
+      );
+
+    }
+
+
+    for(
+      const file of files
+    ){
+
+      /*
+       * Extra safety check.
+       */
+      if(
+        state.photos.length >=
+        MAX_PHOTOS
+      ){
+
+        break;
+
+      }
+
+
+      try{
+
+        /*
+         * Compress large uploads before
+         * entering card state.
+         */
+        const compressed =
+          await preparePhoto(file);
+
+
+        const dataUrl =
+          compressed.dataUrl;
+
+
+        const photo = {
+
+          id:
+            "photo_" +
+            Date.now() +
+            "_" +
+            Math.random()
+              .toString(36)
+              .slice(2,8),
+
+          name:
+            file.name,
+
+          fileName:
+            file.name,
+
+          mimeType:
+            compressed.mimeType,
+
+          dataUrl:
+            dataUrl,
+
+          url:
+            dataUrl,
+
+          x:
+            50,
+
+          y:
+            50,
+
+          width:
+            120,
+
+          height:
+            120,
+
+          rotation:
+            0,
+
+          cropZoom:
+            1,
+
+          cropX:
+            50,
+
+          cropY:
+            50
+
+        };
+
+
+        /*
+         * Final check before adding.
+         */
+        if(
+          state.photos.length <
+          MAX_PHOTOS
+        ){
+
+          state.photos.push(
+            photo
+          );
+
+
+          sendPhotoAdded(
+            photo
+          );
+
+        }
+
+
+      }catch(error){
+
+        console.error(
+          "Photo upload failed:",
+          error
+        );
+
+      }
+
+    }
+
+
+    /*
+     * Reset file input so the same
+     * photo can be selected again later
+     * if needed.
+     */
+    photoInput.value =
+      "";
+
+
+    renderPhotoList();
+
+
+    updatePhotoUploadState();
+
+
+    sendState();
+
+  }
+);
+
+
+/* =========================================================
+   PHOTO PREPARATION
+========================================================= */
+
+async function preparePhoto(file){
+
+  const original =
+    await readFile(file);
+
+
+  /*
+   * Keep already-small images unchanged.
+   */
+  if(
+    original.length <= 42000
+  ){
+
+    return {
+
+      dataUrl:
+        original,
+
+      mimeType:
+        file.type ||
+        "image/jpeg"
+
+    };
+
+  }
+
+
+  const image =
+    await loadImage(original);
+
+
+  const maxDimension =
+    1000;
+
+
+  let width =
+    image.naturalWidth ||
+    image.width;
+
+
+  let height =
+    image.naturalHeight ||
+    image.height;
+
+
+  if(
+    !width ||
+    !height
+  ){
+
+    throw new Error(
+      "The selected image could not be read."
+    );
+
+  }
+
+
+  const scale =
+    Math.min(
+      1,
+      maxDimension /
+      Math.max(
+        width,
+        height
+      )
+    );
+
+
+  width =
+    Math.max(
+      1,
+      Math.round(
+        width * scale
+      )
+    );
+
+
+  height =
+    Math.max(
+      1,
+      Math.round(
+        height * scale
+      )
+    );
+
+
+  const canvas =
+    document.createElement(
+      "canvas"
+    );
+
+
+  canvas.width =
+    width;
+
+  canvas.height =
+    height;
+
+
+  const ctx =
+    canvas.getContext(
+      "2d"
+    );
+
+
+  if(!ctx){
+
+    throw new Error(
+      "Your browser cannot process this image."
+    );
+
+  }
+
+
+  ctx.drawImage(
+    image,
+    0,
+    0,
+    width,
+    height
+  );
+
+
+  /*
+   * WebP is much smaller and current
+   * browsers support it.
+   */
+  let quality =
+    .82;
+
+
+  let dataUrl =
+    canvas.toDataURL(
+      "image/webp",
+      quality
+    );
+
+
+  while(
+    dataUrl.length > 45000 &&
+    quality > .45
+  ){
+
+    quality -= .07;
+
+
+    dataUrl =
+      canvas.toDataURL(
+        "image/webp",
+        quality
+      );
+
+  }
+
+
+  /*
+   * Fallback for browsers without
+   * WebP encoding.
+   */
+  if(
+    !dataUrl.startsWith(
+      "data:image/webp"
+    )
+  ){
+
+    quality =
+      .78;
+
+
+    dataUrl =
+      canvas.toDataURL(
+        "image/jpeg",
+        quality
+      );
+
+
+    while(
+      dataUrl.length > 45000 &&
+      quality > .40
+    ){
+
+      quality -= .06;
+
+
+      dataUrl =
+        canvas.toDataURL(
+          "image/jpeg",
+          quality
+        );
+
+    }
+
+
+    return {
+
+      dataUrl:
+        dataUrl,
+
+      mimeType:
+        "image/jpeg"
+
+    };
+
+  }
+
+
+  return {
+
+    dataUrl:
+      dataUrl,
+
+    mimeType:
+      "image/webp"
+
+  };
+
+}
+
+
+function loadImage(src){
+
+  return new Promise(
+    (resolve, reject) => {
+
+      const image =
+        new Image();
+
+
+      image.onload =
+        () =>
+          resolve(
+            image
+          );
+
+
+      image.onerror =
+        () =>
+          reject(
+            new Error(
+              "The selected image could not be loaded."
+            )
+          );
+
+
+      image.src =
+        src;
+
+    }
+  );
+
+}
+
+
+function readFile(file){
+
+  return new Promise(
+    (resolve,reject) => {
+
+      const reader =
+        new FileReader();
+
+
+      reader.onload =
+        () =>
+          resolve(
+            reader.result
+          );
+
+
+      reader.onerror =
+        reject;
+
+
+      reader.readAsDataURL(
+        file
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   PHOTO LIST
+========================================================= */
+
+function renderPhotoList(){
+
+  photoList.innerHTML =
+    "";
+
+
+  /*
+   * Safety limit:
+   * Never render more than 3.
+   */
+  state.photos =
+    Array.isArray(
+      state.photos
+    )
+      ? state.photos.slice(
+          0,
+          MAX_PHOTOS
+        )
+      : [];
+
+
+  state.photos.forEach(
+    (photo,index) => {
+
+      const item =
+        document.createElement(
+          "div"
+        );
+
+
+      item.className =
+        "photo-item";
+
+
+      const thumb =
+        document.createElement(
+          "div"
+        );
+
+
+      thumb.className =
+        "photo-thumb";
+
+
+      const image =
+        document.createElement(
+          "img"
+        );
+
+
+      image.src =
+        photo.dataUrl ||
+        photo.url ||
+        "";
+
+
+      image.alt =
+        photo.name ||
+        `Photo ${index + 1}`;
+
+
+      thumb.appendChild(
+        image
+      );
+
+
+      const info =
+        document.createElement(
+          "div"
+        );
+
+
+      info.className =
+        "photo-info";
+
+
+      const name =
+        document.createElement(
+          "div"
+        );
+
+
+      name.className =
+        "photo-name";
+
+
+      name.textContent =
+        photo.name ||
+        photo.fileName ||
+        `Photo ${index + 1}`;
+
+
+      const note =
+        document.createElement(
+          "div"
+        );
+
+
+      note.className =
+        "photo-note";
+
+
+      note.textContent =
+        "Edit in Finished Card Preview";
+
+
+      info.append(
+        name,
+        note
+      );
+
+
+      const deleteButton =
+        document.createElement(
+          "button"
+        );
+
+
+      deleteButton.type =
+        "button";
+
+
+      deleteButton.className =
+        "photo-delete";
+
+
+      deleteButton.title =
+        "Remove photo";
+
+
+      deleteButton.setAttribute(
+        "aria-label",
+        "Remove photo"
+      );
+
+
+      deleteButton.textContent =
+        "×";
+
+
+      deleteButton.addEventListener(
+        "click",
+        () =>
+          removePhoto(
+            photo.id
+          )
+      );
+
+
+      item.append(
+        thumb,
+        info,
+        deleteButton
+      );
+
+
+      photoList.appendChild(
+        item
+      );
+
+    }
+  );
+
+
+  updatePhotoUploadState();
+
+}
+
+
+/* =========================================================
+   REMOVE PHOTO
+========================================================= */
+
+function removePhoto(id){
+
+  state.photos =
+    state.photos.filter(
+      photo =>
+        photo.id !== id
+    );
+
+
+  window.parent.postMessage(
+    {
+      type:
+        "REMOVE_PHOTO",
+
+      photoId:
+        id
+    },
+    "*"
+  );
+
+
+  renderPhotoList();
+
+
+  updatePhotoUploadState();
+
+
+  sendState();
+
+}
+
+
+/* =========================================================
+   SEND PHOTO ADDED
+========================================================= */
+
+function sendPhotoAdded(photo){
+
+  window.parent.postMessage(
+    {
+      type:
+        "ADD_PHOTO",
+
+      photo:
+        photo
+    },
+    "*"
+  );
+
+}
+
+
+/* =========================================================
+   TEXTURE NORMALIZATION
+   CSS-ONLY TEXTURES
+========================================================= */
+
+const textureAliases = {
+
+  "Dotted Sun Rays":
+    "tiny-dots",
+
+  "Radiant Dot Pattern":
+    "tiny-dots",
+
+  "Sacred Halftone Rays":
+    "speckles",
+
+  "Soft Ray Lines":
+    "radial-lines",
+
+  "Divine Light Texture":
+    "soft-circles",
+
+  "Minimal Sunburst":
+    "sunburst",
+
+  "Golden Ray Grid":
+    "grid",
+
+  "Subtle Radiance":
+    "soft-circles",
+
+  "Ethereal Dot Rays":
+    "tiny-dots",
+
+  "Sacred Light Lines":
+    "diagonal-lines",
+
+  "Fine Dotted Rays":
+    "tiny-dots",
+
+  "Glowing Sunburst":
+    "starburst",
+
+  "Minimal Divine Rays":
+    "radial-lines",
+
+  "Light Beam Texture":
+    "diagonal-lines",
+
+  "Elegant Ray Pattern":
+    "lace"
+
+};
+
+
+const builtInTextures = [
+
+  "fine-paper",
+  "diagonal-lines",
+  "crosshatch",
+  "tiny-dots",
+  "grid",
+  "diamond",
+  "linen",
+  "soft-waves",
+  "damask",
+  "noise-grain",
+  "vertical-pinstripes",
+  "horizontal-pinstripes",
+  "hexagon",
+  "checker",
+  "scallop",
+  "vintage-paper",
+  "soft-circles",
+  "sunburst",
+  "starburst",
+  "micro-diamond",
+  "herringbone",
+  "basketweave",
+  "zigzag",
+  "chevron",
+  "honeycomb",
+  "polka-dots",
+  "speckles",
+  "ripples",
+  "concentric-circles",
+  "radial-lines",
+  "lace",
+  "frosted",
+  "embossed",
+  "woven-fabric",
+  "canvas",
+  "parchment"
+
+];
+
+
+function normalizeTextureName(value){
+
+  let texture =
+    String(value || "")
+      .trim();
+
+
+  if(
+    textureAliases[texture]
+  ){
+
+    texture =
+      textureAliases[texture];
+
+  }
+
+
+  if(
+    !builtInTextures.includes(
+      texture
+    )
+  ){
+
+    texture =
+      "fine-paper";
+
+  }
+
+
+  return texture;
+
+}
+
+
+/* =========================================================
+   STATE COMMUNICATION
+========================================================= */
+
+function sendState(){
+
+  normalizeAliases();
+
+
+  state.creatorId =
+    state.creatorId ||
+    creatorId;
+
+
+  /*
+   * Always enforce the 3-photo limit
+   * before sending state to the parent.
+   */
+  state.photos =
+    Array.isArray(
+      state.photos
+    )
+      ? state.photos.slice(
+          0,
+          MAX_PHOTOS
+        )
+      : [];
+
+
+  /*
+   * No customTextures property is sent.
+   * Textures are CSS-only and identified
+   * by their texture name.
+   */
+  const cleanState = {
+    ...state
+  };
+
+
+  delete cleanState.customTextures;
+
+
+  window.parent.postMessage(
+    {
+      type:
+        "CARD_STATE",
+
+      state:
+        {
+          ...cleanState,
+
+          creatorId:
+            state.creatorId,
+
+          theme:
+            undefined
+
+        }
+
+    },
+    "*"
+  );
+
+
+  window.parent.postMessage(
+    {
+      type:
+        "CARD_UPDATE",
+
+      state:
+        {
+          ...cleanState,
+
+          creatorId:
+            state.creatorId
+
+        }
+
+    },
+    "*"
+  );
+
+}
+
+
+/* =========================================================
+   NORMALIZE ALIASES
+========================================================= */
+
+function normalizeAliases(){
+
+  state.creatorId =
+    state.creatorId ||
+    creatorId;
+
+
+  state.to =
+    state.to ||
+    state.recipient ||
+    "YSL";
+
+
+  state.recipient =
+    state.recipient ||
+    state.to ||
+    "YSL";
+
+
+  state.texture =
+    normalizeTextureName(
+      state.texture ||
+      state.backgroundTexture ||
+      "fine-paper"
+    );
+
+
+  state.backgroundTexture =
+    state.texture;
+
+
+  state.msg =
+    state.msg ??
+    state.message ??
+    "";
+
+
+  state.message =
+    state.message ??
+    state.msg ??
+    "";
+
+
+  /*
+   * Enforce maximum of 3 photos.
+   */
+  state.photos =
+    Array.isArray(
+      state.photos
+    )
+      ? state.photos.slice(
+          0,
+          MAX_PHOTOS
+        )
+      : [];
+
+
+  if(
+    !validHex(
+      state.backgroundColor
+    )
+  ){
+
+    state.backgroundColor =
+      "#FFFAF2";
+
+  }
+
+
+  if(
+    !validHex(
+      state.textureColor
+    )
+  ){
+
+    state.textureColor =
+      "#C89B3C";
+
+  }
+
+
+  if(
+    !validHex(
+      state.borderColor
+    )
+  ){
+
+    state.borderColor =
+      "#C89B3C";
+
+  }
+
+
+  if(
+    !validHex(
+      state.innerBorderColor
+    )
+  ){
+
+    state.innerBorderColor =
+      "#C89B3C";
+
+  }
+
+
+  if(
+    !validHex(
+      state.fontColor
+    )
+  ){
+
+    state.fontColor =
+      "#4C0A16";
+
+  }
+
+
+  if(
+    !state.innerBorder
+  ){
+
+    state.innerBorder =
+      "fine";
+
+  }
+
+
+  if(
+    !state.font
+  ){
+
+    state.font =
+      "Georgia";
+
+  }
+
+}
+
+
+/* =========================================================
+   EDIT / HISTORY STATE GUARD
+========================================================= */
+let yslHistoryStateLoaded = false;
+
+
+/* =========================================================
+   LOAD STATE FROM BUILDER
+========================================================= */
+
+window.addEventListener(
+  "message",
+  event => {
+
+    const data =
+      event.data;
+
+
+    if(!data){
+
+      return;
+
+    }
+
+
+    if(
+      data.type === "CARD_INIT" ||
+      data.type === "LOAD_STATE" ||
+      data.type === "INIT"
+    ){
+
+      if(data.state){
+
+        yslHistoryStateLoaded = true;
+
+        loadState(
+          data.state
+        );
+
+      }
+
+      return;
+
+    }
+
+
+    if(
+      data.type === "GET_STATE"
+    ){
+
+      sendState();
+
+      return;
+
+    }
+
+
+    if(
+      data.type === "REMOVE_PHOTO"
+    ){
+
+      const id =
+        data.photoId ||
+        data.id;
+
+
+      state.photos =
+        state.photos.filter(
+          photo =>
+            photo.id !== id
+        );
+
+
+      renderPhotoList();
+
+
+      sendState();
+
+
+      return;
+
+    }
+
+
+    if(
+      data.type ===
+      "CARD_UPDATE_PHOTO"
+    ){
+
+      const incoming =
+        data.photo ||
+        data;
+
+
+      const id =
+        incoming.id ||
+        incoming.photoId;
+
+
+      const index =
+        state.photos.findIndex(
+          photo =>
+            photo.id === id
+        );
+
+
+      if(index !== -1){
+
+        state.photos[index] = {
+
+          ...state.photos[index],
+
+          ...incoming
+
+        };
+
+
+        renderPhotoList();
+
+      }
+
+      return;
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   LOAD STATE
+========================================================= */
+
+function loadState(input){
+
+  if(
+    !input ||
+    typeof input !== "object"
+  ){
+
+    return;
+
+  }
+
+
+  state = {
+
+    ...state,
+
+    ...input,
+
+    creatorId:
+      input.creatorId ||
+      state.creatorId ||
+      creatorId,
+
+    theme:
+      undefined
+
+  };
+
+
+  /*
+   * Remove old custom texture data.
+   */
+  delete state.customTextures;
+
+
+  state.creatorId =
+    state.creatorId ||
+    creatorId;
+
+
+  state.title =
+    state.title ||
+    "A Blessing For You";
+
+
+  state.to =
+    state.to ||
+    state.recipient ||
+    "YSL";
+
+
+  state.recipient =
+    state.recipient ||
+    state.to ||
+    "YSL";
+
+
+  state.from =
+    state.from ||
+    "KIM";
+
+
+  state.msg =
+    state.msg ??
+    state.message ??
+    "";
+
+
+  state.message =
+    state.message ??
+    state.msg ??
+    "";
+
+
+  /*
+   * IMPORTANT:
+   * Loaded cards are also restricted
+   * to a maximum of 3 photos.
+   */
+  state.photos =
+    Array.isArray(
+      state.photos
+    )
+      ? state.photos.slice(
+          0,
+          MAX_PHOTOS
+        )
+      : [];
+
+
+  state.symbol =
+    state.symbol ||
+    "✝";
+
+
+  /* =======================================================
+     CSS TEXTURE
+  ======================================================= */
+
+  state.texture =
+    normalizeTextureName(
+      state.texture ||
+      state.backgroundTexture ||
+      "fine-paper"
+    );
+
+
+  state.backgroundTexture =
+    state.texture;
+
+
+  state.textureColor =
+    validHex(
+      state.textureColor
+    )
+      ? state.textureColor.toUpperCase()
+      : "#C89B3C";
+
+
+  state.backgroundColor =
+    validHex(
+      state.backgroundColor
+    )
+      ? state.backgroundColor.toUpperCase()
+      : "#FFFAF2";
+
+
+  state.borderColor =
+    validHex(
+      state.borderColor
+    )
+      ? state.borderColor.toUpperCase()
+      : "#C89B3C";
+
+
+  state.innerBorderColor =
+    validHex(
+      state.innerBorderColor
+    )
+      ? state.innerBorderColor.toUpperCase()
+      : "#C89B3C";
+
+
+  state.innerBorder =
+    state.innerBorder ||
+    "fine";
+
+
+  state.fontColor =
+    validHex(
+      state.fontColor
+    )
+      ? state.fontColor.toUpperCase()
+      : "#4C0A16";
+
+
+  state.font =
+    state.font ||
+    "Georgia";
+
+
+  titleInput.value =
+    state.title;
+
+
+  toInput.value =
+    state.to;
+
+
+  fromInput.value =
+    state.from;
+
+
+  messageInput.value =
+    state.msg;
+
+
+  symbolInput.value =
+    state.symbol;
+
+
+  fontInput.value =
+    state.font;
+
+
+  innerBorderInput.value =
+    state.innerBorder;
+
+
+  setColorValue(
+    textureColor,
+    textureColorText,
+    state.textureColor,
+    "#C89B3C"
+  );
+
+
+  setColorValue(
+    backgroundColor,
+    backgroundColorText,
+    state.backgroundColor,
+    "#FFFAF2"
+  );
+
+
+  setColorValue(
+    borderColor,
+    borderColorText,
+    state.borderColor,
+    "#C89B3C"
+  );
+
+
+  setColorValue(
+    innerBorderColor,
+    innerBorderColorText,
+    state.innerBorderColor,
+    "#C89B3C"
+  );
+
+
+  setColorValue(
+    fontColor,
+    fontColorText,
+    state.fontColor,
+    "#4C0A16"
+  );
+
+
+  textureInput.value =
+    state.texture;
+
+
+  if(
+    textureInput.value !==
+    state.texture
+  ){
+
+    textureInput.value =
+      "fine-paper";
+
+
+    state.texture =
+      "fine-paper";
+
+
+    state.backgroundTexture =
+      "fine-paper";
+
+  }
+
+
+  renderPhotoList();
+
+
+  updatePhotoUploadState();
+
+
+  updateColorPreview(
+    "textureColor",
+    state.textureColor
+  );
+
+
+  updateColorPreview(
+    "backgroundColor",
+    state.backgroundColor
+  );
+
+
+  updateColorPreview(
+    "borderColor",
+    state.borderColor
+  );
+
+
+  updateColorPreview(
+    "innerBorderColor",
+    state.innerBorderColor
+  );
+
+
+  updateColorPreview(
+    "fontColor",
+    state.fontColor
+  );
+
+}
+
+
+/* =========================================================
+   SET COLOR VALUE
+========================================================= */
+
+function setColorValue(
+  colorInput,
+  textInput,
+  value,
+  fallback
+){
+
+  if(!fallback){
+
+    fallback =
+      "#C89B3C";
+
+  }
+
+
+  if(
+    !validHex(value)
+  ){
+
+    value =
+      fallback;
+
+  }
+
+
+  value =
+    value.toUpperCase();
+
+
+  colorInput.value =
+    value;
+
+
+  textInput.value =
+    value;
+
+}
+
+
+/* =========================================================
+   INITIAL COLOR PREVIEWS
+========================================================= */
+
+updateColorPreview(
+  "textureColor",
+  state.textureColor
+);
+
+
+updateColorPreview(
+  "backgroundColor",
+  state.backgroundColor
+);
+
+
+updateColorPreview(
+  "borderColor",
+  state.borderColor
+);
+
+
+updateColorPreview(
+  "innerBorderColor",
+  state.innerBorderColor
+);
+
+
+updateColorPreview(
+  "fontColor",
+  state.fontColor
+);
+
+
+/* =========================================================
+   INITIAL PHOTO STATE
+========================================================= */
+
+updatePhotoUploadState();
+
+
+/* =========================================================
+   READY
+========================================================= */
+
+window.parent.postMessage(
+  {
+    type:
+      "EDITOR_READY"
+  },
+  "*"
+);
+
+
+setTimeout(
+  function(){
+
+    /*
+     * IMPORTANT:
+     * If the builder loaded a Personal History card,
+     * never send the menu's default state back to it.
+     */
+    if(!yslHistoryStateLoaded){
+
+      sendState();
+
+    }
+
+  },
+  100
+);
+
+</script>
+
+</body>
+
+</html>

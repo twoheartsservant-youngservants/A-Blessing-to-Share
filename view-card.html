@@ -1,0 +1,3565 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0">
+
+<title>A Blessing For You</title>
+
+<script src="config.js"></script>
+
+<style>
+
+/* =====================================================
+   RESET
+===================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  min-height: 100%;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+body {
+
+  min-height: 100vh;
+  min-height: 100dvh;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  padding: 20px;
+
+  background:
+    radial-gradient(
+      circle at 50% 25%,
+      #681426 0%,
+      #4c0a16 48%,
+      #2e0610 100%
+    );
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+}
+
+
+/* =====================================================
+   LOADING / ERROR
+===================================================== */
+
+.loading,
+.error-box {
+
+  width: min(430px, 100%);
+
+  padding: 30px;
+
+  border-radius: 18px;
+
+  background:
+    rgba(255,250,242,.97);
+
+  text-align: center;
+
+  color: #4c0a16;
+
+  box-shadow:
+    0 24px 70px rgba(0,0,0,.28);
+
+  border:
+    1px solid
+    rgba(200,155,60,.35);
+}
+
+
+.loading {
+
+  position: relative;
+
+  overflow: hidden;
+
+  padding:
+    34px
+    30px
+    30px;
+}
+
+
+.loading::before {
+
+  content: "";
+
+  position: absolute;
+
+  inset: -55%;
+
+  background:
+    repeating-conic-gradient(
+      from 0deg,
+      rgba(200,155,60,.10) 0deg 5deg,
+      transparent 5deg 20deg
+    );
+
+  animation:
+    loading-rays 12s linear infinite;
+}
+
+
+.loading-content {
+
+  position: relative;
+
+  z-index: 1;
+}
+
+
+.loading-symbol {
+
+  width: 64px;
+
+  height: 64px;
+
+  margin:
+    0
+    auto
+    18px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 50%;
+
+  color: #c89b3c;
+
+  background:
+    rgba(200,155,60,.09);
+
+  border:
+    1px solid
+    rgba(200,155,60,.38);
+
+  font-family:
+    Georgia,
+    serif;
+
+  font-size: 30px;
+
+  animation:
+    loading-pulse
+    1.8s
+    ease-in-out
+    infinite;
+}
+
+
+.loading h2 {
+
+  margin:
+    0
+    0
+    8px;
+
+  font-family:
+    Georgia,
+    serif;
+
+  font-size: 21px;
+
+  font-weight: 700;
+}
+
+
+.loading p {
+
+  margin: 0;
+
+  font-size: 13px;
+
+  opacity: .68;
+}
+
+
+.loading-bar {
+
+  width: 150px;
+
+  height: 3px;
+
+  margin:
+    20px
+    auto
+    0;
+
+  overflow: hidden;
+
+  border-radius: 99px;
+
+  background:
+    rgba(76,10,22,.10);
+}
+
+
+.loading-bar::after {
+
+  content: "";
+
+  display: block;
+
+  width: 45%;
+
+  height: 100%;
+
+  border-radius: inherit;
+
+  background: #c89b3c;
+
+  animation:
+    loading-bar
+    1.15s
+    ease-in-out
+    infinite;
+}
+
+
+@keyframes loading-rays {
+
+  to {
+    transform: rotate(360deg);
+  }
+
+}
+
+
+@keyframes loading-pulse {
+
+  0%,
+  100% {
+    transform: scale(.96);
+    opacity: .78;
+  }
+
+  50% {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+
+}
+
+
+@keyframes loading-bar {
+
+  0% {
+    transform: translateX(-150%);
+  }
+
+  100% {
+    transform: translateX(330%);
+  }
+
+}
+
+
+/* =====================================================
+   APP READY
+===================================================== */
+
+.app-ready {
+
+  width: 430px;
+
+  height: 500px;
+
+  position: relative;
+
+  flex:
+    0 0
+    430px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  overflow:
+    visible;
+
+  animation:
+    card-appear
+    .45s
+    ease
+    both;
+}
+
+
+@keyframes card-appear {
+
+  from {
+    opacity: 0;
+    transform:
+      scale(.985)
+      translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      scale(1)
+      translateY(0);
+  }
+
+}
+
+
+/* =====================================================
+   CARD
+   EXACT BUILDER SIZE
+   430 × 500
+===================================================== */
+
+.card {
+
+  --outer-border-color: #c89b3c;
+  --inner-border-color: #c89b3c;
+  --font-color: #4c0a16;
+
+  --texture:
+    none;
+
+  --texture-size:
+    auto;
+
+  --texture-color:
+    #C89B3C;
+
+  position: absolute;
+
+  left: 0;
+  top: 0;
+
+  width: 430px;
+
+  height: 500px;
+
+  max-width: none;
+
+  min-width: 430px;
+
+  min-height: 500px;
+
+  overflow: hidden;
+
+  border:
+    2px solid
+    var(--outer-border-color);
+
+  border-radius: 12px;
+
+  background:
+    #fffaf2;
+
+  color:
+    var(--font-color);
+
+  font-family:
+    Georgia,
+    serif;
+
+  box-shadow:
+    0 20px 50px
+    rgba(0,0,0,.3);
+
+  transform:
+    scale(
+      var(--card-scale, 1)
+    );
+
+  transform-origin:
+    top left;
+
+  flex-shrink: 0;
+}
+
+
+/* =====================================================
+   CSS-ONLY BACKGROUND TEXTURE
+===================================================== */
+
+.card::before {
+
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  background-image:
+    var(--texture);
+
+  background-size:
+    var(--texture-size);
+
+  background-repeat:
+    repeat;
+
+  background-position:
+    center center;
+
+  pointer-events: none;
+
+  opacity: .45;
+
+  z-index: 0;
+}
+
+
+/* =====================================================
+   INNER BORDER
+===================================================== */
+
+.card::after {
+
+  content: "";
+
+  position: absolute;
+
+  inset: 12px;
+
+  border:
+    var(--inner-border-width, 1px)
+    var(--inner-border-style, solid)
+    var(--inner-border-color);
+
+  border-radius: 9px;
+
+  pointer-events: none;
+
+  z-index: 20;
+}
+
+
+/* =====================================================
+   SYMBOL
+===================================================== */
+
+.symbol {
+
+  position: absolute;
+
+  top: 25px;
+
+  left: 0;
+  right: 0;
+
+  text-align: center;
+
+  font-size: 27px;
+
+  line-height: 1;
+
+  z-index: 5;
+}
+
+
+/* =====================================================
+   SMALL TITLE
+===================================================== */
+
+.small-title {
+
+  position: absolute;
+
+  top: 61px;
+
+  left: 30px;
+  right: 30px;
+
+  text-align: center;
+
+  font-size: 10px;
+
+  letter-spacing: 3px;
+
+  text-transform: uppercase;
+
+  opacity: .65;
+
+  z-index: 5;
+}
+
+
+/* =====================================================
+   MAIN TITLE
+===================================================== */
+
+.title {
+
+  position: absolute;
+
+  top: 82px;
+
+  left: 28px;
+  right: 28px;
+
+  margin: 0;
+
+  text-align: center;
+
+  font-size: 25px;
+
+  line-height: 1.2;
+
+  z-index: 5;
+}
+
+
+/* =====================================================
+   RECIPIENT
+===================================================== */
+
+.recipient {
+
+  position: absolute;
+
+  top: 124px;
+
+  left: 30px;
+  right: 30px;
+
+  text-align: center;
+
+  font-size: 13px;
+
+  opacity: .78;
+
+  z-index: 5;
+}
+
+
+/* =====================================================
+   CONTENT
+===================================================== */
+
+.content {
+
+  position: absolute;
+
+  top: 154px;
+
+  left: 34px;
+  right: 34px;
+
+  bottom: 62px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  z-index: 5;
+
+  min-height: 0;
+}
+
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+.message {
+
+  flex: 1;
+
+  min-height: 80px;
+
+  padding:
+    8px
+    5px
+    10px;
+
+  overflow: hidden;
+
+  text-align: center;
+
+  white-space: pre-wrap;
+
+  word-break: break-word;
+
+  font-size: 16px;
+
+  line-height: 1.55;
+}
+
+
+/* =====================================================
+   PHOTO AREA
+===================================================== */
+
+.photo-stage {
+
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+
+  height: 100%;
+
+  overflow: visible;
+
+  pointer-events: none;
+
+  user-select: none;
+  -webkit-user-select: none;
+
+  z-index: 10;
+}
+
+
+/* =====================================================
+   PHOTO
+===================================================== */
+
+.photo-item {
+
+  position: absolute;
+
+  width: 120px;
+  height: 120px;
+
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9px;
+
+  border: 1px solid rgba(76,10,22,.2);
+
+  transform: translate(-50%, -50%);
+
+  transform-origin: center center;
+
+  z-index: 2;
+
+  pointer-events: none;
+
+  user-select: none;
+
+  touch-action: none;
+
+  background: #eee;
+}
+
+
+.photo-item img {
+
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: auto;
+  height: auto;
+
+  object-fit: initial;
+  object-position: 50% 50%;
+
+  max-width: none;
+  max-height: none;
+
+  display: block;
+
+  pointer-events: none;
+
+  user-select: none;
+
+  -webkit-user-drag: none;
+
+  transform-origin: center center;
+}
+
+
+/* =====================================================
+   FROM
+===================================================== */
+
+.from {
+
+  position: absolute;
+
+  left: 28px;
+  right: 28px;
+
+  bottom: 27px;
+
+  text-align: center;
+
+  font-size: 13px;
+
+  z-index: 5;
+}
+
+
+/* =====================================================
+   CREATE BUTTON
+===================================================== */
+
+.create-button {
+
+  position: fixed;
+
+  left: 50%;
+
+  bottom: 18px;
+
+  transform:
+    translateX(-50%);
+
+  padding:
+    11px
+    18px;
+
+  border: 0;
+
+  border-radius: 8px;
+
+  background:
+    white;
+
+  color:
+    #4c0a16;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0
+    7px
+    20px
+    rgba(0,0,0,.25);
+
+  z-index: 100;
+}
+
+
+.create-button:hover {
+
+  transform:
+    translateX(-50%)
+    translateY(-1px);
+
+  box-shadow:
+    0
+    9px
+    24px
+    rgba(0,0,0,.3);
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 600px) {
+
+  body {
+
+    padding:
+      15px;
+
+    overflow-x: hidden;
+
+    overflow-y: auto;
+  }
+
+  .create-button {
+
+    bottom: 10px;
+
+    font-size: 13px;
+
+    padding:
+      10px
+      15px;
+  }
+
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+
+    animation-duration:
+      .01ms !important;
+
+    animation-iteration-count:
+      1 !important;
+
+    scroll-behavior:
+      auto !important;
+  }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div
+  id="app"
+  class="loading"
+  role="status"
+  aria-live="polite">
+
+  <div class="loading-content">
+
+    <div
+      class="loading-symbol"
+      aria-hidden="true">
+      ✝
+    </div>
+
+    <h2>
+      Preparing Your Blessing
+    </h2>
+
+    <p id="loading-message">
+      Please wait a moment...
+    </p>
+
+    <div
+      class="loading-bar"
+      aria-hidden="true">
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   API
+===================================================== */
+
+const API_URL =
+  window.YSL_CONFIG &&
+  window.YSL_CONFIG.API_URL
+    ? window.YSL_CONFIG.API_URL
+    : "";
+
+
+/* =====================================================
+   RESPONSIVE CARD SCALE
+===================================================== */
+
+function updateCardScale() {
+
+  const app =
+    document.getElementById("app");
+
+  if (
+    !app ||
+    !app.classList.contains("app-ready")
+  ) {
+    return;
+  }
+
+
+  const padding = 30;
+
+  const buttonSpace = 70;
+
+
+  const availableWidth =
+    Math.max(
+      100,
+      window.innerWidth - padding
+    );
+
+
+  const availableHeight =
+    Math.max(
+      100,
+      window.innerHeight - buttonSpace
+    );
+
+
+  const widthScale =
+    availableWidth / 430;
+
+
+  const heightScale =
+    availableHeight / 500;
+
+
+  const scale =
+    Math.min(
+      1,
+      widthScale,
+      heightScale
+    );
+
+
+  app.style.setProperty(
+    "--card-scale",
+    scale
+  );
+
+
+  app.style.width =
+    (430 * scale) + "px";
+
+
+  app.style.height =
+    (500 * scale) + "px";
+
+
+  app.style.flexBasis =
+    (430 * scale) + "px";
+}
+
+
+window.addEventListener(
+  "resize",
+  updateCardScale
+);
+
+
+window.addEventListener(
+  "orientationchange",
+  function() {
+
+    setTimeout(
+      updateCardScale,
+      100
+    );
+
+  }
+);
+
+
+/* =====================================================
+   COLOR → RGBA
+===================================================== */
+
+function hexToRgba(
+  hex,
+  alpha
+) {
+
+  let h =
+    String(
+      hex ||
+      "#C89B3C"
+    )
+    .replace(
+      "#",
+      ""
+    );
+
+
+  if (h.length === 3) {
+
+    h =
+      h
+        .split("")
+        .map(
+          x => x + x
+        )
+        .join("");
+
+  }
+
+
+  if (
+    !/^[0-9A-Fa-f]{6}$/.test(h)
+  ) {
+
+    h =
+      "C89B3C";
+
+  }
+
+
+  const r =
+    parseInt(
+      h.substring(0, 2),
+      16
+    );
+
+
+  const g =
+    parseInt(
+      h.substring(2, 4),
+      16
+    );
+
+
+  const b =
+    parseInt(
+      h.substring(4, 6),
+      16
+    );
+
+
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+
+/* =====================================================
+   TEXTURE NAME NORMALIZATION
+===================================================== */
+
+function normalizeTextureName(
+  value
+) {
+
+  const oldTextureMap = {
+
+    "Dotted Sun Rays":
+      "tiny-dots",
+
+    "Radiant Dot Pattern":
+      "tiny-dots",
+
+    "Sacred Halftone Rays":
+      "speckles",
+
+    "Soft Ray Lines":
+      "radial-lines",
+
+    "Divine Light Texture":
+      "soft-circles",
+
+    "Minimal Sunburst":
+      "sunburst",
+
+    "Golden Ray Grid":
+      "grid",
+
+    "Subtle Radiance":
+      "soft-circles",
+
+    "Ethereal Dot Rays":
+      "tiny-dots",
+
+    "Sacred Light Lines":
+      "diagonal-lines",
+
+    "Fine Dotted Rays":
+      "tiny-dots",
+
+    "Glowing Sunburst":
+      "starburst",
+
+    "Minimal Divine Rays":
+      "radial-lines",
+
+    "Light Beam Texture":
+      "diagonal-lines",
+
+    "Elegant Ray Pattern":
+      "lace",
+
+    /* Old internal values */
+
+    "dotted-sun-rays":
+      "tiny-dots",
+
+    "radiant-dot":
+      "tiny-dots",
+
+    "halftone":
+      "speckles",
+
+    "soft-rays":
+      "radial-lines",
+
+    "divine":
+      "soft-circles",
+
+    "golden-grid":
+      "grid",
+
+    "radiance":
+      "soft-circles",
+
+    "ethereal":
+      "tiny-dots",
+
+    "light-lines":
+      "diagonal-lines",
+
+    "fine-dotted":
+      "tiny-dots",
+
+    "glowing":
+      "starburst",
+
+    "minimal-rays":
+      "radial-lines",
+
+    "beam":
+      "diagonal-lines",
+
+    "elegant":
+      "lace"
+
+  };
+
+
+  const builtInTextures = [
+
+    "fine-paper",
+    "diagonal-lines",
+    "crosshatch",
+    "tiny-dots",
+    "grid",
+    "diamond",
+    "linen",
+    "soft-waves",
+    "damask",
+    "noise-grain",
+    "vertical-pinstripes",
+    "horizontal-pinstripes",
+    "hexagon",
+    "checker",
+    "scallop",
+    "vintage-paper",
+    "soft-circles",
+    "sunburst",
+    "starburst",
+    "micro-diamond",
+    "herringbone",
+    "basketweave",
+    "zigzag",
+    "chevron",
+    "honeycomb",
+    "polka-dots",
+    "speckles",
+    "ripples",
+    "concentric-circles",
+    "radial-lines",
+    "lace",
+    "frosted",
+    "embossed",
+    "woven-fabric",
+    "canvas",
+    "parchment"
+
+  ];
+
+
+  let texture =
+    String(
+      value ||
+      ""
+    ).trim();
+
+
+  if (
+    oldTextureMap[texture]
+  ) {
+
+    texture =
+      oldTextureMap[texture];
+
+  }
+
+
+  if (
+    !builtInTextures.includes(
+      texture
+    )
+  ) {
+
+    texture =
+      "fine-paper";
+
+  }
+
+
+  return texture;
+}
+
+
+/* =====================================================
+   FONT
+===================================================== */
+
+function getFontFamily(
+  font
+) {
+
+  const fonts = {
+
+    serif:
+      "Georgia, 'Times New Roman', serif",
+
+    classic:
+      "'Times New Roman', Georgia, serif",
+
+    modern:
+      "Arial, Helvetica, sans-serif",
+
+    elegant:
+      "Garamond, Georgia, serif",
+
+    georgia:
+      "Georgia, serif",
+
+    palatino:
+      "'Palatino Linotype', Palatino, Georgia, serif",
+
+    garamond:
+      "Garamond, Georgia, serif",
+
+    cursive:
+      "'Brush Script MT', 'Segoe Script', cursive",
+
+    sans:
+      "Arial, Helvetica, sans-serif"
+
+  };
+
+
+  return (
+    fonts[
+      String(
+        font || ""
+      ).toLowerCase()
+    ] ||
+    font ||
+    fonts.serif
+  );
+}
+
+
+/* =====================================================
+   CSS-ONLY TEXTURE GENERATOR
+===================================================== */
+
+function getTexture(
+  type,
+  color
+) {
+
+  type =
+    normalizeTextureName(
+      type
+    );
+
+
+  const c =
+    hexToRgba(
+      color,
+      .25
+    );
+
+
+  const c2 =
+    hexToRgba(
+      color,
+      .12
+    );
+
+
+  const c3 =
+    hexToRgba(
+      color,
+      .07
+    );
+
+
+  const transparent =
+    "transparent";
+
+
+  const textures = {
+
+
+    /* =================================================
+       1. FINE PAPER
+    ================================================= */
+
+    "fine-paper":
+      `
+      radial-gradient(
+        circle,
+        ${c3} 0.7px,
+        transparent 0.9px
+      )
+      `,
+
+
+    /* =================================================
+       2. DIAGONAL LINES
+    ================================================= */
+
+    "diagonal-lines":
+      `
+      repeating-linear-gradient(
+        45deg,
+        transparent 0px,
+        transparent 11px,
+        ${c2} 12px,
+        ${c2} 13px
+      )
+      `,
+
+
+    /* =================================================
+       3. CROSSHATCH
+    ================================================= */
+
+    "crosshatch":
+      `
+      repeating-linear-gradient(
+        45deg,
+        transparent 0px,
+        transparent 9px,
+        ${c2} 10px,
+        ${c2} 11px
+      ),
+      repeating-linear-gradient(
+        -45deg,
+        transparent 0px,
+        transparent 9px,
+        ${c3} 10px,
+        ${c3} 11px
+      )
+      `,
+
+
+    /* =================================================
+       4. TINY DOTS
+    ================================================= */
+
+    "tiny-dots":
+      `
+      radial-gradient(
+        circle,
+        ${c} 1px,
+        transparent 1.6px
+      )
+      `,
+
+
+    /* =================================================
+       5. GRID
+    ================================================= */
+
+    "grid":
+      `
+      linear-gradient(
+        ${c2} 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        90deg,
+        ${c2} 1px,
+        transparent 1px
+      )
+      `,
+
+
+    /* =================================================
+       6. DIAMOND
+    ================================================= */
+
+    "diamond":
+      `
+      repeating-linear-gradient(
+        45deg,
+        transparent 0px,
+        transparent 10px,
+        ${c2} 11px,
+        transparent 12px
+      ),
+      repeating-linear-gradient(
+        -45deg,
+        transparent 0px,
+        transparent 10px,
+        ${c2} 11px,
+        transparent 12px
+      )
+      `,
+
+
+    /* =================================================
+       7. LINEN
+    ================================================= */
+
+    "linen":
+      `
+      repeating-linear-gradient(
+        0deg,
+        ${c3} 0px,
+        ${c3} 1px,
+        transparent 1px,
+        transparent 4px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        ${c3} 0px,
+        ${c3} 1px,
+        transparent 1px,
+        transparent 4px
+      )
+      `,
+
+
+    /* =================================================
+       8. SOFT WAVES
+    ================================================= */
+
+    "soft-waves":
+      `
+      repeating-radial-gradient(
+        ellipse at 50% 0%,
+        transparent 0px,
+        transparent 12px,
+        ${c2} 13px,
+        transparent 14px,
+        transparent 28px
+      )
+      `,
+
+
+    /* =================================================
+       9. DAMASK
+    ================================================= */
+
+    "damask":
+      `
+      radial-gradient(
+        ellipse at 50% 0%,
+        transparent 0 12px,
+        ${c2} 13px,
+        transparent 14px
+      ),
+      radial-gradient(
+        ellipse at 0% 50%,
+        transparent 0 12px,
+        ${c2} 13px,
+        transparent 14px
+      )
+      `,
+
+
+    /* =================================================
+       10. NOISE-LIKE GRAIN
+    ================================================= */
+
+    "noise-grain":
+      `
+      radial-gradient(
+        circle at 20% 20%,
+        ${c3} 0px,
+        transparent 1px
+      ),
+      radial-gradient(
+        circle at 70% 35%,
+        ${c2} 0px,
+        transparent 1px
+      ),
+      radial-gradient(
+        circle at 35% 75%,
+        ${c3} 0px,
+        transparent 1px
+      ),
+      radial-gradient(
+        circle at 85% 80%,
+        ${c2} 0px,
+        transparent 1px
+      )
+      `,
+
+
+    /* =================================================
+       11. VERTICAL PINSTRIPES
+    ================================================= */
+
+    "vertical-pinstripes":
+      `
+      repeating-linear-gradient(
+        90deg,
+        transparent 0px,
+        transparent 7px,
+        ${c2} 8px,
+        transparent 9px
+      )
+      `,
+
+
+    /* =================================================
+       12. HORIZONTAL PINSTRIPES
+    ================================================= */
+
+    "horizontal-pinstripes":
+      `
+      repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        transparent 7px,
+        ${c2} 8px,
+        transparent 9px
+      )
+      `,
+
+
+    /* =================================================
+       13. HEXAGON
+    ================================================= */
+
+    "hexagon":
+      `
+      repeating-linear-gradient(
+        30deg,
+        transparent 0px,
+        transparent 12px,
+        ${c2} 13px,
+        transparent 14px
+      ),
+      repeating-linear-gradient(
+        150deg,
+        transparent 0px,
+        transparent 12px,
+        ${c2} 13px,
+        transparent 14px
+      )
+      `,
+
+
+    /* =================================================
+       14. CHECKER
+    ================================================= */
+
+    "checker":
+      `
+      linear-gradient(
+        45deg,
+        ${c2} 25%,
+        transparent 25%,
+        transparent 75%,
+        ${c2} 75%
+      ),
+      linear-gradient(
+        45deg,
+        ${c2} 25%,
+        transparent 25%,
+        transparent 75%,
+        ${c2} 75%
+      )
+      `,
+
+
+    /* =================================================
+       15. SCALLOP
+    ================================================= */
+
+    "scallop":
+      `
+      radial-gradient(
+        circle at 50% 100%,
+        ${c2} 0 9px,
+        transparent 10px
+      )
+      `,
+
+
+    /* =================================================
+       16. VINTAGE PAPER
+    ================================================= */
+
+    "vintage-paper":
+      `
+      radial-gradient(
+        ellipse at 20% 20%,
+        ${c3},
+        transparent 35%
+      ),
+      radial-gradient(
+        ellipse at 80% 80%,
+        ${c3},
+        transparent 35%
+      ),
+      radial-gradient(
+        circle,
+        ${c3} 0.7px,
+        transparent 1px
+      )
+      `,
+
+
+    /* =================================================
+       17. SOFT CIRCLES
+    ================================================= */
+
+    "soft-circles":
+      `
+      radial-gradient(
+        circle at 20% 20%,
+        ${c2},
+        transparent 18%
+      ),
+      radial-gradient(
+        circle at 80% 70%,
+        ${c2},
+        transparent 20%
+      )
+      `,
+
+
+    /* =================================================
+       18. SUNBURST
+    ================================================= */
+
+    "sunburst":
+      `
+      repeating-conic-gradient(
+        from 0deg at 50% 50%,
+        ${c2} 0deg 4deg,
+        transparent 4deg 28deg
+      )
+      `,
+
+
+    /* =================================================
+       19. STARBURST
+    ================================================= */
+
+    "starburst":
+      `
+      repeating-conic-gradient(
+        from 0deg at 50% 50%,
+        ${c2} 0deg 2deg,
+        transparent 2deg 18deg
+      ),
+      radial-gradient(
+        circle at center,
+        ${c2},
+        transparent 42%
+      )
+      `,
+
+
+    /* =================================================
+       20. MICRO-DIAMOND
+    ================================================= */
+
+    "micro-diamond":
+      `
+      repeating-linear-gradient(
+        45deg,
+        transparent 0px,
+        transparent 5px,
+        ${c2} 6px,
+        transparent 7px
+      ),
+      repeating-linear-gradient(
+        -45deg,
+        transparent 0px,
+        transparent 5px,
+        ${c2} 6px,
+        transparent 7px
+      )
+      `,
+
+
+    /* =================================================
+       21. HERRINGBONE
+    ================================================= */
+
+    "herringbone":
+      `
+      repeating-linear-gradient(
+        45deg,
+        transparent 0px,
+        transparent 8px,
+        ${c2} 9px,
+        transparent 10px
+      ),
+      repeating-linear-gradient(
+        -45deg,
+        transparent 0px,
+        transparent 8px,
+        ${c2} 9px,
+        transparent 10px
+      )
+      `,
+
+
+    /* =================================================
+       22. BASKETWEAVE
+    ================================================= */
+
+    "basketweave":
+      `
+      repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        transparent 5px,
+        ${c2} 6px,
+        transparent 7px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        transparent 0px,
+        transparent 5px,
+        ${c3} 6px,
+        transparent 7px
+      )
+      `,
+
+
+    /* =================================================
+       23. ZIGZAG
+    ================================================= */
+
+    "zigzag":
+      `
+      repeating-linear-gradient(
+        135deg,
+        transparent 0px,
+        transparent 7px,
+        ${c2} 8px,
+        transparent 9px
+      ),
+      repeating-linear-gradient(
+        45deg,
+        transparent 0px,
+        transparent 7px,
+        ${c3} 8px,
+        transparent 9px
+      )
+      `,
+
+
+    /* =================================================
+       24. CHEVRON
+    ================================================= */
+
+    "chevron":
+      `
+      repeating-linear-gradient(
+        45deg,
+        transparent 0px,
+        transparent 11px,
+        ${c2} 12px,
+        transparent 13px
+      ),
+      repeating-linear-gradient(
+        -45deg,
+        transparent 0px,
+        transparent 11px,
+        ${c2} 12px,
+        transparent 13px
+      )
+      `,
+
+
+    /* =================================================
+       25. HONEYCOMB
+    ================================================= */
+
+    "honeycomb":
+      `
+      repeating-linear-gradient(
+        30deg,
+        transparent 0px,
+        transparent 10px,
+        ${c2} 11px,
+        transparent 12px
+      ),
+      repeating-linear-gradient(
+        150deg,
+        transparent 0px,
+        transparent 10px,
+        ${c2} 11px,
+        transparent 12px
+      )
+      `,
+
+
+    /* =================================================
+       26. POLKA DOTS
+    ================================================= */
+
+    "polka-dots":
+      `
+      radial-gradient(
+        circle,
+        ${c} 2px,
+        transparent 2.5px
+      )
+      `,
+
+
+    /* =================================================
+       27. SPECKLES
+    ================================================= */
+
+    "speckles":
+      `
+      radial-gradient(
+        circle at 15% 25%,
+        ${c} 1px,
+        transparent 2px
+      ),
+      radial-gradient(
+        circle at 45% 70%,
+        ${c2} 1px,
+        transparent 2px
+      ),
+      radial-gradient(
+        circle at 80% 35%,
+        ${c} 1px,
+        transparent 2px
+      ),
+      radial-gradient(
+        circle at 90% 85%,
+        ${c2} 1px,
+        transparent 2px
+      )
+      `,
+
+
+    /* =================================================
+       28. RIPPLES
+    ================================================= */
+
+    "ripples":
+      `
+      repeating-radial-gradient(
+        circle at center,
+        transparent 0px,
+        transparent 9px,
+        ${c2} 10px,
+        transparent 11px
+      )
+      `,
+
+
+    /* =================================================
+       29. CONCENTRIC CIRCLES
+    ================================================= */
+
+    "concentric-circles":
+      `
+      repeating-radial-gradient(
+        circle at center,
+        transparent 0px,
+        transparent 15px,
+        ${c2} 16px,
+        transparent 17px
+      )
+      `,
+
+
+    /* =================================================
+       30. RADIAL LINES
+    ================================================= */
+
+    "radial-lines":
+      `
+      repeating-conic-gradient(
+        from 0deg at 50% 50%,
+        ${c2} 0deg 2deg,
+        transparent 2deg 18deg
+      )
+      `,
+
+
+    /* =================================================
+       31. LACE
+    ================================================= */
+
+    "lace":
+      `
+      radial-gradient(
+        circle at 50% 50%,
+        transparent 0 7px,
+        ${c2} 8px,
+        transparent 9px
+      ),
+      radial-gradient(
+        circle at 0% 0%,
+        ${c2} 0 5px,
+        transparent 6px
+      )
+      `,
+
+
+    /* =================================================
+       32. FROSTED
+    ================================================= */
+
+    "frosted":
+      `
+      radial-gradient(
+        circle at 20% 30%,
+        rgba(255,255,255,.24),
+        transparent 22%
+      ),
+      radial-gradient(
+        circle at 80% 70%,
+        rgba(255,255,255,.18),
+        transparent 25%
+      ),
+      radial-gradient(
+        circle,
+        ${c3} 1px,
+        transparent 1.7px
+      )
+      `,
+
+
+    /* =================================================
+       33. EMBOSSED
+    ================================================= */
+
+    "embossed":
+      `
+      linear-gradient(
+        135deg,
+        rgba(255,255,255,.22) 0%,
+        transparent 42%,
+        rgba(0,0,0,.035) 58%,
+        transparent 100%
+      ),
+      repeating-linear-gradient(
+        45deg,
+        transparent 0px,
+        transparent 10px,
+        ${c3} 11px,
+        transparent 12px
+      )
+      `,
+
+
+    /* =================================================
+       34. WOVEN FABRIC
+    ================================================= */
+
+    "woven-fabric":
+      `
+      repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        transparent 3px,
+        ${c2} 4px,
+        transparent 5px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        transparent 0px,
+        transparent 3px,
+        ${c3} 4px,
+        transparent 5px
+      )
+      `,
+
+
+    /* =================================================
+       35. CANVAS
+    ================================================= */
+
+    "canvas":
+      `
+      repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        transparent 2px,
+        ${c3} 3px,
+        transparent 4px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        transparent 0px,
+        transparent 2px,
+        ${c3} 3px,
+        transparent 4px
+      )
+      `,
+
+
+    /* =================================================
+       36. PARCHMENT
+    ================================================= */
+
+    "parchment":
+      `
+      radial-gradient(
+        ellipse at 15% 20%,
+        ${c3},
+        transparent 30%
+      ),
+      radial-gradient(
+        ellipse at 85% 75%,
+        ${c3},
+        transparent 35%
+      ),
+      repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        transparent 7px,
+        ${c3} 8px,
+        transparent 9px
+      )
+      `
+
+  };
+
+
+  return (
+    textures[type] ||
+    textures["fine-paper"]
+  );
+}
+
+
+/* =====================================================
+   TEXTURE SIZE
+===================================================== */
+
+function getTextureSize(
+  type
+) {
+
+  type =
+    normalizeTextureName(
+      type
+    );
+
+
+  const sizes = {
+
+    "fine-paper":
+      "8px 8px",
+
+    "diagonal-lines":
+      "20px 20px",
+
+    "crosshatch":
+      "20px 20px",
+
+    "tiny-dots":
+      "12px 12px",
+
+    "grid":
+      "20px 20px",
+
+    "diamond":
+      "22px 22px",
+
+    "linen":
+      "12px 12px",
+
+    "soft-waves":
+      "60px 60px",
+
+    "damask":
+      "70px 70px",
+
+    "noise-grain":
+      "45px 45px",
+
+    "vertical-pinstripes":
+      "12px 12px",
+
+    "horizontal-pinstripes":
+      "12px 12px",
+
+    "hexagon":
+      "28px 28px",
+
+    "checker":
+      "24px 24px",
+
+    "scallop":
+      "30px 30px",
+
+    "vintage-paper":
+      "80px 80px",
+
+    "soft-circles":
+      "100px 100px",
+
+    "sunburst":
+      "100% 100%",
+
+    "starburst":
+      "100% 100%",
+
+    "micro-diamond":
+      "14px 14px",
+
+    "herringbone":
+      "20px 20px",
+
+    "basketweave":
+      "14px 14px",
+
+    "zigzag":
+      "20px 20px",
+
+    "chevron":
+      "24px 24px",
+
+    "honeycomb":
+      "28px 28px",
+
+    "polka-dots":
+      "24px 24px",
+
+    "speckles":
+      "80px 80px",
+
+    "ripples":
+      "70px 70px",
+
+    "concentric-circles":
+      "90px 90px",
+
+    "radial-lines":
+      "100% 100%",
+
+    "lace":
+      "35px 35px",
+
+    "frosted":
+      "100px 100px",
+
+    "embossed":
+      "30px 30px",
+
+    "woven-fabric":
+      "12px 12px",
+
+    "canvas":
+      "10px 10px",
+
+    "parchment":
+      "100px 100px"
+
+  };
+
+
+  return (
+    sizes[type] ||
+    "8px 8px"
+  );
+}
+
+
+/* =====================================================
+   NORMALIZE STATE
+===================================================== */
+
+function normalizeState(
+  state
+) {
+
+  state =
+    state &&
+    typeof state === "object"
+      ? state
+      : {};
+
+
+  const texture =
+    normalizeTextureName(
+      state.backgroundTexture ||
+      state.texture ||
+      "fine-paper"
+    );
+
+
+  const message =
+    state.message !== undefined
+      ? state.message
+      : (
+          state.msg ||
+          ""
+        );
+
+
+  return {
+
+    title:
+      state.title ||
+      state.cardTitle ||
+      "A Blessing For You",
+
+
+    to:
+      state.to ||
+      state.recipient ||
+      "YSL",
+
+
+    recipient:
+      state.recipient ||
+      state.to ||
+      "YSL",
+
+
+    from:
+      state.from ||
+      state.sender ||
+      "KIM",
+
+
+    message:
+
+
+      message,
+
+
+    msg:
+      state.msg !== undefined
+        ? state.msg
+        : message,
+
+
+    photos:
+      Array.isArray(state.photos)
+        ? state.photos.map(function(photo){
+
+            if (!photo || typeof photo !== "object") {
+              return photo;
+            }
+
+            const normalizedPhoto = {
+              ...photo
+            };
+
+            if (normalizedPhoto.x == null || !Number.isFinite(Number(normalizedPhoto.x))) {
+              normalizedPhoto.x = 50;
+            } else {
+              normalizedPhoto.x = Number(normalizedPhoto.x);
+            }
+
+            if (normalizedPhoto.y == null || !Number.isFinite(Number(normalizedPhoto.y))) {
+              normalizedPhoto.y = 50;
+            } else {
+              normalizedPhoto.y = Number(normalizedPhoto.y);
+            }
+
+            if (normalizedPhoto.width == null || !Number.isFinite(Number(normalizedPhoto.width))) {
+              normalizedPhoto.width = 120;
+            }
+
+            if (normalizedPhoto.height == null || !Number.isFinite(Number(normalizedPhoto.height))) {
+              normalizedPhoto.height = 120;
+            }
+
+            return normalizedPhoto;
+
+          })
+        : [],
+
+
+    symbol:
+      state.symbol !== undefined
+        ? state.symbol
+        : "✝",
+
+
+    texture:
+
+
+      texture,
+
+
+    backgroundTexture:
+      texture,
+
+
+    textureColor:
+      validTextureHex(
+        state.textureColor
+      )
+        ? state.textureColor
+        : "#C89B3C",
+
+
+    backgroundColor:
+      validColor(
+        state.backgroundColor
+      )
+        ? state.backgroundColor
+        : (
+            validColor(
+              state.bgColor
+            )
+              ? state.bgColor
+              : "#FFFAF2"
+          ),
+
+
+    borderColor:
+      validColor(
+        state.borderColor
+      )
+        ? state.borderColor
+        : "#C89B3C",
+
+
+    innerBorderColor:
+      validColor(
+        state.innerBorderColor
+      )
+        ? state.innerBorderColor
+        : (
+            validColor(
+              state.borderColor
+            )
+              ? state.borderColor
+              : "#C89B3C"
+          ),
+
+
+    innerBorder:
+      state.innerBorder ||
+      "fine",
+
+
+    fontColor:
+      validColor(
+        state.fontColor
+      )
+        ? state.fontColor
+        : "#4C0A16",
+
+
+    font:
+      state.font ||
+      "Georgia"
+
+  };
+}
+
+
+/* =====================================================
+   COLOR VALIDATION
+===================================================== */
+
+function validTextureHex(
+  value
+) {
+
+  return (
+    typeof value === "string" &&
+    /^#[0-9A-Fa-f]{6}$/.test(
+      value.trim()
+    )
+  );
+}
+
+
+function validColor(
+  value
+) {
+
+  if (
+    typeof value !== "string"
+  ) {
+
+    return false;
+
+  }
+
+
+  const valueTrimmed =
+    value.trim();
+
+
+  return (
+    /^#[0-9A-Fa-f]{6}$/.test(
+      valueTrimmed
+    ) ||
+    /^#[0-9A-Fa-f]{3}$/.test(
+      valueTrimmed
+    ) ||
+    /^rgb(a)?\(/i.test(
+      valueTrimmed
+    ) ||
+    /^hsl(a)?\(/i.test(
+      valueTrimmed
+    )
+  );
+}
+
+
+/* =====================================================
+   INNER BORDER
+===================================================== */
+
+function applyInnerBorder(
+  card,
+  type
+) {
+
+  card.style.setProperty(
+    "--inner-border-width",
+    "1px"
+  );
+
+
+  card.style.setProperty(
+    "--inner-border-style",
+    "solid"
+  );
+
+
+  switch (type) {
+
+    case "none":
+
+      card.style.setProperty(
+        "--inner-border-width",
+        "0px"
+      );
+
+      break;
+
+
+    case "fine":
+
+      card.style.setProperty(
+        "--inner-border-width",
+        "1px"
+      );
+
+      card.style.setProperty(
+        "--inner-border-style",
+        "solid"
+      );
+
+      break;
+
+
+    case "double":
+
+      card.style.setProperty(
+        "--inner-border-width",
+        "3px"
+      );
+
+      card.style.setProperty(
+        "--inner-border-style",
+        "double"
+      );
+
+      break;
+
+
+    case "dotted":
+
+      card.style.setProperty(
+        "--inner-border-width",
+        "1px"
+      );
+
+      card.style.setProperty(
+        "--inner-border-style",
+        "dotted"
+      );
+
+      break;
+
+
+    case "dashed":
+
+      card.style.setProperty(
+        "--inner-border-width",
+        "1px"
+      );
+
+      card.style.setProperty(
+        "--inner-border-style",
+        "dashed"
+      );
+
+      break;
+
+
+    case "elegant":
+
+      card.style.setProperty(
+        "--inner-border-width",
+        "1px"
+      );
+
+      card.style.setProperty(
+        "--inner-border-style",
+        "double"
+      );
+
+      break;
+
+
+    default:
+
+      card.style.setProperty(
+        "--inner-border-width",
+        "1px"
+      );
+
+      card.style.setProperty(
+        "--inner-border-style",
+        "solid"
+      );
+
+      break;
+
+  }
+}
+
+
+/* =====================================================
+   PHOTO SOURCE
+===================================================== */
+
+function getPhotoSource(
+  photo
+) {
+
+  if (!photo) {
+    return "";
+  }
+
+
+  return (
+    photo.dataUrl ||
+    photo.url ||
+    photo.src ||
+    ""
+  );
+}
+
+
+/* =====================================================
+   PHOTO NUMBER
+===================================================== */
+
+function numberOrDefault(
+  value,
+  fallback
+) {
+
+  const number =
+    Number(value);
+
+
+  return Number.isFinite(number)
+    ? number
+    : fallback;
+}
+
+
+/* =====================================================
+   PHOTO POSITION
+===================================================== */
+
+function applyPhotoPosition(
+  item,
+  photo
+) {
+
+  const x =
+    Math.max(0, Math.min(100, numberOrDefault(photo.x, 50)));
+
+  const y =
+    Math.max(0, Math.min(100, numberOrDefault(photo.y, 50)));
+
+  const width =
+    Math.max(10, numberOrDefault(photo.width, 120));
+
+  const height =
+    Math.max(10, numberOrDefault(photo.height, 120));
+
+  item.style.left = x + '%';
+  item.style.top = y + '%';
+  item.style.width = width + 'px';
+  item.style.height = height + 'px';
+  item.style.transform = 'translate(-50%, -50%)';
+}
+
+
+
+/* =====================================================
+   PHOTO STYLE — SAME AS BUILDER
+===================================================== */
+
+function applyPhotoStyle(
+  img,
+  photo
+) {
+
+  let zoom =
+    Number(photo.cropZoom ?? 100);
+
+  if (zoom > 0 && zoom <= 2) {
+    zoom = zoom * 100;
+  }
+
+  zoom = Math.max(10, zoom);
+
+  const rotation =
+    Number(photo.rotation ?? 0) || 0;
+
+  const rawImageX = Number(photo.cropX);
+  const rawImageY = Number(photo.cropY);
+
+  const imageX = Number.isFinite(rawImageX)
+    ? Math.max(0, Math.min(100, rawImageX))
+    : 50;
+
+  const imageY = Number.isFinite(rawImageY)
+    ? Math.max(0, Math.min(100, rawImageY))
+    : 50;
+
+  /* Exact Builder behavior: natural image size, centered by default. */
+  img.style.objectFit = 'initial';
+  img.style.objectPosition = '50% 50%';
+  img.style.left = imageX + '%';
+  img.style.top = imageY + '%';
+  img.style.width = 'auto';
+  img.style.height = 'auto';
+  img.style.maxWidth = 'none';
+  img.style.maxHeight = 'none';
+  img.style.transform =
+    'translate(-50%, -50%) scale(' +
+    (zoom / 100) +
+    ') rotate(' +
+    rotation +
+    'deg)';
+  img.style.transformOrigin = 'center center';
+}
+
+
+
+/* =====================================================
+   PHOTO RENDER
+===================================================== */
+
+function renderPhotos(
+  stage,
+  photos
+) {
+
+  if (!Array.isArray(photos)) {
+    return;
+  }
+
+
+  photos.forEach(function(photo) {
+
+    if (!photo) {
+      return;
+    }
+
+
+    /* Use the same source priority as the Builder preview. */
+    const src =
+      photo.dataUrl ||
+      photo.url ||
+      photo.src ||
+      "";
+
+
+    if (!src) {
+      return;
+    }
+
+
+    const item =
+      document.createElement("div");
+
+
+    item.className =
+      "photo-item";
+
+
+    applyPhotoPosition(
+      item,
+      photo
+    );
+
+
+    const img =
+      document.createElement("img");
+
+
+    img.src = src;
+    img.loading = "eager";
+    img.decoding = "async";
+    img.draggable = false;
+    img.setAttribute("draggable", "false");
+
+    img.alt =
+      photo.name ||
+      photo.fileName ||
+      "Blessing photo";
+
+
+    img.addEventListener(
+      "error",
+      function() {
+        item.style.display = "none";
+      },
+      { once: true }
+    );
+
+
+    applyPhotoStyle(
+      img,
+      photo
+    );
+
+
+    item.appendChild(img);
+    stage.appendChild(item);
+
+  });
+}
+
+
+/* =====================================================
+   RENDER CARD
+===================================================== */
+
+function renderCard(
+  rawState
+) {
+
+  const state =
+    normalizeState(
+      rawState
+    );
+
+
+  const card =
+    document.createElement(
+      "div"
+    );
+
+
+  card.className =
+    "card";
+
+  /* VIEW CARD IS READ-ONLY. No dragging, selection, or image editing. */
+  card.addEventListener("dragstart", function(event) {
+    event.preventDefault();
+  });
+
+  card.addEventListener("contextmenu", function(event) {
+    event.preventDefault();
+  });
+
+  card.addEventListener("selectstart", function(event) {
+    event.preventDefault();
+  });
+
+
+  /* =================================================
+     COLORS
+  ================================================= */
+
+  card.style.setProperty(
+    "--outer-border-color",
+    state.borderColor
+  );
+
+
+  card.style.setProperty(
+    "--inner-border-color",
+    state.innerBorderColor
+  );
+
+
+  card.style.setProperty(
+    "--font-color",
+    state.fontColor
+  );
+
+
+  /* =================================================
+     CSS-ONLY TEXTURE
+  ================================================= */
+
+  card.style.setProperty(
+    "--texture",
+    getTexture(
+      state.texture,
+      state.textureColor
+    )
+  );
+
+
+  card.style.setProperty(
+    "--texture-size",
+    getTextureSize(
+      state.texture
+    )
+  );
+
+
+  card.style.setProperty(
+    "--texture-color",
+    state.textureColor
+  );
+
+
+  /* =================================================
+     FONT
+  ================================================= */
+
+  card.style.fontFamily =
+    getFontFamily(
+      state.font
+    );
+
+
+  /* =================================================
+     CARD BACKGROUND COLOR
+  ================================================= */
+
+  card.style.backgroundColor =
+    state.backgroundColor;
+
+
+  /* =================================================
+     INNER BORDER
+  ================================================= */
+
+  applyInnerBorder(
+    card,
+    state.innerBorder
+  );
+
+
+  /* =================================================
+     SYMBOL
+  ================================================= */
+
+  const symbol =
+    document.createElement(
+      "div"
+    );
+
+
+  symbol.className =
+    "symbol";
+
+
+  symbol.textContent =
+    state.symbol;
+
+
+  /* =================================================
+     SMALL TITLE
+  ================================================= */
+
+  const smallTitle =
+    document.createElement(
+      "div"
+    );
+
+
+  smallTitle.className =
+    "small-title";
+
+
+  smallTitle.textContent =
+    "A Blessing For You";
+
+
+  /* =================================================
+     MAIN TITLE
+  ================================================= */
+
+  const title =
+    document.createElement(
+      "h1"
+    );
+
+
+  title.className =
+    "title";
+
+
+  title.textContent =
+    state.title;
+
+
+  /* =================================================
+     RECIPIENT
+  ================================================= */
+
+  const recipient =
+    document.createElement(
+      "div"
+    );
+
+
+  recipient.className =
+    "recipient";
+
+
+  recipient.textContent =
+    state.to ||
+    state.recipient ||
+    "YSL";
+
+
+  /* =================================================
+     CONTENT
+  ================================================= */
+
+  const content =
+    document.createElement(
+      "div"
+    );
+
+
+  content.className =
+    "content";
+
+
+  /* =================================================
+     MESSAGE
+  ================================================= */
+
+  const message =
+    document.createElement(
+      "div"
+    );
+
+
+  message.className =
+    "message";
+
+
+  message.textContent =
+    state.message ||
+    state.msg ||
+    "";
+
+
+  /* =================================================
+     PHOTO STAGE
+  ================================================= */
+
+  const photoStage =
+    document.createElement(
+      "div"
+    );
+
+
+  photoStage.className =
+    "photo-stage";
+
+
+  renderPhotos(
+    photoStage,
+    state.photos
+  );
+
+
+  content.appendChild(
+    message
+  );
+
+
+
+
+  /* =================================================
+     FROM
+  ================================================= */
+
+  const from =
+    document.createElement(
+      "div"
+    );
+
+
+  from.className =
+    "from";
+
+
+  from.textContent =
+    "—" +
+    (
+      state.from ||
+      "KIM"
+    );
+
+
+  /* =================================================
+     CARD ELEMENTS
+  ================================================= */
+
+  card.appendChild(
+    symbol
+  );
+
+
+  card.appendChild(
+    smallTitle
+  );
+
+
+  card.appendChild(
+    title
+  );
+
+
+  card.appendChild(
+    recipient
+  );
+
+
+  card.appendChild(
+    content
+  );
+
+
+  /* Photos are a full-card overlay, exactly like the Builder. */
+  card.appendChild(
+    photoStage
+  );
+
+
+  card.appendChild(
+    from
+  );
+
+
+  return card;
+}
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHtml(
+  value
+) {
+
+  return String(
+    value ?? ""
+  )
+
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+}
+
+
+/* =====================================================
+   LOADING
+===================================================== */
+
+function setLoadingMessage(
+  message
+) {
+
+  const el =
+    document.getElementById(
+      "loading-message"
+    );
+
+
+  if (el) {
+
+    el.textContent =
+      message;
+
+  }
+}
+
+
+function wait(ms) {
+
+  return new Promise(
+    resolve =>
+      setTimeout(
+        resolve,
+        ms
+      )
+  );
+
+}
+
+
+async function waitForImages(
+  root
+) {
+
+  const images =
+    Array.from(
+      root.querySelectorAll(
+        "img"
+      )
+    );
+
+
+  if (!images.length) {
+
+    return;
+
+  }
+
+
+  await Promise.all(
+    images.map(
+      img => {
+
+        if (img.complete) {
+
+          return Promise.resolve();
+
+        }
+
+
+        return new Promise(
+          resolve => {
+
+            img.addEventListener(
+              "load",
+              resolve,
+              { once: true }
+            );
+
+
+            img.addEventListener(
+              "error",
+              resolve,
+              { once: true }
+            );
+
+          }
+        );
+
+      }
+    )
+  );
+
+}
+
+
+/* =====================================================
+   LOAD CARD
+===================================================== */
+
+async function loadCard() {
+
+  const app =
+    document.getElementById(
+      "app"
+    );
+
+
+  const loadingMessage =
+    document.getElementById(
+      "loading-message"
+    );
+
+
+  /* =================================================
+     GET CARD ID
+  ================================================= */
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+
+  const id =
+    params.get("id") ||
+    params.get("creationId");
+
+
+  if (!id) {
+
+    showError(
+      "This blessing link is missing its card ID."
+    );
+
+    return;
+
+  }
+
+
+  if (!API_URL) {
+
+    showError(
+      "The card API is not configured."
+    );
+
+    return;
+
+  }
+
+
+  try {
+
+    setLoadingMessage(
+      "Connecting to the blessing..."
+    );
+
+
+    const url =
+      API_URL +
+      "?action=getPublic&id=" +
+      encodeURIComponent(id) +
+      "&_=" +
+      Date.now();
+
+
+    if (loadingMessage) {
+
+      loadingMessage.textContent =
+        "Connecting to your blessing...";
+
+    }
+
+
+    setLoadingMessage(
+      "Loading your saved card..."
+    );
+
+
+    const response =
+      await fetch(
+        url,
+        {
+          method: "GET",
+          credentials: "omit",
+          cache: "no-store"
+        }
+      );
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        "Server returned HTTP " +
+        response.status
+      );
+
+    }
+
+
+    if (loadingMessage) {
+
+      loadingMessage.textContent =
+        "Opening your blessing...";
+
+    }
+
+
+    setLoadingMessage(
+      "Preparing your blessing..."
+    );
+
+
+    const result =
+      await response.json();
+
+
+    if (!result.ok) {
+
+      throw new Error(
+        result.error ||
+        "Blessing card not found."
+      );
+
+    }
+
+
+    /* =================================================
+       GET STATE
+    ================================================= */
+
+    let state =
+      result.state ||
+      (
+        result.data &&
+        result.data.state
+      ) ||
+      (
+        result.card &&
+        result.card.state
+      ) ||
+      result.data ||
+      {};
+
+
+    if (
+      typeof state ===
+      "string"
+    ) {
+
+      try {
+
+        state =
+          JSON.parse(
+            state
+          );
+
+      }
+
+      catch(error) {
+
+        throw new Error(
+          "The saved blessing data is invalid."
+        );
+
+      }
+
+    }
+
+
+    /* =================================================
+       RENDER
+    ================================================= */
+
+    if (loadingMessage) {
+
+      loadingMessage.textContent =
+        "Almost ready...";
+
+    }
+
+
+    setLoadingMessage(
+      "Adding your message and photos..."
+    );
+
+
+    const card =
+      renderCard(
+        state
+      );
+
+
+    setLoadingMessage(
+      "Loading photos..."
+    );
+
+
+    await waitForImages(
+      card
+    );
+
+
+    setLoadingMessage(
+      "Your blessing is ready."
+    );
+
+
+    await wait(180);
+
+
+    /* =================================================
+       DISPLAY CARD
+    ================================================= */
+
+    app.className =
+      "app-ready";
+
+
+    app.innerHTML =
+      "";
+
+
+    app.appendChild(
+      card
+    );
+
+
+    updateCardScale();
+
+
+    /* =================================================
+       CREATE BUTTON
+    ================================================= */
+
+    const button =
+      document.createElement(
+        "button"
+      );
+
+
+    button.className =
+      "create-button";
+
+
+    button.type =
+      "button";
+
+
+    button.textContent =
+      "Create Your Own Blessing";
+
+
+    button.addEventListener(
+      "click",
+      function() {
+
+        window.location.href =
+          "index.html";
+
+      }
+    );
+
+
+    document.body.appendChild(
+      button
+    );
+
+  }
+
+  catch(error) {
+
+    console.error(
+      "VIEW CARD ERROR:",
+      error
+    );
+
+
+    showError(
+      error.message ||
+      "Unable to load this blessing."
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   ERROR
+===================================================== */
+
+function showError(
+  message
+) {
+
+  const app =
+    document.getElementById(
+      "app"
+    );
+
+
+  app.className =
+    "error-box";
+
+
+  app.setAttribute(
+    "role",
+    "alert"
+  );
+
+
+  app.innerHTML = `
+
+    <h2>
+      Blessing Unavailable
+    </h2>
+
+    <p>
+      ${escapeHtml(
+        message
+      )}
+    </p>
+
+    <button
+      class="create-button"
+      type="button"
+      onclick="location.href='index.html'">
+
+      Create Your Own Blessing
+
+    </button>
+
+  `;
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+loadCard();
+
+</script>
+
+</body>
+</html>
